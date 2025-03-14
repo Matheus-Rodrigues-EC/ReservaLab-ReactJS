@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router";
+import * as Constants from '../../Constants/Constants';
 import styled from "styled-components";
 import Logo from '../../assets/Logo.jpg'
 
-import { CalendarOutlined, UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button } from 'antd';
+import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+import { Row, Col, Avatar, Form, Input, Button, Typography } from 'antd';
 
 
 const Login = () => {
+  const inputRef = useRef(null);
   const Email = useState("");
   const Password = useState("");
 
@@ -18,21 +21,25 @@ const Login = () => {
   };
 
   useEffect(() => {
+    inputRef.current?.focus();
+  }, [inputRef]);
+
+  useEffect(() => {
 
   }, [Email, Password]);
 
   return (
     <Container>
       <Col span={12}>
-        <Row justify="center" style={{ marginTop: "10%"}}>
+        <Row justify="center" style={{ marginTop: "10%" }}>
           <Avatar
             size={{ xxl: 350 }}
             src={Logo || undefined}
             icon={!Logo ? <CalendarOutlined /> : undefined}
           />
         </Row>
-        
-        <Row justify="center" style={{marginTop: "70px"}}>
+
+        <Row justify="center" style={{ marginTop: "70px" }}>
           <Form
             name="login"
             onFinish={onFinish}
@@ -43,22 +50,24 @@ const Login = () => {
             <Form.Item
               name='Email'
               rules={[
-                {
-                  required: true,
-                  message: 'Por favor, insira seu e-mail.',
-                },
+                {required: true, message: "Por favor, insira seu e-mail"},
+                { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
               ]}
             >
               <Input
-                prefix={<UserOutlined />}
-                size="large" 
-                placeholder="Email" 
+                prefix={<MailOutlined />}
+                ref={inputRef}
+                size="large"
+                placeholder="Email"
+                onChange={() => {
+                  inputRef.current.focus({
+                    cursor: 'end',
+                  });
+                }}
 
-                style={{width: 600, height: 60}}
+                style={{ width: 650, height: 60 }}
                 allowClear
                 type="text"
-                // value={}
-                onChange={() => console.log()}
               >
 
               </Input>
@@ -75,13 +84,12 @@ const Login = () => {
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                size="large" 
-                placeholder="Senha" 
+                size="large"
+                placeholder="Senha"
 
-                style={{width: 600, height: 60}}
+                style={{ width: 650, height: 60 }}
                 allowClear
                 type="password"
-                // value={}
                 onChange={() => console.log()}
               >
 
@@ -90,7 +98,7 @@ const Login = () => {
 
             <Form.Item>
               <Button
-                type="primary" 
+                type="primary"
                 htmlType="submit"
                 style={{
                   margin: 'auto',
@@ -100,14 +108,24 @@ const Login = () => {
                   backgroundColor: '#79C7D9',
                   border: 'solid 3px',
                   borderColor: '#2BB9D9',
-                  color: 'black'
+                  color: 'black',
+                  fontSize: 20
                 }}
-                >
-                  Login
-                </Button>
+              >
+                Login
+              </Button>
             </Form.Item>
 
           </Form>
+
+
+        </Row>
+        <Row justify='center'>
+
+          <Link to="/cadastro" style={{ color: "#70B3CD", fontSize: 18}}>
+            Ainda não possui cadastro? Clique aqui.
+          </Link>
+          
         </Row>
 
       </Col>
