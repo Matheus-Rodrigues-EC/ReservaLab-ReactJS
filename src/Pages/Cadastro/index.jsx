@@ -4,17 +4,25 @@ import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import Logo from '../../assets/Logo.jpg'
 
-import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button, Typography } from 'antd';
+import { 
+  CalendarOutlined, 
+  MailOutlined, 
+  UserAddOutlined, 
+  LockOutlined,
+} from '@ant-design/icons';
+import { Row, Col, Avatar, Form, Input, Button } from 'antd';
 
 
-const Login = () => {
+const Cadastro = () => {
+  const [form] = Form.useForm();
   const inputRef = useRef(null);
+  const [FullName, setFullName] = useState("");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-
+  
   const onFinish = (values) => {
     console.log('Success:');
+    setFullName(values.FullName);
     setEmail(values.Email);
     setPassword(values.Password)
   };
@@ -28,11 +36,11 @@ const Login = () => {
 
   useEffect(() => {
 
-  }, [Email, Password]);
+  }, [FullName, Email, Password ]);
 
   return (
     <Container>
-      <Col span={12}>
+      <Col span={13}>
         <Row justify="center" style={{ marginTop: "10%" }}>
           <Avatar
             size={{ xxl: 350 }}
@@ -41,47 +49,68 @@ const Login = () => {
           />
         </Row>
 
-        <Row justify="center" style={{ marginTop: "70px" }}>
+        <Row justify="center" style={{ marginTop: "20px" }}>
           <Form
+            form={form}
             name="login"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
 
+            {/* Fullname */}
             <Form.Item
-              name='Email'
+              name='FullName'
               rules={[
-                {required: true, message: "Por favor, insira seu e-mail"},
-                { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
+                {
+                  required: true,
+                  message: 'Por favor, insira seu nome.',
+                },
               ]}
             >
               <Input
-                prefix={<MailOutlined />}
+                prefix={<UserAddOutlined />}
                 ref={inputRef}
                 size="large"
-                placeholder="Email"
-                onChange={() => {
-                  inputRef.current.focus({
-                    cursor: 'end',
-                  });
-                }}
+                placeholder="Nome copleto"
 
                 style={{ width: 650, height: 60 }}
                 allowClear
                 type="text"
+                onChange={() => console.log()}
               >
 
               </Input>
             </Form.Item>
 
+            {/* Email */}
+            <Form.Item
+              name='Email'
+              rules={[
+                { required: true, message: 'Por favor, insira seu e-mail.'},
+                { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
+              ]}
+            >
+              <Input
+                prefix={<MailOutlined />}
+                size="large"
+                placeholder="Email"
+
+                style={{ width: 650, height: 60 }}
+                allowClear
+                type="text"
+                onChange={() => console.log()}
+              >
+
+              </Input>
+            </Form.Item>
+
+            {/* Password */}
             <Form.Item
               name='Password'
               rules={[
-                {
-                  required: true,
-                  message: 'Por favor, insira sua senha.',
-                },
+                { required: true, message: 'Por favor, insira sua senha.'},
+                { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
               ]}
             >
               <Input.Password
@@ -91,8 +120,35 @@ const Login = () => {
 
                 style={{ width: 650, height: 60 }}
                 allowClear
-                type="password"
-                onChange={() => console.log()}
+              >
+
+              </Input.Password>
+            </Form.Item>
+
+            {/* Confirm Password */}
+            <Form.Item
+              name='ConfirmPassword'
+              rules={[
+                { required: true, message: 'Por favor, insira sua senha.'},
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue('Password') === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error('As senhas não correspondem!'));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                size="large"
+                placeholder="Confirme a Senha"
+                dependencies={['password']}
+
+                style={{ width: 650, height: 60 }}
+                allowClear
+                // onChange={() => validatePassword()}
               >
 
               </Input.Password>
@@ -114,7 +170,7 @@ const Login = () => {
                   fontSize: 20
                 }}
               >
-                Login
+                Cadastrar
               </Button>
             </Form.Item>
 
@@ -124,10 +180,10 @@ const Login = () => {
         </Row>
         <Row justify='center'>
 
-          <Link to="/cadastro" style={{ color: "#70B3CD", fontSize: 18}}>
-            Ainda não possui cadastro? Clique aqui.
+          <Link to="/login" style={{ color: "#70B3CD", fontSize: 18 }}>
+            Já possui cadastro? Acesse aqui.
           </Link>
-          
+
         </Row>
 
       </Col>
@@ -135,7 +191,7 @@ const Login = () => {
   )
 }
 
-export default Login;
+export default Cadastro;
 
 const Container = styled.div`
   margin: auto;
