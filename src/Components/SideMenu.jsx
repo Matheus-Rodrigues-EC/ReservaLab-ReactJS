@@ -1,15 +1,13 @@
 import React, { 
   useState, 
-  useEffect, 
-  // useRef 
+  useEffect,
 } from "react";
-// import { Link } from "react-router";
 import "./Style.less";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 import styled from "styled-components";
 import Logo from '../assets/Logo.jpg';
-import { Row, Col, Avatar, Button, Typography } from 'antd';
+import { Row, Avatar, Button, Typography } from 'antd';
 
 dayjs.locale("pt-br");
 
