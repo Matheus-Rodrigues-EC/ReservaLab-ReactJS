@@ -33,7 +33,7 @@ const Login = () => {
   return (
     <Container>
       <Col span={12}>
-        <Row justify="center" style={{ marginTop: "10%" }}>
+        <Row justify="center" style={{ marginTop: "75px" }} >
           <Avatar
             size={{ xxl: 350 }}
             src={Logo || undefined}

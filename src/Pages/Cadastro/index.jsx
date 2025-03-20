@@ -41,7 +41,7 @@ const Cadastro = () => {
   return (
     <Container>
       <Col span={13}>
-        <Row justify="center" style={{ marginTop: "10%" }}>
+        <Row justify="center" style={{ marginTop: "75px" }}>
           <Avatar
             size={{ xxl: 350 }}
             src={Logo || undefined}

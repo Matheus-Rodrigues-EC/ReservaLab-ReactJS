@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import React from 'react'
 import styled from "styled-components";
 import Background from './assets/Background.png';
@@ -13,7 +13,8 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          <Route path="/login" element={ <Login/> } />
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={ <Cadastro/> } />
         
         </Routes>
