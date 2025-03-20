@@ -5,6 +5,7 @@ import Background from './assets/Background.png';
 
 import Login from './Pages/Login'
 import Cadastro from './Pages/Cadastro';
+import Home from "./Pages/Home";
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={ <Cadastro/> } />
+          <Route path="/home" element={ <Home/> } />
         
         </Routes>
       </BrowserRouter>

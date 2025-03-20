@@ -2,10 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
-import Logo from '../../assets/Logo.jpg'
+import "./Style.less";
+import Logo from '../../assets/Logo.jpg';
 
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button, Typography } from 'antd';
+import { Row, Col, Avatar, Form, Input, Button } from 'antd';
 
 
 const Login = () => {
@@ -102,17 +103,7 @@ const Login = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{
-                  margin: 'auto',
-                  display: 'flex',
-                  width: '400px',
-                  height: '60px',
-                  backgroundColor: '#79C7D9',
-                  border: 'solid 3px',
-                  borderColor: '#2BB9D9',
-                  color: 'black',
-                  fontSize: 20
-                }}
+                className="SubmitButton"
               >
                 Login
               </Button>
@@ -124,7 +115,7 @@ const Login = () => {
         </Row>
         <Row justify='center'>
 
-          <Link to="/cadastro" style={{ color: "#70B3CD", fontSize: 18}}>
+          <Link to="/cadastro" className="LinkButton">
             Ainda não possui cadastro? Clique aqui.
           </Link>
           
