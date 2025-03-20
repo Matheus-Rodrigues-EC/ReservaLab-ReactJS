@@ -1,24 +1,21 @@
 import React, {
-  // useState, 
   useEffect,
-  // useRef 
 } from "react";
-import { Col, Row, Card, List, Button } from "antd";
-// import { Link } from "react-router";
+import { Col, Row, Card, List, Button, Empty, Typography } from "antd";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
-// import Logo from '../../assets/Logo.jpg';
 
 import SideMenu from "../../Components/SideMenu";
+import CardReservation from "../../Components/CardReservation";
 
 const Home = () => {
 
-  const data = Constants.data;
+  const data = Constants?.data;
 
   useEffect(() => {
 
-  }, [])
+  }, [data]);
 
   return (
 
@@ -28,25 +25,34 @@ const Home = () => {
       </Col>
       <Col span={20}>
         <div className="Container">
-          <List
-            itemLayout="vertical"
-            size="large"
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item>
-                <Card>
-                  {item.title}
-                  <Button onClick={() => alert(item)}></Button>
-                </Card>
-                  
-              </List.Item>
-            )}
-          />
+          {data.length > 0 ? (
+            <List
+              itemLayout="horizontal"
+              size="large"
+              dataSource={data}
+              className="ListReservations"
+              renderItem={(item) => (
+                <List.Item >
+                  <CardReservation data={item} />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <Empty
+              className="EmpityMessage"
+              description={
+                <Typography.Text 
+                  className="EmpityMessage" 
+                  color="#A5BFA4"
+                >
+                  Nenhuma Reserva Agendada para hoje
+                </Typography.Text>
+              }
+            />
+          )}
         </div>
 
       </Col>
-
-
     </Container>
   )
 }
