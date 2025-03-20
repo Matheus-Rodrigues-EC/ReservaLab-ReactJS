@@ -14,7 +14,7 @@ export const data = [
 		id: 1,
 		name: "João Pedro Benício de Sousa magalhães",
 		rule: "teacher",
-		disciplina: "Portugês",
+		disciplina: "Português",
 		sala: "Sala de Informática",
     type: "Info",
 		day: "22/03/2025",

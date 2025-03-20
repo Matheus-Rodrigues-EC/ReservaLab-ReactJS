@@ -32,13 +32,13 @@ const CardReservation = (Data) => {
       bodyStyle={{ display: 'flex' }}
     >
 
-      <Col span={5} >
+      <Col span={4} >
         <Image
           src={(data?.type) !== 'Info' ? (data?.type === 'Sport' ? Sport : Libr) : Info}
           className="ImageResv"
         />
       </Col>
-      <Col span={18} offset={1}>
+      <Col span={19} offset={1}>
         <Row>
           <Typography.Title level={2} className="TitleResv">
             {data?.sala} - {data?.disciplina}
