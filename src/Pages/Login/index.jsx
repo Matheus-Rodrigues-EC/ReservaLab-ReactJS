@@ -115,7 +115,7 @@ const Login = () => {
         </Row>
         <Row justify='center'>
 
-          <Link to="/cadastro" className="LinkButton">
+          <Link to="/register" className="LinkButton">
             Ainda não possui cadastro? Clique aqui.
           </Link>
           

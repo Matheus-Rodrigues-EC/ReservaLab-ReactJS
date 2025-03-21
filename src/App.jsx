@@ -7,6 +7,7 @@ import Login from './Pages/Login'
 import Cadastro from './Pages/Cadastro';
 import Home from "./Pages/Home"
 import Profile from "./Pages/Profile";
+import UpdatePassword from "./Pages/Profile/UpdatePassword";
 
 function App() {
 
@@ -17,9 +18,10 @@ function App() {
 
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={ <Cadastro/> } />
+          <Route path="/register" element={ <Cadastro/> } />
           <Route path="/home" element={ <Home/> } />
           <Route path="/profile" element={ <Profile/> } />
+          <Route path="/profile/updatePassword" element={ <UpdatePassword/> } />
         
         </Routes>
       </BrowserRouter>

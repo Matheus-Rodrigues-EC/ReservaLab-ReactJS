@@ -2,7 +2,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Link, Navigate } from "react-router";
+import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -19,6 +19,8 @@ import SideMenu from "../../Components/SideMenu";
 const Profile = () => {
   const [filteredCargos, setFilteredCargos] = useState(Cargos);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
+  const data = Constants?.data;
+  const Navigate = useNavigate()
 
   const handleSearchCargos = (value) => {
     if (!value) {
@@ -42,7 +44,9 @@ const Profile = () => {
     }
   };
 
-  const data = Constants?.data;
+  const goToUpdatePassword = () => {
+    Navigate('/profile/updatePassword')
+  }
 
   const onFinish = (values) => {
     console.log('Success:');
@@ -88,7 +92,7 @@ const Profile = () => {
             <Button
             type="danger"
                 className="EditPasswordButton"
-                onClick={() => console.log('alterar senha')}
+                onClick={goToUpdatePassword}
               >
                 Alterar Senha
               </Button>
