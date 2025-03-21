@@ -5,7 +5,8 @@ import Background from './assets/Background.png';
 
 import Login from './Pages/Login'
 import Cadastro from './Pages/Cadastro';
-import Home from "./Pages/Home";
+import Home from "./Pages/Home"
+import Profile from "./Pages/Profile";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={ <Cadastro/> } />
           <Route path="/home" element={ <Home/> } />
+          <Route path="/profile" element={ <Profile/> } />
         
         </Routes>
       </BrowserRouter>
