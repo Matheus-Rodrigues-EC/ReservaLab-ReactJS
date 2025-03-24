@@ -178,8 +178,8 @@ const Profile = () => {
                   filterOption={false}
                 >
                   {filteredDisciplinas.map((disciplina) => (
-                    <Select.Option key={disciplina?.key} value={disciplina?.key}>
-                      {disciplina?.value}
+                    <Select.Option key={disciplina?.id} value={disciplina?.id}>
+                      {disciplina?.label}
                     </Select.Option>
                   ))}
                 </Select>

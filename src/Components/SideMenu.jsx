@@ -35,6 +35,10 @@ const SideMenu = () => {
     Navigate("/classroom");
   };
 
+  const goToclass = () => {
+    Navigate("/class");
+  };
+
   useEffect(() => {
     setToday(SetDate);
     setUser('Professor(a)');
@@ -100,7 +104,7 @@ const SideMenu = () => {
 
       <Button 
         className="ButtonMenu" 
-        onClick={() => alert('Cadastrar Turma')}
+        onClick={goToclass}
       >
         Cadastrar Turma
       </Button>
