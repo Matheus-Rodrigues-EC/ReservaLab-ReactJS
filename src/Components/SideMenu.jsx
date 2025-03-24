@@ -56,7 +56,7 @@ const SideMenu = () => {
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.25vw' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
           {today}
         </Typography.Title>
       </Row>
