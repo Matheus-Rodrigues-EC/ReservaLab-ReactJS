@@ -33,95 +33,104 @@ const Login = () => {
 
   return (
     <Container>
-      <Col span={12}>
-        <Row justify="center" style={{ marginTop: "75px" }} >
-          <Avatar
-            size={{ xxl: 350 }}
-            src={Logo || undefined}
-            icon={!Logo ? <CalendarOutlined /> : undefined}
-          />
-        </Row>
+      <Row justify='center' align='middle' style={{ height: '100vh' }}>
+        <Col span={14}>
+          <Row justify="center">
+            <Avatar
+              size={{
+                xs: 75,
+                sm: 100,
+                md: 150,
+                lg: 200,
+                xl: 250,
+                xxl: 300
+              }}
+              src={Logo || undefined}
+              icon={!Logo ? <CalendarOutlined /> : undefined}
+            />
+          </Row>
 
-        <Row justify="center" style={{ marginTop: "70px" }}>
-          <Form
-            name="login"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-
-            <Form.Item
-              name='Email'
-              rules={[
-                {required: true, message: "Por favor, insira seu e-mail"},
-                { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
-              ]}
+          <Row justify="center" style={{ marginTop: "70px" }}>
+            <Form
+              name="login"
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input
-                prefix={<MailOutlined />}
-                ref={inputRef}
-                size="large"
-                placeholder="Email"
-                onChange={() => {
-                  inputRef.current.focus({
-                    cursor: 'end',
-                  });
-                }}
 
-                style={{ width: 650, height: 60 }}
-                allowClear
-                type="text"
+              <Form.Item
+                name='Email'
+                rules={[
+                  { required: true, message: "Por favor, insira seu e-mail" },
+                  { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
+                ]}
               >
+                <Input
+                  prefix={<MailOutlined />}
+                  ref={inputRef}
+                  size="large"
+                  placeholder="Email"
+                  onChange={() => {
+                    inputRef.current.focus({
+                      cursor: 'end',
+                    });
+                  }}
 
-              </Input>
-            </Form.Item>
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                  type="text"
+                >
 
-            <Form.Item
-              name='Password'
-              rules={[
-                {
-                  required: true,
-                  message: 'Por favor, insira sua senha.',
-                },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                size="large"
-                placeholder="Senha"
+                </Input>
+              </Form.Item>
 
-                style={{ width: 650, height: 60 }}
-                allowClear
-                type="password"
-                onChange={() => console.log()}
+              <Form.Item
+                name='Password'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Por favor, insira sua senha.',
+                  },
+                ]}
               >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  size="large"
+                  placeholder="Senha"
 
-              </Input.Password>
-            </Form.Item>
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                  type="password"
+                  onChange={() => console.log()}
+                >
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="SubmitButton"
-              >
-                Login
-              </Button>
-            </Form.Item>
+                </Input.Password>
+              </Form.Item>
 
-          </Form>
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="SubmitButton"
+                >
+                  Login
+                </Button>
+              </Form.Item>
+
+            </Form>
 
 
-        </Row>
-        <Row justify='center'>
+          </Row>
+          <Row justify='center'>
 
-          <Link to="/cadastro" className="LinkButton">
-            Ainda não possui cadastro? Clique aqui.
-          </Link>
-          
-        </Row>
+            <Link to="/register" className="LinkButton">
+              Ainda não possui cadastro? Clique aqui.
+            </Link>
 
-      </Col>
+          </Row>
+
+        </Col>
+      </Row>
     </Container>
   )
 }

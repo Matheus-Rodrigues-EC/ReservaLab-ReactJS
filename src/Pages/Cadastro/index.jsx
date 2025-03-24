@@ -41,143 +41,151 @@ const Cadastro = () => {
 
   return (
     <Container>
-      <Col span={13}>
-        <Row justify="center" style={{ marginTop: "75px" }}>
-          <Avatar
-            size={{ xxl: 350 }}
-            src={Logo || undefined}
-            icon={!Logo ? <CalendarOutlined /> : undefined}
-          />
-        </Row>
+      <Row justify='center' align='middle' style={{height: '100vh'}}>
+        <Col span={14}>
+          <Row justify="center">
+            <Avatar
+              size={{
+                xs: 75,
+                sm: 100,
+                md: 150,
+                lg: 200,
+                xl: 250,
+                xxl: 300 }}
+              src={Logo || undefined}
+              icon={!Logo ? <CalendarOutlined /> : undefined}
+            />
+          </Row>
 
-        <Row justify="center" style={{ marginTop: "20px" }}>
-          <Form
-            form={form}
-            name="login"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-
-            {/* Fullname */}
-            <Form.Item
-              name='FullName'
-              rules={[
-                {
-                  required: true,
-                  message: 'Por favor, insira seu nome.',
-                },
-              ]}
+          <Row justify="center" style={{ marginTop: "20px" }}>
+            <Form
+              form={form}
+              name="login"
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input
-                prefix={<UserAddOutlined />}
-                ref={inputRef}
-                size="large"
-                placeholder="Nome copleto"
 
-                style={{ width: 650, height: 60 }}
-                allowClear
-                type="text"
-                onChange={() => console.log()}
-              >
-
-              </Input>
-            </Form.Item>
-
-            {/* Email */}
-            <Form.Item
-              name='Email'
-              rules={[
-                { required: true, message: 'Por favor, insira seu e-mail.'},
-                { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
-              ]}
-            >
-              <Input
-                prefix={<MailOutlined />}
-                size="large"
-                placeholder="Email"
-
-                style={{ width: 650, height: 60 }}
-                allowClear
-                type="text"
-                onChange={() => console.log()}
-              >
-
-              </Input>
-            </Form.Item>
-
-            {/* Password */}
-            <Form.Item
-              name='Password'
-              rules={[
-                { required: true, message: 'Por favor, insira sua senha.'},
-                { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                size="large"
-                placeholder="Senha"
-
-                style={{ width: 650, height: 60 }}
-                allowClear
-              >
-
-              </Input.Password>
-            </Form.Item>
-
-            {/* Confirm Password */}
-            <Form.Item
-              name='ConfirmPassword'
-              rules={[
-                { required: true, message: 'Por favor, insira sua senha.'},
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue('Password') === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(new Error('As senhas não correspondem!'));
+              {/* Fullname */}
+              <Form.Item
+                name='FullName'
+                rules={[
+                  {
+                    required: true,
+                    message: 'Por favor, insira seu nome.',
                   },
-                }),
-              ]}
-            >
-              <Input.Password
-                prefix={<LockOutlined />}
-                size="large"
-                placeholder="Confirme a Senha"
-                dependencies={['password']}
-
-                style={{ width: 650, height: 60 }}
-                allowClear
-                // onChange={() => validatePassword()}
+                ]}
               >
+                <Input
+                  prefix={<UserAddOutlined />}
+                  ref={inputRef}
+                  size="large"
+                  placeholder="Nome copleto"
 
-              </Input.Password>
-            </Form.Item>
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                  type="text"
+                  onChange={() => console.log()}
+                >
 
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="SubmitButton"
+                </Input>
+              </Form.Item>
+
+              {/* Email */}
+              <Form.Item
+                name='Email'
+                rules={[
+                  { required: true, message: 'Por favor, insira seu e-mail.'},
+                  { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
+                ]}
               >
-                Cadastrar
-              </Button>
-            </Form.Item>
+                <Input
+                  prefix={<MailOutlined />}
+                  size="large"
+                  placeholder="Email"
 
-          </Form>
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                  type="text"
+                  onChange={() => console.log()}
+                >
+
+                </Input>
+              </Form.Item>
+
+              {/* Password */}
+              <Form.Item
+                name='Password'
+                rules={[
+                  { required: true, message: 'Por favor, insira sua senha.'},
+                  { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  size="large"
+                  placeholder="Senha"
+
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                >
+
+                </Input.Password>
+              </Form.Item>
+
+              {/* Confirm Password */}
+              <Form.Item
+                name='ConfirmPassword'
+                rules={[
+                  { required: true, message: 'Por favor, insira sua senha.'},
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('Password') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error('As senhas não correspondem!'));
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined />}
+                  size="large"
+                  placeholder="Confirme a Senha"
+                  dependencies={['password']}
+
+                  style={{ width: '40vw', height: 60 }}
+                  allowClear
+                  // onChange={() => validatePassword()}
+                >
+
+                </Input.Password>
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="SubmitButton"
+                >
+                  Cadastrar
+                </Button>
+              </Form.Item>
+
+            </Form>
 
 
-        </Row>
-        <Row justify='center'>
+          </Row>
+          <Row justify='center'>
 
-          <Link to="/login" className="LinkButton">
-            Já possui cadastro? Acesse aqui.
-          </Link>
+            <Link to="/login" className="LinkButton">
+              Já possui cadastro? Acesse aqui.
+            </Link>
 
-        </Row>
+          </Row>
 
-      </Col>
+        </Col>
+      </Row>
     </Container>
   )
 }

@@ -2,6 +2,7 @@ import React, {
   useState, 
   useEffect,
 } from "react";
+import { useNavigate } from "react-router";
 import "./Style.less";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
@@ -14,12 +15,21 @@ dayjs.locale("pt-br");
 const SideMenu = () => {
   const [today, setToday] = useState();
   const [user, setUser] = useState('Professor(a)');
+  const Navigate = useNavigate();
 
   const SetDate = () => {
     const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
     const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
     return dataCapitalizada;
   }
+
+  const goToHome = () => {
+    Navigate("/home");
+  }
+
+  const goToProfile = () => {
+    Navigate("/Profile");
+  };
 
   useEffect(() => {
     setToday(SetDate);
@@ -30,37 +40,42 @@ const SideMenu = () => {
     <Container>
       <Row justify="center" style={{ marginTop: "50px" }} >
         <Avatar
-          size={{ xxl: 200 }}
-          src={Logo || undefined}
-          icon={Logo}
+          size={{
+            xs: 75,
+            sm: 100,
+            md: 125,
+            lg: 150,
+            xl: 175,
+            xxl: 200 }}
+          src={Logo}
         />
       </Row>
       <Row justify="center" >
-        <Typography.Title level={1} style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2vw' }}>
           ReservaLab
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title level={4}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
           {today}
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title level={4}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
           Bem vindo(a) {user}
         </Typography.Title>
       </Row>
 
       <Button 
         className="ButtonMenu" 
-        onClick={() => alert('Inicio')}
+        onClick={goToHome}
       >
         Inicio
       </Button>
 
       <Button 
         className="ButtonMenu" 
-        onClick={() => alert('Perfil')}
+        onClick={goToProfile}
       >
         Perfil
       </Button>

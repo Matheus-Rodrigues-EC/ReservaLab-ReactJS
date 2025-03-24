@@ -5,6 +5,39 @@ export const hasSpecialChar = (text) => /[!@#$%^&*(),.?":{}|<>]/.test(text);
 export const hasUppercase = (text) => /[A-Z]/.test(text);
 export const hasNumber = (text) => /[0-9]/.test(text);
 
+export const CargosList = [
+	{id: 1, label: 'Diretor(a)'},
+	{id: 2, label: 'Coordenador(a)'},
+	{id: 3, label: 'Professor(a)'},
+	{id: 4, label: 'Apoio'},
+]
+
+export const  DisciplinasList = [
+	{key: 1, value: 'Português'},
+	{key: 2, value: 'Matemática'},
+	{key: 3, value: 'História'},
+	{key: 4, value: 'Geografia'},
+	{key: 5, value: 'Ciências'},
+	{key: 6, value: 'Religião'},
+	{key: 7, value: 'Artes'},
+	{key: 8, value: 'Educação Física'},
+	{key: 9, value: 'Laboratório de Redação'},
+	{key: 10, value: 'TDIC'},
+	{key: 11, value: 'Projeto de Vida'},
+	{key: 12, value: 'AO de Português'},
+	{key: 13, value: 'AO de Matemática'},
+	{key: 14, value: 'LCP'},
+	{key: 15, value: 'LA'},
+]
+
+export const TurnoList = [
+	{key: 1, value: 'Manhã'},
+	{key: 2, value: 'Tarde'},
+	{key: 3, value: 'Noite'},
+	{key: 4, value: 'Integral'},
+	{key: 5, value: 'EJA'},
+]
+
 
 // export const data = [];
 

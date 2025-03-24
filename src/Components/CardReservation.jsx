@@ -40,7 +40,7 @@ const CardReservation = (Data) => {
       </Col>
       <Col span={19} offset={1}>
         <Row>
-          <Typography.Title level={2} className="TitleResv">
+          <Typography.Title style={{ fontSize: '2.25vw'}} className="TitleResv">
             {data?.sala} - {data?.disciplina}
           </Typography.Title>
         </Row>

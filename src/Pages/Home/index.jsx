@@ -24,7 +24,7 @@ const Home = () => {
         <SideMenu />
       </Col>
       <Col span={20}>
-        <div className="Container">
+        <div className="ContainerHome">
           {data.length > 0 ? (
             <List
               itemLayout="horizontal"
