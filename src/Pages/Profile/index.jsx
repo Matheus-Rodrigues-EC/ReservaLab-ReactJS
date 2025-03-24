@@ -173,10 +173,9 @@ const Profile = () => {
                   size="large"
                   placeholder="Disciplina"
                   style={{ width: '80%', height: 40 }}
-                  allowClear
+                  // allowClear
                   onSearch={handleSearchDisciplinas}
                   filterOption={false}
-                  onClick={() => console.log(this.value)}
                 >
                   {filteredDisciplinas.map((disciplina) => (
                     <Select.Option key={disciplina?.key} value={disciplina?.key}>
