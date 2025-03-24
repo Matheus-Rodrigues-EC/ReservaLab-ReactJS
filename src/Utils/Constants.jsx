@@ -1,4 +1,5 @@
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const numberRegex = /^[0-9]{1,3}$/;
 export const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
 export const hasSpecialChar = (text) => /[!@#$%^&*(),.?":{}|<>]/.test(text);
@@ -36,6 +37,17 @@ export const TurnoList = [
 	{key: 3, value: 'Noite'},
 	{key: 4, value: 'Integral'},
 	{key: 5, value: 'EJA'},
+]
+
+export const FuncionalidadesList = [
+	{id: 1, label: 'Estudo'},
+	{id: 2, label: 'Esporte'},
+	{id: 3, label: 'Informática'},
+	{id: 4, label: 'Leitura'},
+	{id: 5, label: 'Reforço'},
+	{id: 6, label: 'Educação Especial'},
+	{id: 7, label: 'EJA'},
+	{id: 8, label: '2ª Chamada'},
 ]
 
 

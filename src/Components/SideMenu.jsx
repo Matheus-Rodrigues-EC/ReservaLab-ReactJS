@@ -31,6 +31,10 @@ const SideMenu = () => {
     Navigate("/Profile");
   };
 
+  const goToClassroom = () => {
+    Navigate("/classroom");
+  };
+
   useEffect(() => {
     setToday(SetDate);
     setUser('Professor(a)');
@@ -89,7 +93,7 @@ const SideMenu = () => {
 
       <Button 
         className="ButtonMenu" 
-        onClick={() => alert('Cadastrar Sala')}
+        onClick={goToClassroom}
       >
         Cadastrar Sala
       </Button>
