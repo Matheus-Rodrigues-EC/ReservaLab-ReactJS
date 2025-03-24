@@ -1,6 +1,5 @@
 import React, {
   useEffect,
-  useState,
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
@@ -9,26 +8,15 @@ import styled from "styled-components";
 import "./Style.less";
 
 import {
-  FuncionalidadesList as Funcionalidades,
+  TurmaList as Turmas,
+  TurnoList as Turnos,
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 
-const Classroom = () => {
-  const [filteredFuncionalidades, setFilteredFuncionalidades] = useState(Funcionalidades);
+const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-
-  const handleSearchFuncionalidades = (value) => {
-    if (!value) {
-      setFilteredFuncionalidades(Funcionalidades);
-    } else {
-      const filtered = Funcionalidades?.filter((funcionalidade) =>
-        funcionalidade.value.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredFuncionalidades(filtered);
-    }
-  };
 
   const goToHome = () => {
     Navigate('/home')
@@ -56,24 +44,24 @@ const Classroom = () => {
         <div className="ContainerProfile">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Série/Ano</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Funcionalidade</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Turma</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Capacidade da Sala</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Turno</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Descrição</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Obervação</Typography.Title>
             </Row>
 
             <Button
             type="danger"
-                className="CancelClassroomButton"
+                className="CancelClassButton"
                 onClick={goToHome}
               >
                 Cancelar
@@ -81,82 +69,85 @@ const Classroom = () => {
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
-              name="Create_Classroom"
+              name="Série"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='Classroom Name'
+                name='Série/Ano'
                 rules={[
-                  { required: true, message: "Por favor, insira um nome para a sala" },
+                  { required: true, message: "Por favor, insira a série/ano da turma." },
+                  { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
                 ]}
                 className="FormItemProfile"
               >
 
                 <Input
                   size="large"
-                  placeholder="Nome da Sala"
+                  placeholder="Série/Ano"
+                  suffix='º'
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  type="text"
+                  type="number"
+                  min='1'
+                  max='9'
                 />
               </Form.Item>
 
               <Form.Item
-                name='Funcionalidade'
+                name='Turma'
                 rules={[
-                  { required: true, message: "Por favor insira a funcionalidade que a sala terá." }
+                  { required: true, message: "Por favor insira a turma referente a série." }
                 ]}
                 className="FormItemProfile"
               >
                 <Select
-                  showSearch
                   size="large"
-                  placeholder="Funcionalidade"
+                  placeholder="Turma"
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onSearch={handleSearchFuncionalidades}
-                  filterOption={false}
                 >
-                  {filteredFuncionalidades.map((funcionalidade) => (
-                    <Select.Option key={funcionalidade?.id} values={funcionalidade?.id} >
-                      {funcionalidade?.label}
+                  {Turmas.map((turma) => (
+                    <Select.Option key={turma?.id} values={turma?.id} >
+                      {turma?.label}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
 
               <Form.Item
-                name='Capacidade_da_Sala'
+                name='Turno'
                 rules={[
-                  { required: true, message: "Por favor selecione a capacidade da sala." },
-                  { pattern: Constants.numberRegex, message: "Por favor, insira um valor válido!" },
+                  { required: true, message: "Por favor selecione o turno da turma." },
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <Select
                   size="large"
-                  placeholder="Capacidade da Sala"
+                  placeholder="Turno"
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  type="number"
-                  min='10'
-                  max='100'
-                />
+                >
+                  {Turnos.map((turno) => (
+                    <Select.Option key={turno?.id} values={turno?.id} >
+                      {turno?.label}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
               <Form.Item
-                name='Descrição'
+                name='Obervação'
                 rules={[
-                  { required: false, message: "Gostaria de adicionar alguma descrição?" }
+                  { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}
                 className="FormItemProfile"
               >
                 <Input
                   showSearch
                   size="large"
-                  placeholder="Gostaria de adicionar alguma descrição?"
+                  placeholder="Gostaria de adicionar alguma Obervação?"
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="textarea"
@@ -167,7 +158,7 @@ const Classroom = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="ClassroomButton"
+                className="ClassButton"
               >
                 Salvar Alterações
               </Button>
@@ -181,7 +172,7 @@ const Classroom = () => {
   )
 }
 
-export default Classroom;
+export default Class;
 
 
 const Container = styled.div`

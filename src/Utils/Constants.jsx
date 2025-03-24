@@ -1,5 +1,6 @@
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const numberRegex = /^[0-9]{1,3}$/;
+export const serieRegex = /^[0-9]{1}$/;
 export const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
 export const hasSpecialChar = (text) => /[!@#$%^&*(),.?":{}|<>]/.test(text);
@@ -14,29 +15,35 @@ export const CargosList = [
 ]
 
 export const  DisciplinasList = [
-	{key: 1, value: 'Português'},
-	{key: 2, value: 'Matemática'},
-	{key: 3, value: 'História'},
-	{key: 4, value: 'Geografia'},
-	{key: 5, value: 'Ciências'},
-	{key: 6, value: 'Religião'},
-	{key: 7, value: 'Artes'},
-	{key: 8, value: 'Educação Física'},
-	{key: 9, value: 'Laboratório de Redação'},
-	{key: 10, value: 'TDIC'},
-	{key: 11, value: 'Projeto de Vida'},
-	{key: 12, value: 'AO de Português'},
-	{key: 13, value: 'AO de Matemática'},
-	{key: 14, value: 'LCP'},
-	{key: 15, value: 'LA'},
+	{id: 1, label: 'Português'},
+	{id: 2, label: 'Matemática'},
+	{id: 3, label: 'História'},
+	{id: 4, label: 'Geografia'},
+	{id: 5, label: 'Ciências'},
+	{id: 6, label: 'Religião'},
+	{id: 7, label: 'Artes'},
+	{id: 8, label: 'Educação Física'},
+	{id: 9, label: 'Laboratório de Redação'},
+	{id: 10, label: 'TDIC'},
+	{id: 11, label: 'Projeto de Vida'},
+	{id: 12, label: 'AO de Português'},
+	{id: 13, label: 'AO de Matemática'},
+	{id: 14, label: 'LCP'},
+	{id: 15, label: 'LA'},
 ]
 
 export const TurnoList = [
-	{key: 1, value: 'Manhã'},
-	{key: 2, value: 'Tarde'},
-	{key: 3, value: 'Noite'},
-	{key: 4, value: 'Integral'},
-	{key: 5, value: 'EJA'},
+	{id: 1, label: 'Manhã'},
+	{id: 2, label: 'Tarde'},
+	{id: 3, label: 'Noite'},
+	{id: 4, label: 'Integral'},
+	{id: 5, label: 'EJA'},
+]
+
+export const TurmaList = [
+	{id: 1, label: 'A'},
+	{id: 2, label: 'B'},
+	{id: 3, label: 'C'},
 ]
 
 export const FuncionalidadesList = [

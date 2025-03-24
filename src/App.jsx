@@ -9,6 +9,7 @@ import Home from "./Pages/Home"
 import Profile from "./Pages/Profile";
 import UpdatePassword from "./Pages/Profile/UpdatePassword";
 import Classroom from "./Pages/Classroom";
+import Class from "./Pages/Class";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/profile" element={ <Profile/> } />
           <Route path="/profile/updatePassword" element={ <UpdatePassword/> } />
           <Route path="/classroom" element={ <Classroom/> } />
+          <Route path="/class" element={ <Class/> } />
         
         </Routes>
       </BrowserRouter>
