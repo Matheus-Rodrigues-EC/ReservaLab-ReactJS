@@ -1,12 +1,18 @@
-# React + Vite
+# ReservaLab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### - O que é ReservaLab?
 
-Currently, two official plugins are available:
+Esta aplicação Web consiste em um sistema de reserva de salas para escolas, garantindo assim que não aja conflitos de horários entre turmas por uma sala ou quadra.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+### - Como usar ReservaLab?
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Iniciamente, deve-se ser cadastrador o/a Diretor(a) e Coordenadores(as).
+- O/A Diretor(a) e Coordenadores(as) irão ser responsáveis por cadastrar salas e turmas.
+- Após o cadastro as salas e turmas ficarão disponíveis para serem reservados.
+- Os professores poderão fazer reservas de salas ou de áreas da escola que estejam previamente cadastradas no sistema.
+
+### - Como usar em Desenvolvimento?
+
+- Em breve...
+  
