@@ -10,6 +10,7 @@ import Profile from "./Pages/Profile";
 import UpdatePassword from "./Pages/Profile/UpdatePassword";
 import Classroom from "./Pages/Classroom";
 import Class from "./Pages/Class";
+import Reservation from "./Pages/Reservation";
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/profile/updatePassword" element={ <UpdatePassword/> } />
           <Route path="/classroom" element={ <Classroom/> } />
           <Route path="/class" element={ <Class/> } />
+          <Route path="/reservation" element={ <Reservation/> } />
         
         </Routes>
       </BrowserRouter>

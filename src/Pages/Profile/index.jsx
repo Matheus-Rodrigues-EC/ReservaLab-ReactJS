@@ -17,7 +17,7 @@ import {
 import SideMenu from "../../Components/SideMenu";
 
 const Profile = () => {
-  const [filteredCargos, setFilteredCargos] = useState(Cargos);
+  const [filteredCargos, setFilteredCargos] = useState([]);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
   const data = Constants?.data;
   const Navigate = useNavigate()
@@ -57,7 +57,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-
+    setFilteredCargos(Cargos);
   }, [data]);
 
   return (

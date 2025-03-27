@@ -54,7 +54,8 @@ export const FuncionalidadesList = [
 	{id: 5, label: 'Reforço'},
 	{id: 6, label: 'Educação Especial'},
 	{id: 7, label: 'EJA'},
-	{id: 8, label: '2ª Chamada'},
+	{id: 8, label: 'Recuperação'},
+	{id: 9, label: '2ª Chamada'},
 ]
 
 

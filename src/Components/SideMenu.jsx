@@ -31,6 +31,11 @@ const SideMenu = () => {
     Navigate("/Profile");
   };
 
+
+  const goToReservation = () => {
+    Navigate("/reservation");
+  };
+
   const goToClassroom = () => {
     Navigate("/classroom");
   };
@@ -90,7 +95,7 @@ const SideMenu = () => {
 
       <Button 
         className="ButtonMenu" 
-        onClick={() => alert('Fazer Reserva')}
+        onClick={goToReservation}
       >
         Fazer Reserva
       </Button>
