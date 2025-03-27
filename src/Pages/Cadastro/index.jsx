@@ -85,7 +85,7 @@ const Cadastro = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
-                  onChange={() => console.log()}
+                  // onChange={() => console.log()}
                 >
 
                 </Input>
@@ -107,7 +107,7 @@ const Cadastro = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
-                  onChange={() => console.log()}
+                  // onChange={() => console.log()}
                 >
 
                 </Input>

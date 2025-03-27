@@ -3,32 +3,47 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, TimePicker } from "antd";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
+import dayjs from "dayjs";
 
 import {
-  FuncionalidadesList as Funcionalidades,
+  CargosList as Cargos,
+  DisciplinasList as Disciplinas,
+  TurnoList as Turnos
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 
-const Classroom = () => {
-  const [filteredFuncionalidades, setFilteredFuncionalidades] = useState(Funcionalidades);
+const Reservation = () => {
+  const [salas, setSalas] = useState([]);
+  // const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
   const data = Constants?.data;
   const Navigate = useNavigate()
 
-  const handleSearchFuncionalidades = (value) => {
-    if (!value) {
-      setFilteredFuncionalidades(Funcionalidades);
-    } else {
-      const filtered = Funcionalidades?.filter((funcionalidade) =>
-        funcionalidade.value.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredFuncionalidades(filtered);
-    }
+  const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
+  const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+
+  const onChange = (date, dateString) => {
+    console.log(date, dateString);
+    // console.log(dataCapitalizada)
   };
+
+  const dateFormat = 'DD/MM/YYYY';
+  const timeFormat = 'HH:mm';
+
+  // const handleSearchDisciplinas = (value) => {
+  //   if (!value) {
+  //     setFilteredDisciplinas(Disciplinas);
+  //   } else {
+  //     const filtered = Disciplinas?.filter((disciplina) =>
+  //       disciplina.value.toLowerCase().includes(value.toLowerCase())
+  //     );
+  //     setFilteredDisciplinas(filtered);
+  //   }
+  // };
 
   const goToHome = () => {
     Navigate('/home')
@@ -43,7 +58,7 @@ const Classroom = () => {
   };
 
   useEffect(() => {
-
+    setSalas([]);
   }, [data]);
 
   return (
@@ -53,18 +68,18 @@ const Classroom = () => {
         <SideMenu />
       </Col>
       <Col span={20}>
-        <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+        <div className="ContainerReservation">
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a data</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Funcionalidade</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a sala</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Capacidade da Sala</Typography.Title>
+              <Typography.Title level={4} style={{ margin: 0 }}>Selecione o  horário</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -72,77 +87,75 @@ const Classroom = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="CancelClassroomButton"
-                onClick={goToHome}
-              >
-                Cancelar
-              </Button>
+              type="danger"
+              className="CanceldButton"
+              onClick={goToHome}
+            >
+              Cancelar
+            </Button>
           </Col>
+
           <Col span={14} offset={2} style={{}}>
             <Form
-              name="Create_Classroom"
+              name="Reservation"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='Classroom Name'
+                name='Select_Date'
                 rules={[
-                  { required: true, message: "Por favor, insira um nome para a sala" },
+                  { required: true, message: "Por favor, selecione a data desejada" },
                 ]}
                 className="FormItemProfile"
               >
+                <DatePicker
+                  onChange={onChange}
+                  // defaultValue={dayjs()}
+                  format={dateFormat}
+                  needConfirm
 
-                <Input
                   size="large"
-                  placeholder="Nome da Sala"
+                  placeholder={dataCapitalizada}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  type="text"
                 />
               </Form.Item>
 
               <Form.Item
-                name='Funcionalidade'
+                name='Sala'
                 rules={[
-                  { required: true, message: "Por favor insira a funcionalidade que a sala terá." }
+                  { required: true, message: "Por favor selecione uma sala." }
                 ]}
                 className="FormItemProfile"
               >
                 <Select
-                  showSearch
                   size="large"
-                  placeholder="Funcionalidade"
+                  placeholder="Sala"
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onSearch={handleSearchFuncionalidades}
-                  filterOption={false}
                 >
-                  {filteredFuncionalidades.map((funcionalidade) => (
-                    <Select.Option key={funcionalidade?.id} values={funcionalidade?.id} >
-                      {funcionalidade?.label}
+                  {salas.map((sala) => (
+                    <Select.Option key={sala} values={sala} >
+                      {sala}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
 
               <Form.Item
-                name='Capacidade_da_Sala'
+                name='Horário'
                 rules={[
-                  { required: true, message: "Por favor selecione a capacidade da sala." },
-                  { pattern: Constants.numberRegex, message: "Por favor, insira um valor válido!" },
+                  { required: true, message: "Por favor selecione um horário." }
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <TimePicker
+                  format={timeFormat}
+                  needConfirm
                   size="large"
-                  placeholder="Capacidade da Sala"
+                  placeholder="Horário"
                   style={{ width: '80%', height: 40 }}
-                  allowClear
-                  type="number"
-                  min='10'
-                  max='100'
                 />
               </Form.Item>
 
@@ -166,7 +179,7 @@ const Classroom = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="ClassroomButton"
+                className="SaveButton"
               >
                 Salvar Alterações
               </Button>
@@ -180,7 +193,7 @@ const Classroom = () => {
   )
 }
 
-export default Classroom;
+export default Reservation;
 
 
 const Container = styled.div`

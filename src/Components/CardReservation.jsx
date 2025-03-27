@@ -20,7 +20,6 @@ const CardReservation = (Data) => {
   const { data } = Data;
   const [loading, setLoading] = useState(false);
 
-  console.log(Data)
   useEffect(() => {
   }, [data])
 
