@@ -15,21 +15,21 @@ export const CargosList = [
 ]
 
 export const  DisciplinasList = [
-	{id: 1, label: 'Português'},
-	{id: 2, label: 'Matemática'},
-	{id: 3, label: 'História'},
-	{id: 4, label: 'Geografia'},
-	{id: 5, label: 'Ciências'},
-	{id: 6, label: 'Religião'},
-	{id: 7, label: 'Artes'},
-	{id: 8, label: 'Educação Física'},
-	{id: 9, label: 'Laboratório de Redação'},
-	{id: 10, label: 'TDIC'},
-	{id: 11, label: 'Projeto de Vida'},
-	{id: 12, label: 'AO de Português'},
-	{id: 13, label: 'AO de Matemática'},
-	{id: 14, label: 'LCP'},
-	{id: 15, label: 'LA'},
+	{id: 1,  label: 'AO de Matemática'},
+	{id: 2,  label: 'AO de Português'},
+	{id: 3,  label: 'Artes'},
+	{id: 4,  label: 'Ciências'},
+	{id: 5,  label: 'Educação Física'},
+	{id: 6,  label: 'Geografia'},
+	{id: 7,  label: 'História'},
+	{id: 8,  label: 'LA'},
+	{id: 9,  label: 'Laboratório de Redação'},
+	{id: 10, label: 'LCP'},
+	{id: 11, label: 'Matemática'},
+	{id: 12, label: 'Português'},
+	{id: 13, label: 'Projeto de Vida'},
+	{id: 14, label: 'Religião'},
+	{id: 15, label: 'TDIC'},
 ]
 
 export const TurnoList = [
@@ -47,15 +47,15 @@ export const TurmaList = [
 ]
 
 export const FuncionalidadesList = [
-	{id: 1, label: 'Estudo'},
-	{id: 2, label: 'Esporte'},
-	{id: 3, label: 'Informática'},
-	{id: 4, label: 'Leitura'},
-	{id: 5, label: 'Reforço'},
-	{id: 6, label: 'Educação Especial'},
-	{id: 7, label: 'EJA'},
+	{id: 1, label: '2ª Chamada'},
+	{id: 2, label: 'Educação Especial'},
+	{id: 3, label: 'EJA'},
+	{id: 4, label: 'Esporte'},
+	{id: 5, label: 'Estudo'},
+	{id: 6, label: 'Informática'},
+	{id: 7, label: 'Leitura'},
 	{id: 8, label: 'Recuperação'},
-	{id: 9, label: '2ª Chamada'},
+	{id: 9, label: 'Reforço'},
 ]
 
 
