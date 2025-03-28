@@ -10,18 +10,28 @@ import "./Style.less";
 import dayjs from "dayjs";
 
 import {
-  CargosList as Cargos,
-  DisciplinasList as Disciplinas,
-  TurnoList as Turnos
+  FuncionalidadesList as Finalidades,
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 
 const Reservation = () => {
   const [salas, setSalas] = useState([]);
+  const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
   // const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
   const data = Constants?.data;
   const Navigate = useNavigate()
+
+  const handleSearchFinalidades = (value) => {
+    if (!value) {
+      setFilteredFinalidades(Finalidades);
+    } else {
+      const filtered = Finalidades?.filter((finalidade) =>
+        finalidade.value.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredFinalidades(filtered);
+    }
+  };
 
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
@@ -31,7 +41,7 @@ const Reservation = () => {
     // console.log(dataCapitalizada)
   };
 
-  const dateFormat = 'DD/MM/YYYY';
+  const dateFormat = 'dddd, DD/MM/YYYY';
   const timeFormat = 'HH:mm';
 
   // const handleSearchDisciplinas = (value) => {
@@ -80,6 +90,10 @@ const Reservation = () => {
 
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Selecione o  horário</Typography.Title>
+            </Row>
+
+            <Row justify='space-between'>
+              <Typography.Title level={4} style={{ margin: 0 }}>Finalidade</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -157,6 +171,30 @@ const Reservation = () => {
                   placeholder="Horário"
                   style={{ width: '80%', height: 40 }}
                 />
+              </Form.Item>
+
+              <Form.Item
+                name='Finalidade'
+                rules={[
+                  { required: true, message: "Por favor insira a finalidade que a sala terá." }
+                ]}
+                className="FormItemProfile"
+              >
+                <Select
+                  showSearch
+                  size="large"
+                  placeholder="Finalidade"
+                  style={{ width: '80%', height: 40 }}
+                  allowClear
+                  onSearch={handleSearchFinalidades}
+                  filterOption={false}
+                >
+                  {filteredFinalidades.map((finalidade) => (
+                    <Select.Option key={finalidade?.id} values={finalidade?.id} >
+                      {finalidade?.label}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
               <Form.Item

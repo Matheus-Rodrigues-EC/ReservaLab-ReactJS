@@ -1,6 +1,5 @@
 import React, {
   useEffect,
-  useState,
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
@@ -8,27 +7,11 @@ import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 
-import {
-  FuncionalidadesList as Funcionalidades,
-} from "../../Utils/Constants";
-
 import SideMenu from "../../Components/SideMenu";
 
 const Classroom = () => {
-  const [filteredFuncionalidades, setFilteredFuncionalidades] = useState(Funcionalidades);
   const data = Constants?.data;
   const Navigate = useNavigate()
-
-  const handleSearchFuncionalidades = (value) => {
-    if (!value) {
-      setFilteredFuncionalidades(Funcionalidades);
-    } else {
-      const filtered = Funcionalidades?.filter((funcionalidade) =>
-        funcionalidade.value.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredFuncionalidades(filtered);
-    }
-  };
 
   const goToHome = () => {
     Navigate('/home')
@@ -53,14 +36,10 @@ const Classroom = () => {
         <SideMenu />
       </Col>
       <Col span={20}>
-        <div className="ContainerProfile">
+        <div className="ContainerClassroom">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Funcionalidade</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -101,30 +80,6 @@ const Classroom = () => {
                   allowClear
                   type="text"
                 />
-              </Form.Item>
-
-              <Form.Item
-                name='Funcionalidade'
-                rules={[
-                  { required: true, message: "Por favor insira a funcionalidade que a sala terá." }
-                ]}
-                className="FormItemProfile"
-              >
-                <Select
-                  showSearch
-                  size="large"
-                  placeholder="Funcionalidade"
-                  style={{ width: '80%', height: 40 }}
-                  allowClear
-                  onSearch={handleSearchFuncionalidades}
-                  filterOption={false}
-                >
-                  {filteredFuncionalidades.map((funcionalidade) => (
-                    <Select.Option key={funcionalidade?.id} values={funcionalidade?.id} >
-                      {funcionalidade?.label}
-                    </Select.Option>
-                  ))}
-                </Select>
               </Form.Item>
 
               <Form.Item

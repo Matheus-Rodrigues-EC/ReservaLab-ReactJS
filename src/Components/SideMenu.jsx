@@ -2,6 +2,7 @@ import React, {
   useState, 
   useEffect,
 } from "react";
+import packageJson from '../../package.json';
 import { useNavigate } from "react-router";
 import "./Style.less";
 import dayjs from "dayjs";
@@ -120,6 +121,10 @@ const SideMenu = () => {
       >
         Sair
       </Button>
+      
+      <Typography.Text className="Version">
+        Versão: {packageJson.version}
+      </Typography.Text>
 
     
     </Container>
