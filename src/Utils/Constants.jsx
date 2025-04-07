@@ -58,92 +58,26 @@ export const FuncionalidadesList = [
 	{id: 9, label: 'Reforço'},
 ]
 
+export const classTypes = [
+	{id: 1, label: 'Informática'},
+	{id: 2, label: 'Esportes'},
+	{id: 3, label: 'Leitura/Estudo'},
+	{id: 4, label: 'Provas'},
+	{id: 5, label: 'Recuperação/Reforço'},
+]
 
-// export const data = [];
-
-export const data = [
-  {
-    
-		id: 1,
-		name: "João Pedro Benício de Sousa magalhães",
-		rule: "teacher",
-		disciplina: "Português",
-		sala: "Sala de Informática",
-    type: "Info",
-		day: "22/03/2025",
-		horario: "09:00",
-		turma: "7º A"
-  },
-  {
-    
-		id: 2,
-		name: "Bruna Costa Nascimento",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Sport",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-  {
-    
-		id: 2,
-		name: "Mary",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Libr",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-  {
-    
-		id: 2,
-		name: "Mary",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Sport",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-  {
-    
-		id: 2,
-		name: "Mary",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Sport",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-  {
-    
-		id: 2,
-		name: "Mary",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Sport",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-  {
-    
-		id: 2,
-		name: "Mary",
-		rule: "teacher",
-		disciplina: "Matemática",
-		sala: "Sala de Informática",
-    type: "Sport",
-		day: "22/03/2025",
-		horario: "10:00",
-		turma: "8º B"
-  },
-];
+export const Times = [
+	
+	{id: 1, label: '07:00'},
+	{id: 2, label: '07:50'},
+	{id: 3, label: '08:40'},
+	{id: 4, label: '09:20'},
+	{id: 5, label: '10:00'},
+	{id: 6, label: '10:50'},
+	{id: 7, label: '13:00'},
+	{id: 8, label: '13:50'},
+	{id: 9, label: '14:40'},
+	{id: 10, label: '15:30'},
+	{id: 11, label: '16:20'},
+	{id: 12, label: '17:00'},
+]

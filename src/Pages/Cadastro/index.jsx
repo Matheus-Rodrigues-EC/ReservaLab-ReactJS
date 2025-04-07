@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
@@ -20,12 +21,28 @@ const Cadastro = () => {
   const [FullName, setFullName] = useState("");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+
+  const Navigate = useNavigate()
+
+  const goToLogin = () => {
+    Navigate('/login')
+  }
+
+  const Register = async (data) => {
+    const { name, email, password } = data;
+    const body = { name, email, password }
+    console.log(body);
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/register`, body );
+    console.log(response.data);
+    goToLogin();
+  }
   
   const onFinish = (values) => {
     console.log('Success:');
     setFullName(values.FullName);
     setEmail(values.Email);
-    setPassword(values.Password)
+    setPassword(values.Password);
+    Register(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -60,7 +77,7 @@ const Cadastro = () => {
           <Row justify="center" style={{ marginTop: "20px" }}>
             <Form
               form={form}
-              name="login"
+              name="register"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="off"
@@ -68,7 +85,7 @@ const Cadastro = () => {
 
               {/* Fullname */}
               <Form.Item
-                name='FullName'
+                name='name'
                 rules={[
                   {
                     required: true,
@@ -85,7 +102,6 @@ const Cadastro = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
-                  // onChange={() => console.log()}
                 >
 
                 </Input>
@@ -93,7 +109,7 @@ const Cadastro = () => {
 
               {/* Email */}
               <Form.Item
-                name='Email'
+                name='email'
                 rules={[
                   { required: true, message: 'Por favor, insira seu e-mail.'},
                   { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
@@ -115,7 +131,7 @@ const Cadastro = () => {
 
               {/* Password */}
               <Form.Item
-                name='Password'
+                name='password'
                 rules={[
                   { required: true, message: 'Por favor, insira sua senha.'},
                   { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
@@ -140,7 +156,7 @@ const Cadastro = () => {
                   { required: true, message: 'Por favor, insira sua senha.'},
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('Password') === value) {
+                      if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(new Error('As senhas não correspondem!'));

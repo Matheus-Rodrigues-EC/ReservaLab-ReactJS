@@ -3,6 +3,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
@@ -12,18 +13,34 @@ import SideMenu from "../../Components/SideMenu";
 const Classroom = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const createClassroom = async (data) => {
+    const body = {
+      ...data, 
+      capacity: Number(data.capacity)
+    }
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body, config );
+    console.log(response?.data);
+    goToHome();
+  }
+
   const onFinish = (values) => {
     console.log('Success:');
     console.table(values);
+    createClassroom(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
   };
+
 
   useEffect(() => {
 
@@ -37,9 +54,13 @@ const Classroom = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerClassroom">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
+            </Row>
+
+            <Row justify='space-between'>
+              <Typography.Title level={4} style={{ margin: 0 }}>Tipo de Sala</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -51,12 +72,12 @@ const Classroom = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="CancelClassroomButton"
-                onClick={goToHome}
-              >
-                Cancelar
-              </Button>
+              type="danger"
+              className="CancelClassroomButton"
+              onClick={goToHome}
+            >
+              Cancelar
+            </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
@@ -66,7 +87,7 @@ const Classroom = () => {
               autoComplete="on"
             >
               <Form.Item
-                name='Classroom Name'
+                name='name'
                 rules={[
                   { required: true, message: "Por favor, insira um nome para a sala" },
                 ]}
@@ -83,7 +104,28 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
-                name='Capacidade_da_Sala'
+                name='classType'
+                rules={[
+                  { required: true, message: "Por favor selecione o tipo de sala." }
+                ]}
+                className="FormItemProfile"
+              >
+                <Select
+                  size="large"
+                  placeholder="Tipo de sala"
+                  style={{ width: '80%', height: 40 }}
+                  allowClear
+                >
+                  {Constants.classTypes.map((tipo) => (
+                    <Select.Option key={tipo?.id} values={tipo?.id} >
+                      {tipo?.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                name='capacity'
                 rules={[
                   { required: true, message: "Por favor selecione a capacidade da sala." },
                   { pattern: Constants.numberRegex, message: "Por favor, insira um valor válido!" },
@@ -102,7 +144,7 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
-                name='Descrição'
+                name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
