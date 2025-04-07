@@ -93,6 +93,7 @@ const Reservation = () => {
   useEffect(() => {
     fetchSalas();
     fetchTurmas();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -262,7 +263,6 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <Select
-                  showSearch
                   size="large"
                   placeholder="Finalidade"
                   style={{ width: '80%', height: 40 }}
@@ -286,7 +286,6 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <Input
-                  showSearch
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   style={{ width: '80%', height: 40 }}

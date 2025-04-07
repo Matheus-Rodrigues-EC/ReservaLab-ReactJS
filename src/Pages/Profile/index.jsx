@@ -31,7 +31,6 @@ const Profile = () => {
       headers: {Authorization: `Bearer ${userData.token}`},
     }
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`, config);
-    console.log(response.data);
     setUserData(response.data)
   }
 
@@ -39,8 +38,8 @@ const Profile = () => {
     const config = {
       headers: {Authorization: `Bearer ${userData.token}`}
     }
-    const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
-    console.log(response.data);
+    await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
+
   }
 
   const handleSearchCargos = (value) => {
@@ -70,12 +69,12 @@ const Profile = () => {
   }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
+    // console.table(values);
     updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    console.error(errorInfo?.values);
   };
 
   useEffect(() => {

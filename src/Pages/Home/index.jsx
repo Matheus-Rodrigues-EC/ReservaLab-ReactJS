@@ -3,6 +3,7 @@ import React, {
   useState,
 } from "react";
 import { Col, List, Empty, Typography } from "antd";
+import dayjs from "dayjs";
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
@@ -14,12 +15,21 @@ const Home = () => {
   const [reservations, setReservations] = useState([]);
   const userData = JSON.parse(localStorage.getItem('userData'));
 
+  const filteredReservationsToday = () => {
+    const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
+    const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+    const filtered = reservations.map((item) => {
+      if(item.date === dataCapitalizada)
+        return item
+    });
+    return filtered;
+  }
+
   const getReservations = async () => {
     const config = {
       headers: {Authorization: `Bearer ${userData.token}`}
   }
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`, config);
-    console.log(response.data);
     setReservations(response?.data);
   }
 
@@ -36,11 +46,11 @@ const Home = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerHome">
-          {reservations.length > 0 ? (
+          {filteredReservationsToday.length > 0 ? (
             <List
               itemLayout="horizontal"
               size="large"
-              dataSource={reservations}
+              dataSource={filteredReservationsToday}
               className="ListReservations"
               renderItem={(item) => (
                 <List.Item >
