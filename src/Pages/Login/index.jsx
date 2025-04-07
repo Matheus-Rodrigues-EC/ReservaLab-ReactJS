@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 import Logo from '../../assets/Logo.jpg';
+import { UserDataContext } from '../../Providers/UserData';
 
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col, Avatar, Form, Input, Button } from 'antd';
@@ -13,11 +15,33 @@ const Login = () => {
   const inputRef = useRef(null);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const {setUserData} = React.useContext(UserDataContext);
+
+
+  const Navigate = useNavigate()
+
+  const goToHome = () => {
+    Navigate('/home')
+  }
+
+  const login = async (body) => {
+    console.log(body)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
+    console.log(response.data);
+    
+    const user = {id:response.data.user.id ,name: response.data.user.name, email: response.data.user.email, token: response.data.token.token};
+    console.log('USER: ', user);
+    const serializableUser = JSON.stringify(user);
+    localStorage.setItem("userData", serializableUser);
+    setUserData (user);
+    goToHome();
+  }
 
   const onFinish = (values) => {
     console.log('Success:');
     setEmail(values.Email);
     setPassword(values.Password)
+    login(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -59,7 +83,7 @@ const Login = () => {
             >
 
               <Form.Item
-                name='Email'
+                name='email'
                 rules={[
                   { required: true, message: "Por favor, insira seu e-mail" },
                   { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
@@ -85,7 +109,7 @@ const Login = () => {
               </Form.Item>
 
               <Form.Item
-                name='Password'
+                name='password'
                 rules={[
                   {
                     required: true,

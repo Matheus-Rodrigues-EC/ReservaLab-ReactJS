@@ -3,6 +3,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
@@ -17,14 +18,29 @@ import SideMenu from "../../Components/SideMenu";
 const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const createClass = async (data) => {
+    const body = {
+      ...data, 
+      grade: Number(data.grade)
+    }
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body, config );
+    console.log(response?.data);
+    goToHome();
+  }
+
   const onFinish = (values) => {
     console.log('Success:');
     console.table(values);
+    createClass(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
@@ -75,7 +91,7 @@ const Class = () => {
               autoComplete="on"
             >
               <Form.Item
-                name='Série/Ano'
+                name='grade'
                 rules={[
                   { required: true, message: "Por favor, insira a série/ano da turma." },
                   { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
@@ -96,7 +112,7 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
-                name='Turma'
+                name='className'
                 rules={[
                   { required: true, message: "Por favor insira a turma referente a série." }
                 ]}
@@ -109,7 +125,7 @@ const Class = () => {
                   allowClear
                 >
                   {Turmas.map((turma) => (
-                    <Select.Option key={turma?.id} values={turma?.id} >
+                    <Select.Option key={turma?.label} values={turma?.label} >
                       {turma?.label}
                     </Select.Option>
                   ))}
@@ -117,7 +133,7 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
-                name='Turno'
+                name='shift'
                 rules={[
                   { required: true, message: "Por favor selecione o turno da turma." },
                 ]}
@@ -130,7 +146,7 @@ const Class = () => {
                   allowClear
                 >
                   {Turnos.map((turno) => (
-                    <Select.Option key={turno?.id} values={turno?.id} >
+                    <Select.Option key={turno?.label} values={turno?.label} >
                       {turno?.label}
                     </Select.Option>
                   ))}
@@ -138,7 +154,7 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
-                name='Obervação'
+                name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}

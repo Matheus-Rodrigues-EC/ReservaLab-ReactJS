@@ -4,8 +4,10 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
+import { UserDataContext } from '../../Providers/UserData';
 import "./Style.less";
 
 import {
@@ -17,10 +19,29 @@ import {
 import SideMenu from "../../Components/SideMenu";
 
 const Profile = () => {
+  const [form] = Form.useForm();
   const [filteredCargos, setFilteredCargos] = useState([]);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
-  const data = Constants?.data;
+  const [UserData, setUserData] = useState();
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
+
+  const getProfile = async (id) => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`, config);
+    console.log(response.data);
+    setUserData(response.data)
+  }
+
+  const updateProfile = async (id, body) => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`}
+    }
+    const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
+    console.log(response.data);
+  }
 
   const handleSearchCargos = (value) => {
     if (!value) {
@@ -51,6 +72,7 @@ const Profile = () => {
   const onFinish = (values) => {
     console.log('Success:');
     console.table(values);
+    updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
@@ -58,7 +80,21 @@ const Profile = () => {
 
   useEffect(() => {
     setFilteredCargos(Cargos);
-  }, [data]);
+    getProfile(userData.id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData.id]);
+
+  useEffect(() => {
+    if (UserData) {
+      form.setFieldsValue({
+        name: UserData.name,
+        rulets: UserData.rulets,
+        surname: UserData.surname,
+        subject: UserData.subject,
+        shift: UserData.shift,
+      });
+    }
+  }, [UserData, form]);
 
   return (
 
@@ -99,13 +135,15 @@ const Profile = () => {
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
+              form={form}
               name="Profile"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='FullName'
+                name='name'
+                initialValue={UserData?.name}
                 rules={[
                   { required: true, message: "Por favor, insira seu nome" },
                 ]}
@@ -122,7 +160,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Cargo'
+                name='rulets'
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -138,7 +176,7 @@ const Profile = () => {
                   filterOption={false}
                 >
                   {filteredCargos.map((cargo) => (
-                    <Select.Option key={cargo?.id} values={cargo?.id} >
+                    <Select.Option key={cargo?.label} values={cargo?.label} >
                       {cargo?.label}
                     </Select.Option>
                   ))}
@@ -146,7 +184,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Apelido'
+                name='surname'
                 rules={[
                   { required: false, message: "Por favor digite seu Apelido." }
                 ]}
@@ -162,7 +200,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Disciplina'
+                name='subject'
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -178,7 +216,7 @@ const Profile = () => {
                   filterOption={false}
                 >
                   {filteredDisciplinas.map((disciplina) => (
-                    <Select.Option key={disciplina?.id} value={disciplina?.id}>
+                    <Select.Option key={disciplina?.label} value={disciplina?.label}>
                       {disciplina?.label}
                     </Select.Option>
                   ))}
@@ -186,7 +224,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Turno'
+                name='shift'
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -200,8 +238,8 @@ const Profile = () => {
                   allowClear
                 >
                   {Turnos.map((turno) => (
-                    <Select.Option key={turno?.key} value={turno?.key}>
-                      {turno?.value}
+                    <Select.Option key={turno?.label} value={turno?.label}>
+                      {turno?.label}
                     </Select.Option>
                   ))}
                 </Select>

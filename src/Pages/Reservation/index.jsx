@@ -4,6 +4,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, TimePicker } from "antd";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
@@ -17,10 +18,15 @@ import SideMenu from "../../Components/SideMenu";
 
 const Reservation = () => {
   const [salas, setSalas] = useState([]);
+  const [turmas, setTurmas] = useState([]);
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
-  // const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
-  const data = Constants?.data;
+
+  const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
+  const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+  const dateFormat = 'dddd, DD/MM/YYYY';
+  // const timeFormat = 'HH:mm';
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
 
   const handleSearchFinalidades = (value) => {
     if (!value) {
@@ -33,43 +39,61 @@ const Reservation = () => {
     }
   };
 
-  const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
-  const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+  const fetchSalas = async () => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`, config);
+    setSalas(response.data);
+  }
+
+  const fetchTurmas = async () => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`, config);
+    setTurmas(response.data);
+  }
 
   const onChange = (date, dateString) => {
     console.log(date, dateString);
     // console.log(dataCapitalizada)
   };
 
-  const dateFormat = 'dddd, DD/MM/YYYY';
-  const timeFormat = 'HH:mm';
-
-  // const handleSearchDisciplinas = (value) => {
-  //   if (!value) {
-  //     setFilteredDisciplinas(Disciplinas);
-  //   } else {
-  //     const filtered = Disciplinas?.filter((disciplina) =>
-  //       disciplina.value.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     setFilteredDisciplinas(filtered);
-  //   }
-  // };
-
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const createReservation = async (data) => {
+    const body = {
+      ...data, 
+      date: dataCapitalizada,
+      userId: Number(userData.id),
+      classroomId: Number(data.classroomId),
+      classId: Number(data.classId)
+    }
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    console.log('Body: ', body)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
+    console.log(response?.data);
+    goToHome();
+  }
+
   const onFinish = (values) => {
     console.log('Success:');
-    console.table(values);
+    console.log(values);
+    createReservation(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
   };
 
   useEffect(() => {
-    setSalas([]);
-  }, [data]);
+    fetchSalas();
+    fetchTurmas();
+  }, []);
 
   return (
 
@@ -86,6 +110,10 @@ const Reservation = () => {
 
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Selecione a sala</Typography.Title>
+            </Row>
+
+            <Row justify='space-between'>
+              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a turma</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -117,7 +145,7 @@ const Reservation = () => {
               autoComplete="on"
             >
               <Form.Item
-                name='Select_Date'
+                name='date'
                 rules={[
                   { required: true, message: "Por favor, selecione a data desejada" },
                 ]}
@@ -128,7 +156,6 @@ const Reservation = () => {
                   // defaultValue={dayjs()}
                   format={dateFormat}
                   needConfirm
-
                   size="large"
                   placeholder={dataCapitalizada}
                   style={{ width: '80%', height: 40 }}
@@ -137,7 +164,7 @@ const Reservation = () => {
               </Form.Item>
 
               <Form.Item
-                name='Sala'
+                name='classroomId'
                 rules={[
                   { required: true, message: "Por favor selecione uma sala." }
                 ]}
@@ -148,33 +175,87 @@ const Reservation = () => {
                   placeholder="Sala"
                   style={{ width: '80%', height: 40 }}
                   allowClear
+                  onClick={() => fetchSalas()}
                 >
                   {salas.map((sala) => (
-                    <Select.Option key={sala} values={sala} >
-                      {sala}
+                    <Select.Option key={sala?.id} values={sala?.id} >
+                      {sala?.name}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
 
               <Form.Item
-                name='Horário'
+                name='classId'
                 rules={[
-                  { required: true, message: "Por favor selecione um horário." }
+                  { required: true, message: "Por favor selecione uma Turma." }
                 ]}
                 className="FormItemProfile"
               >
-                <TimePicker
-                  format={timeFormat}
-                  needConfirm
+                <Select
                   size="large"
-                  placeholder="Horário"
+                  placeholder="Turma"
                   style={{ width: '80%', height: 40 }}
-                />
+                  allowClear
+                  onClick={() => fetchTurmas()}
+                >
+                  {turmas.map((turma) => (
+                    <Select.Option key={turma?.id} values={turma?.id} >
+                      {turma?.grade}º {turma?.className} - {turma?.shift}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
+              <Row justify='start' >
+                <Form.Item
+                  name='time'
+                  rules={[
+                    { required: true, message: "Por favor selecione um horário." }
+                  ]}
+                  className="FormItemTimeProfile"
+                >
+                  <Select
+                    size="large"
+                    placeholder="Horário"
+                    style={{ width: '95%', height: 40 }}
+                    prefix="De: "
+                    allowClear
+                    onClick={() => fetchTurmas()}
+                  >
+                    {Constants.Times.map((time) => (
+                      <Select.Option key={time?.label} values={time?.id} >
+                        {time?.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+
+                {/* <Form.Item
+                  name='timeEnd'
+                  rules={[
+                    { required: true, message: "Por favor selecione um horário." }
+                  ]}
+                  className="FormItemTimeProfile"
+                ><Select
+                  size="large"
+                  placeholder="Horário"
+                  style={{ width: '95%', height: 40 }}
+                  prefix="às: "
+                  allowClear
+                  onClick={() => fetchTurmas()}
+                >
+                    {Constants.Times.map((time) => (
+                      <Select.Option key={time?.label} values={time?.id} >
+                        {time?.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Item> */}
+              </Row>
+
               <Form.Item
-                name='Finalidade'
+                name='purpose'
                 rules={[
                   { required: true, message: "Por favor insira a finalidade que a sala terá." }
                 ]}
@@ -198,7 +279,7 @@ const Reservation = () => {
               </Form.Item>
 
               <Form.Item
-                name='Descrição'
+                name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
