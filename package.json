@@ -1,7 +1,7 @@
 {
   "name": "reservalab",
   "private": true,
-  "version": "0.0.23",
+  "version": "0.0.24",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,7 @@
     "version:patch": "npm version patch -m \"Bump versão patch para %s\"",
     "version:minor": "npm version minor -m \"Bump versão minor para %s\"",
     "version:major": "npm version major -m \"Bump versão major para %s\"",
-    "release": "node scripts/release.cjs"
+    "release": "node scripts/release.mjs"
   },
   "dependencies": {
     "antd": "^5.24.3",
