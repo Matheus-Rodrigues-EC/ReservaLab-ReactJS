@@ -7,6 +7,15 @@ export const hasSpecialChar = (text) => /[!@#$%^&*(),.?":{}|<>]/.test(text);
 export const hasUppercase = (text) => /[A-Z]/.test(text);
 export const hasNumber = (text) => /[0-9]/.test(text);
 
+export const removerAcentos = (str) => {
+  return str
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ç/g, 'c')
+    .replace(/Ç/g, 'C');
+};
+
+
 export const CargosList = [
 	{id: 1, label: 'Diretor(a)'},
 	{id: 2, label: 'Coordenador(a)'},

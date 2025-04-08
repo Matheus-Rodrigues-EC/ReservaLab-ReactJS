@@ -5,24 +5,28 @@ import React, {
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, notification } from "antd";
 import axios from "axios";
-import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 import dayjs from "dayjs";
 
 import {
   FuncionalidadesList as Finalidades,
+  Times,
+  removerAcentos,
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 
 const Reservation = () => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
   const [initialTime, setInitialTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
+  const [filteredClasses, setFilteredClasses] = useState(turmas);
+  const [filteredSalas, setFilteredSalas] = useState(salas);
   const [api, contextHolder] = notification.useNotification();
 
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
@@ -32,14 +36,39 @@ const Reservation = () => {
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
 
+  
+  const handleSearchSalas = (value) => {
+    console.log(salas)
+    if (!value) {
+      setFilteredSalas(salas);
+    } else {
+      const filtered = salas?.filter((sala) =>
+        sala?.name?.toLowerCase()?.includes(value?.toLowerCase())
+      );
+      setFilteredSalas(filtered);
+    }
+  };
+
   const handleSearchFinalidades = (value) => {
     if (!value) {
       setFilteredFinalidades(Finalidades);
     } else {
       const filtered = Finalidades?.filter((finalidade) =>
-        finalidade.value.toLowerCase().includes(value.toLowerCase())
+        finalidade.label.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredFinalidades(filtered);
+    }
+  };
+
+  const handleSearchClasses = (value) => {
+    if (!value) {
+      setFilteredClasses(turmas);
+    } else {
+      const filtered = turmas?.filter((turma) => {
+        const classe = `${turma?.grade || ""}º ${turma?.className || ""} - ${turma?.shift || ""}`;
+        return removerAcentos(classe.toLowerCase()).includes(removerAcentos(value.toLowerCase()));
+      });
+      setFilteredClasses(filtered);
     }
   };
 
@@ -59,18 +88,11 @@ const Reservation = () => {
     setTurmas(response.data);
   }
 
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-    // console.log(dataCapitalizada)
-  };
-
   const goToHome = () => {
     Navigate('/home')
   }
 
   const createReservation = async (data) => {
-    
-    // form.setFieldValue('time', `${initialTime} - ${endTime}`);
     const body = {
       ...data,
       date: dataCapitalizada,
@@ -81,13 +103,10 @@ const Reservation = () => {
     const config = {
       headers: { Authorization: `Bearer ${userData.token}` },
     }
-    console.log('Body: ', body)
-
-    
+    setLoading(true);
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
-      console.log(response?.data);
-  
+      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
+
       api.success({
         message: 'Reserva Cadastrada!',
         description: 'A reserva foi registrada com sucesso.',
@@ -98,10 +117,8 @@ const Reservation = () => {
       setTimeout(() => {
         goToHome();
       }, 2250);
-  
     } catch (error) {
       console.error(error);
-  
       api.error({
         message: 'Erro ao cadastrar reserva',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -109,25 +126,29 @@ const Reservation = () => {
         duration: 2,
         placement: "top"
       });
+
+    } finally {
+      setLoading(false);
     }
   }
 
   const onFinish = (values) => {
-    console.log('Success:');
+    // console.log('Success:');
+    // console.log(values);
     form.setFieldValue('time', `${initialTime} - ${endTime}`);
-    console.log(values);
     createReservation(values);
   };
   const onFinishFailed = (errorInfo) => {
+    form.setFieldValue('time', `${initialTime} - ${endTime}`);
     console.log('Failed:');
     console.table(errorInfo?.values);
-    form.setFieldValue('time', `${initialTime} - ${endTime}`);
-    console.log(`${initialTime} - ${endTime}`)
   };
 
   useEffect(() => {
     fetchSalas();
     fetchTurmas();
+    handleSearchClasses('');
+    handleSearchSalas('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -169,6 +190,8 @@ const Reservation = () => {
               type="danger"
               className="CanceldButton"
               onClick={goToHome}
+              loading={loading}
+              disabled={loading}
             >
               Cancelar
             </Button>
@@ -190,7 +213,6 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <DatePicker
-                  onChange={onChange}
                   // defaultValue={dayjs()}
                   format={dateFormat}
                   needConfirm
@@ -209,13 +231,16 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <Select
+                  showSearch
                   size="large"
                   placeholder="Sala"
+                  filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onClick={() => fetchSalas()}
+                  onSearch={handleSearchSalas}
                 >
-                  {salas.map((sala) => (
+                  {(filteredSalas.length > 0 ? filteredSalas : salas).map((sala) => (
                     <Select.Option key={sala?.id} values={sala?.id} >
                       {sala?.name}
                     </Select.Option>
@@ -231,13 +256,16 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <Select
+                  showSearch
                   size="large"
                   placeholder="Turma"
+                  filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onClick={() => fetchTurmas()}
+                  onSearch={handleSearchClasses}
                 >
-                  {turmas.map((turma) => (
+                  {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
                     <Select.Option key={turma?.id} values={turma?.id} >
                       {turma?.grade}º {turma?.className} - {turma?.shift}
                     </Select.Option>
@@ -245,7 +273,7 @@ const Reservation = () => {
                 </Select>
               </Form.Item>
 
-              <Row justify='start' >
+              <Row justify='space-between' >
                 <Form.Item
                   name='time'
                   rules={[
@@ -256,58 +284,35 @@ const Reservation = () => {
                   <Select
                     size="large"
                     placeholder="Horário"
-                    style={{ width: '41%', height: 40 }}
+                    style={{ width: '40%', height: 40 }}
                     prefix="De: "
                     allowClear
                     onClick={() => fetchTurmas()}
                     onChange={(value, option) => setInitialTime(option.children)}
                   >
-                    {Constants.Times.map((time) => (
+                    {Times.map((time) => (
                       <Select.Option key={time?.label} values={time?.id} >
                         {time?.label}
                       </Select.Option>
                     ))}
                   </Select>
-                  
+
                   <Select
                     size="large"
                     placeholder="Horário"
-                    style={{ width: '41%', height: 40 }}
+                    style={{ width: '40%', height: 40, marginLeft: '4%' }}
                     prefix="às: "
                     allowClear
                     onClick={() => fetchTurmas()}
                     onChange={(value, option) => setEndTime(option.children)}
                   >
-                    {Constants.Times.map((time) => (
+                    {Times.map((time) => (
                       <Select.Option key={time?.id} value={time?.id}>
                         {time?.label}
                       </Select.Option>
                     ))}
                   </Select>
                 </Form.Item>
-
-                {/* <Form.Item
-                  name='timeEnd'
-                  rules={[
-                    { required: true, message: "Por favor selecione um horário." }
-                  ]}
-                  className="FormItemTimeProfile"
-                >
-                  <Select
-                    size="large"
-                    placeholder="Horário"
-                    style={{ width: '95%', height: 40 }}
-                    prefix="às: "
-                    allowClear
-                    onClick={() => fetchTurmas()}
-                  >
-                    {Constants.Times.map((time) => (
-                      <Select.Option key={time?.label} values={time?.id} >
-                        {time?.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-                </Form.Item> */}
               </Row>
 
               <Form.Item
@@ -318,6 +323,7 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <Select
+                  showSearch
                   size="large"
                   placeholder="Finalidade"
                   style={{ width: '80%', height: 40 }}
@@ -354,6 +360,8 @@ const Reservation = () => {
                 htmlType="submit"
                 className="SaveReservationButton"
                 onClick={() => form.setFieldValue('time', `${initialTime} - ${endTime}`)}
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>
