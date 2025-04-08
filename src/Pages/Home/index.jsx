@@ -35,6 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     getReservations();
+    filteredReservationsToday();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,11 +47,11 @@ const Home = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerHome">
-          {filteredReservationsToday.length > 0 ? (
+          {reservations.length > 0 ? (
             <List
               itemLayout="horizontal"
               size="large"
-              dataSource={filteredReservationsToday}
+              dataSource={reservations}
               className="ListReservations"
               renderItem={(item) => (
                 <List.Item >

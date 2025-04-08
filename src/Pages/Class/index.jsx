@@ -1,8 +1,9 @@
 import React, {
   useEffect,
+  useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -19,6 +20,8 @@ const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(false);
 
   const goToHome = () => {
     Navigate('/home')
@@ -26,15 +29,41 @@ const Class = () => {
 
   const createClass = async (data) => {
     const body = {
-      ...data, 
+      ...data,
       grade: Number(data.grade)
     }
     const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
+      headers: { Authorization: `Bearer ${userData.token}` },
     }
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body, config );
-    console.log(response?.data);
-    goToHome();
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body, config);
+  
+      api.success({
+        message: 'Turma Cadastrada!',
+        description: 'A turma cadastrada foi salva com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      
+      setTimeout(() => {
+        setLoading(false);
+        goToHome();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao cadastrar turma',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+    }finally{
+      setLoading(false);
+    }
   }
 
   const onFinish = (values) => {
@@ -53,12 +82,13 @@ const Class = () => {
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
       <Col span={20}>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Série/Ano</Typography.Title>
             </Row>
@@ -76,12 +106,14 @@ const Class = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="CancelClassButton"
-                onClick={goToHome}
-              >
-                Cancelar
-              </Button>
+              type="danger"
+              className="CancelClassButton"
+              onClick={goToHome}
+              loading={loading}
+              disabled={loading}
+            >
+              Cancelar
+            </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
@@ -175,6 +207,8 @@ const Class = () => {
                 type="primary"
                 htmlType="submit"
                 className="ClassButton"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>

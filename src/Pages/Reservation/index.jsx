@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, TimePicker } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, notification } from "antd";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -17,9 +17,13 @@ import {
 import SideMenu from "../../Components/SideMenu";
 
 const Reservation = () => {
+  const [form] = Form.useForm();
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
+  const [initialTime, setInitialTime] = useState('');
+  const [endTime, setEndTime] = useState('');
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
+  const [api, contextHolder] = notification.useNotification();
 
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
@@ -41,7 +45,7 @@ const Reservation = () => {
 
   const fetchSalas = async () => {
     const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
+      headers: { Authorization: `Bearer ${userData.token}` },
     }
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`, config);
     setSalas(response.data);
@@ -49,7 +53,7 @@ const Reservation = () => {
 
   const fetchTurmas = async () => {
     const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
+      headers: { Authorization: `Bearer ${userData.token}` },
     }
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`, config);
     setTurmas(response.data);
@@ -65,40 +69,72 @@ const Reservation = () => {
   }
 
   const createReservation = async (data) => {
+    
+    // form.setFieldValue('time', `${initialTime} - ${endTime}`);
     const body = {
-      ...data, 
+      ...data,
       date: dataCapitalizada,
       userId: Number(userData.id),
       classroomId: Number(data.classroomId),
-      classId: Number(data.classId)
+      classId: Number(data.classId),
     }
     const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
+      headers: { Authorization: `Bearer ${userData.token}` },
     }
     console.log('Body: ', body)
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
-    console.log(response?.data);
-    goToHome();
+
+    
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
+      console.log(response?.data);
+  
+      api.success({
+        message: 'Reserva Cadastrada!',
+        description: 'A reserva foi registrada com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        goToHome();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao cadastrar reserva',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+    }
   }
 
   const onFinish = (values) => {
     console.log('Success:');
+    form.setFieldValue('time', `${initialTime} - ${endTime}`);
     console.log(values);
     createReservation(values);
   };
   const onFinishFailed = (errorInfo) => {
+    console.log('Failed:');
     console.table(errorInfo?.values);
+    form.setFieldValue('time', `${initialTime} - ${endTime}`);
+    console.log(`${initialTime} - ${endTime}`)
   };
 
   useEffect(() => {
     fetchSalas();
     fetchTurmas();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
@@ -140,6 +176,7 @@ const Reservation = () => {
 
           <Col span={14} offset={2} style={{}}>
             <Form
+              form={form}
               name="Reservation"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
@@ -219,13 +256,30 @@ const Reservation = () => {
                   <Select
                     size="large"
                     placeholder="Horário"
-                    style={{ width: '95%', height: 40 }}
+                    style={{ width: '41%', height: 40 }}
                     prefix="De: "
                     allowClear
                     onClick={() => fetchTurmas()}
+                    onChange={(value, option) => setInitialTime(option.children)}
                   >
                     {Constants.Times.map((time) => (
                       <Select.Option key={time?.label} values={time?.id} >
+                        {time?.label}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                  
+                  <Select
+                    size="large"
+                    placeholder="Horário"
+                    style={{ width: '41%', height: 40 }}
+                    prefix="às: "
+                    allowClear
+                    onClick={() => fetchTurmas()}
+                    onChange={(value, option) => setEndTime(option.children)}
+                  >
+                    {Constants.Times.map((time) => (
+                      <Select.Option key={time?.id} value={time?.id}>
                         {time?.label}
                       </Select.Option>
                     ))}
@@ -238,14 +292,15 @@ const Reservation = () => {
                     { required: true, message: "Por favor selecione um horário." }
                   ]}
                   className="FormItemTimeProfile"
-                ><Select
-                  size="large"
-                  placeholder="Horário"
-                  style={{ width: '95%', height: 40 }}
-                  prefix="às: "
-                  allowClear
-                  onClick={() => fetchTurmas()}
                 >
+                  <Select
+                    size="large"
+                    placeholder="Horário"
+                    style={{ width: '95%', height: 40 }}
+                    prefix="às: "
+                    allowClear
+                    onClick={() => fetchTurmas()}
+                  >
                     {Constants.Times.map((time) => (
                       <Select.Option key={time?.label} values={time?.id} >
                         {time?.label}
@@ -297,7 +352,8 @@ const Reservation = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="SaveButton"
+                className="SaveReservationButton"
+                onClick={() => form.setFieldValue('time', `${initialTime} - ${endTime}`)}
               >
                 Salvar Alterações
               </Button>
