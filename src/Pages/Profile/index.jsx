@@ -3,11 +3,9 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
 import axios from "axios";
-import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
-import { UserDataContext } from '../../Providers/UserData';
 import "./Style.less";
 
 import {
@@ -22,9 +20,11 @@ const Profile = () => {
   const [form] = Form.useForm();
   const [filteredCargos, setFilteredCargos] = useState([]);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
+  const [loading, setLoading] = useState(false);
   const [UserData, setUserData] = useState();
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const [api, contextHolder] = notification.useNotification();
 
   const getProfile = async (id) => {
     const config = {
@@ -38,8 +38,35 @@ const Profile = () => {
     const config = {
       headers: {Authorization: `Bearer ${userData.token}`}
     }
-    await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
-
+    
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
+  
+      api.success({
+        message: 'Perfil atualizado!',
+        description: 'As informações do perfil foram salvas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        goToHome();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao atualizar perfil',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+    }finally{
+      setLoading(false);
+    }
   }
 
   const handleSearchCargos = (value) => {
@@ -66,6 +93,9 @@ const Profile = () => {
 
   const goToUpdatePassword = () => {
     Navigate('/profile/updatePassword')
+  }
+  const goToHome = () => {
+    Navigate('/home')
   }
 
   const onFinish = (values) => {
@@ -98,6 +128,7 @@ const Profile = () => {
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
@@ -128,6 +159,8 @@ const Profile = () => {
             type="danger"
                 className="EditPasswordButton"
                 onClick={goToUpdatePassword}
+                loading={loading}
+                disabled={loading}
               >
                 Alterar Senha
               </Button>
@@ -248,6 +281,8 @@ const Profile = () => {
                 type="primary"
                 htmlType="submit"
                 className="SaveButton"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>

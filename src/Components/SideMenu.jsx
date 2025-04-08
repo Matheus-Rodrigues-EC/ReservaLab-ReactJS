@@ -32,7 +32,6 @@ const SideMenu = () => {
     Navigate("/Profile");
   };
 
-
   const goToReservation = () => {
     Navigate("/reservation");
   };
@@ -44,6 +43,11 @@ const SideMenu = () => {
   const goToclass = () => {
     Navigate("/class");
   };
+
+  const Exit = () => {
+    localStorage.clear();
+    Navigate("/");
+  }
 
   useEffect(() => {
     setToday(SetDate);
@@ -117,7 +121,7 @@ const SideMenu = () => {
 
       <Button 
         className="ButtonMenuExit" 
-        onClick={() => alert('Sair')}
+        onClick={Exit}
       >
         Sair
       </Button>
