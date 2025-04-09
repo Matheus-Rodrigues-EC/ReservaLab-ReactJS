@@ -1,9 +1,10 @@
 import React, {
   useEffect,
-  // useState,
+  useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import { Col, Row, Form, Input, notification, Button, Typography } from "antd";
+import axios from "axios";
 import { 
   LockOutlined,
 } from '@ant-design/icons';
@@ -16,34 +17,51 @@ import SideMenu from "../../Components/SideMenu";
 const UpdatePassword = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-  //   if (!value) {
-  //     setFilteredCargos(Cargos);
-  //   } else {
-  //     const filtered = Cargos?.filter((cargo) =>
-  //       cargo.value.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     setFilteredCargos(filtered);
-  //   }
-  // };
-
-  // const handleSearchDisciplinas = (value) => {
-  //   if (!value) {
-  //     setFilteredDisciplinas(Disciplinas);
-  //   } else {
-  //     const filtered = Disciplinas?.filter((disciplina) =>
-  //       disciplina.value.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     setFilteredDisciplinas(filtered);
-  //   }
-  // };
+    const [loading, setLoading] = useState(false);
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const [api, contextHolder] = notification.useNotification();
 
   const goToProfile = () => {
     Navigate('/profile')
   }
 
+  const updatePasswordProfile = async (id, body) => {
+      const config = {
+        headers: {Authorization: `Bearer ${userData.token}`}
+      }
+      
+      setLoading(true);
+      try {
+        await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body, config);
+    
+        api.success({
+          message: 'Senha atualizado!',
+          description: 'A nova senha foi salva com sucesso.',
+          showProgress: true,
+          duration: 2,
+          placement: "top"
+        });
+        setTimeout(() => {
+          goToProfile();
+        }, 2250);
+    
+      } catch (error) {
+        console.error(error);
+    
+        api.error({
+          message: 'Erro ao atualizar senha',
+          description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+          showProgress: true,
+          duration: 2,
+          placement: "top"
+        });
+      }finally{
+        setLoading(false);
+      }
+    }
+
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    updatePasswordProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
@@ -56,6 +74,7 @@ const UpdatePassword = () => {
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
@@ -78,6 +97,8 @@ const UpdatePassword = () => {
               type="danger"
               className="CancelSavePasswordButton"
               onClick={goToProfile}
+              loading={loading}
+              disabled={loading}
             >
               Cancelar
             </Button>
@@ -107,7 +128,7 @@ const UpdatePassword = () => {
               </Form.Item>
 
               <Form.Item
-                name='NewPassword'
+                name='password'
                 rules={[
                   { required: true, message: 'Por favor, insira sua senha.' },
                   { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
@@ -132,7 +153,7 @@ const UpdatePassword = () => {
                   { required: true, message: 'Por favor, insira sua senha.' },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('Password') === value) {
+                      if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(new Error('As senhas não correspondem!'));
@@ -157,6 +178,8 @@ const UpdatePassword = () => {
                 type="primary"
                 htmlType="submit"
                 className="SavePasswordButton"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>

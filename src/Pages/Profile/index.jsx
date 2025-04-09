@@ -3,8 +3,8 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
-import * as Constants from '../../Utils/Constants';
+import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
+import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
 
@@ -17,10 +17,57 @@ import {
 import SideMenu from "../../Components/SideMenu";
 
 const Profile = () => {
+  const [form] = Form.useForm();
   const [filteredCargos, setFilteredCargos] = useState([]);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
-  const data = Constants?.data;
+  const [loading, setLoading] = useState(false);
+  const [UserData, setUserData] = useState();
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const [api, contextHolder] = notification.useNotification();
+
+  const getProfile = async (id) => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`},
+    }
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`, config);
+    setUserData(response.data)
+  }
+
+  const updateProfile = async (id, body) => {
+    const config = {
+      headers: {Authorization: `Bearer ${userData.token}`}
+    }
+    
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
+  
+      api.success({
+        message: 'Perfil atualizado!',
+        description: 'As informações do perfil foram salvas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        goToHome();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao atualizar perfil',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+    }finally{
+      setLoading(false);
+    }
+  }
 
   const handleSearchCargos = (value) => {
     if (!value) {
@@ -47,22 +94,41 @@ const Profile = () => {
   const goToUpdatePassword = () => {
     Navigate('/profile/updatePassword')
   }
+  const goToHome = () => {
+    Navigate('/home')
+  }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
+    // console.table(values);
+    updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    console.error(errorInfo?.values);
   };
 
   useEffect(() => {
     setFilteredCargos(Cargos);
-  }, [data]);
+    getProfile(userData.id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData.id]);
+
+  useEffect(() => {
+    if (UserData) {
+      form.setFieldsValue({
+        name: UserData.name,
+        rulets: UserData.rulets,
+        surname: UserData.surname,
+        subject: UserData.subject,
+        shift: UserData.shift,
+      });
+    }
+  }, [UserData, form]);
 
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
@@ -93,19 +159,23 @@ const Profile = () => {
             type="danger"
                 className="EditPasswordButton"
                 onClick={goToUpdatePassword}
+                loading={loading}
+                disabled={loading}
               >
                 Alterar Senha
               </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
+              form={form}
               name="Profile"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='FullName'
+                name='name'
+                initialValue={UserData?.name}
                 rules={[
                   { required: true, message: "Por favor, insira seu nome" },
                 ]}
@@ -122,7 +192,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Cargo'
+                name='rulets'
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -138,7 +208,7 @@ const Profile = () => {
                   filterOption={false}
                 >
                   {filteredCargos.map((cargo) => (
-                    <Select.Option key={cargo?.id} values={cargo?.id} >
+                    <Select.Option key={cargo?.label} values={cargo?.label} >
                       {cargo?.label}
                     </Select.Option>
                   ))}
@@ -146,7 +216,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Apelido'
+                name='surname'
                 rules={[
                   { required: false, message: "Por favor digite seu Apelido." }
                 ]}
@@ -162,7 +232,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Disciplina'
+                name='subject'
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -178,7 +248,7 @@ const Profile = () => {
                   filterOption={false}
                 >
                   {filteredDisciplinas.map((disciplina) => (
-                    <Select.Option key={disciplina?.id} value={disciplina?.id}>
+                    <Select.Option key={disciplina?.label} value={disciplina?.label}>
                       {disciplina?.label}
                     </Select.Option>
                   ))}
@@ -186,7 +256,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Turno'
+                name='shift'
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -200,8 +270,8 @@ const Profile = () => {
                   allowClear
                 >
                   {Turnos.map((turno) => (
-                    <Select.Option key={turno?.key} value={turno?.key}>
-                      {turno?.value}
+                    <Select.Option key={turno?.label} value={turno?.label}>
+                      {turno?.label}
                     </Select.Option>
                   ))}
                 </Select>
@@ -211,6 +281,8 @@ const Profile = () => {
                 type="primary"
                 htmlType="submit"
                 className="SaveButton"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>

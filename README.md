@@ -2,7 +2,7 @@
 
 ### - O que é ReservaLab?
 
-Esta aplicação Web consiste em um sistema de reserva de salas para escolas, garantindo assim que não aja conflitos de horários entre turmas por uma sala ou quadra.
+Esta aplicação Web consiste em um sistema de reserva de salas para escolas, garantindo assim que não haja conflitos de horários entre turmas por uma sala ou quadra.
 
 
 ### - Como usar ReservaLab?

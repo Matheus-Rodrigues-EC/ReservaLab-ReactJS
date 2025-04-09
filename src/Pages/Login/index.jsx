@@ -1,26 +1,65 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router";
+import packageJson from '../../../package.json';
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 import Logo from '../../assets/Logo.jpg';
+import { UserDataContext } from '../../Providers/UserData';
 
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button } from 'antd';
+import { Row, Col, Avatar, Form, Input, Button, Typography, notification } from 'antd';
 
 
 const Login = () => {
   const inputRef = useRef(null);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
+  const { setUserData } = React.useContext(UserDataContext);
+  const [loading, setLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+
+
+  const Navigate = useNavigate()
+
+  const goToHome = () => {
+    Navigate('/home')
+  }
+
+  const login = async (body) => {
+
+    setLoading(true);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
+      const user = { id: response.data.user.id, name: response.data.user.name, email: response.data.user.email, token: response.data.token.token };
+      const serializableUser = JSON.stringify(user);
+      localStorage.setItem("userData", serializableUser);
+      setUserData(user);
+      goToHome();
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao fazer Login',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 3.5,
+        placement: "top"
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const onFinish = (values) => {
-    console.log('Success:');
     setEmail(values.Email);
     setPassword(values.Password)
+    login(values);
   };
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.error('Failed:', errorInfo);
   };
 
   useEffect(() => {
@@ -33,6 +72,7 @@ const Login = () => {
 
   return (
     <Container>
+      {contextHolder}
       <Row justify='center' align='middle' style={{ height: '100vh' }}>
         <Col span={14}>
           <Row justify="center">
@@ -59,7 +99,7 @@ const Login = () => {
             >
 
               <Form.Item
-                name='Email'
+                name='email'
                 rules={[
                   { required: true, message: "Por favor, insira seu e-mail" },
                   { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
@@ -85,7 +125,7 @@ const Login = () => {
               </Form.Item>
 
               <Form.Item
-                name='Password'
+                name='password'
                 rules={[
                   {
                     required: true,
@@ -101,7 +141,6 @@ const Login = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="password"
-                  onChange={() => console.log()}
                 >
 
                 </Input.Password>
@@ -112,6 +151,8 @@ const Login = () => {
                   type="primary"
                   htmlType="submit"
                   className="SubmitButton"
+                  loading={loading}
+                  disabled={loading}
                 >
                   Login
                 </Button>
@@ -123,13 +164,17 @@ const Login = () => {
           </Row>
           <Row justify='center'>
 
-            <Link to="/register" className="LinkButton">
+            <Link to="/register" className="LinkButton" >
               Ainda não possui cadastro? Clique aqui.
             </Link>
-
           </Row>
 
         </Col>
+      </Row>
+      <Row>
+        <Typography.Text className="VersionLogin">
+          Versão: {packageJson.version}
+        </Typography.Text>
       </Row>
     </Container>
   )

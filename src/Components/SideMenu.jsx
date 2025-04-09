@@ -2,6 +2,7 @@ import React, {
   useState, 
   useEffect,
 } from "react";
+import packageJson from '../../package.json';
 import { useNavigate } from "react-router";
 import "./Style.less";
 import dayjs from "dayjs";
@@ -31,7 +32,6 @@ const SideMenu = () => {
     Navigate("/Profile");
   };
 
-
   const goToReservation = () => {
     Navigate("/reservation");
   };
@@ -43,6 +43,11 @@ const SideMenu = () => {
   const goToclass = () => {
     Navigate("/class");
   };
+
+  const Exit = () => {
+    localStorage.clear();
+    Navigate("/");
+  }
 
   useEffect(() => {
     setToday(SetDate);
@@ -116,10 +121,14 @@ const SideMenu = () => {
 
       <Button 
         className="ButtonMenuExit" 
-        onClick={() => alert('Sair')}
+        onClick={Exit}
       >
         Sair
       </Button>
+      
+      <Typography.Text className="Version">
+        Versão: {packageJson.version}
+      </Typography.Text>
 
     
     </Container>
