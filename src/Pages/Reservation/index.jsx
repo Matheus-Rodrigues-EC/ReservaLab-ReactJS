@@ -123,7 +123,7 @@ const Reservation = () => {
         message: 'Erro ao cadastrar reserva',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
-        duration: 2,
+        duration: 3,
         placement: "top"
       });
 
