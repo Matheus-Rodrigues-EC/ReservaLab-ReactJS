@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.28](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.27...v0.0.28) (2025-04-09)
+
+
+### Bug Fixes
+
+* Adjustment on time of notification where new reservation is created ([c05e645](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/c05e64569fcbc008ad9557f4b6c05230c6e11efa))
+
 ### [0.0.27](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.26...v0.0.27) (2025-04-09)
 
 
