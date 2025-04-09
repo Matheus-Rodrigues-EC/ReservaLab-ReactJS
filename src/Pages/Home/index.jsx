@@ -39,20 +39,8 @@ const Home = () => {
     setLoading(true)
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`, config);
-      filteredReservationsToday(response?.data)
-
-      // api.success({
-      //   message: 'Sala Cadastrada!',
-      //   description: 'A sala cadastrada foi salva com sucesso.',
-      //   showProgress: true,
-      //   duration: 2,
-      //   placement: "top"
-      // });
-
-      // setTimeout(() => {
-      //   setLoading(false);
-      //   goToHome();
-      // }, 2250);
+      // filteredReservationsToday(response?.data)
+      setReservations(response?.data)
 
     } catch (error) {
       console.error(error);
