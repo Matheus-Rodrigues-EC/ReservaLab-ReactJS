@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.27](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.26...v0.0.27) (2025-04-09)
+
+
+### Bug Fixes
+
+* remove consoles ([7b8be85](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/7b8be857a654ca10c60f48d1552b5d1f21046eff))
+
+### [0.0.26](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.25...v0.0.26) (2025-04-09)
+
 ### [0.0.25](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.24...v0.0.25) (2025-04-09)
 
 
