@@ -36,7 +36,6 @@ const Reservation = () => {
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
 
-  
   const handleSearchSalas = (value) => {
     console.log(salas)
     if (!value) {
@@ -85,17 +84,21 @@ const Reservation = () => {
       headers: { Authorization: `Bearer ${userData.token}` },
     }
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`, config);
-    setTurmas(response.data);
+    setTurmas(response?.data);
   }
 
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const disabledDate = (current) => {
+    // Desativa datas anteriores a hoje e finais de semana (sábado = 6, domingo = 0)
+    return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
+  };
+
   const createReservation = async (data) => {
     const body = {
       ...data,
-      date: dataCapitalizada,
       userId: Number(userData.id),
       classroomId: Number(data.classroomId),
       classId: Number(data.classId),
@@ -133,11 +136,12 @@ const Reservation = () => {
   }
 
   const onFinish = (values) => {
-    // console.log('Success:');
-    // console.log(values);
+    const dataFormatada = dayjs(values.date).format("dddd, DD/MM/YYYY");
+    const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
     form.setFieldValue('time', `${initialTime} - ${endTime}`);
-    createReservation(values);
+    createReservation({ ...values, date: dataCapitalizada });
   };
+
   const onFinishFailed = (errorInfo) => {
     form.setFieldValue('time', `${initialTime} - ${endTime}`);
     console.log('Failed:');
@@ -213,13 +217,13 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <DatePicker
-                  // defaultValue={dayjs()}
                   format={dateFormat}
                   needConfirm
                   size="large"
                   placeholder={dataCapitalizada}
                   style={{ width: '80%', height: 40 }}
                   allowClear
+                  disabledDate={disabledDate}
                 />
               </Form.Item>
 
@@ -283,32 +287,40 @@ const Reservation = () => {
                 >
                   <Select
                     size="large"
-                    placeholder="Horário"
+                    placeholder="De: "
                     style={{ width: '40%', height: 40 }}
-                    prefix="De: "
                     allowClear
                     onClick={() => fetchTurmas()}
-                    onChange={(value, option) => setInitialTime(option.children)}
+                    onChange={(value, option) => {
+                      setInitialTime(option?.children);
+                      if (endTime && option?.children >= endTime) {
+                        setEndTime(null); // Reseta a hora final se for inválida
+                      }
+                    }}
                   >
-                    {Times.map((time) => (
-                      <Select.Option key={time?.label} values={time?.id} >
-                        {time?.label}
+                    {Times.filter(time => !endTime || time.label < endTime).map((time) => (
+                      <Select.Option key={time.id} value={time.id}>
+                        {time.label}
                       </Select.Option>
                     ))}
                   </Select>
 
                   <Select
                     size="large"
-                    placeholder="Horário"
+                    placeholder="Até: "
                     style={{ width: '40%', height: 40, marginLeft: '4%' }}
-                    prefix="às: "
                     allowClear
                     onClick={() => fetchTurmas()}
-                    onChange={(value, option) => setEndTime(option.children)}
+                    onChange={(value, option) => {
+                      setEndTime(option?.children);
+                      if (initialTime && option?.children <= initialTime) {
+                        setInitialTime(null); // Reseta a hora inicial se for inválida
+                      }
+                    }}
                   >
-                    {Times.map((time) => (
-                      <Select.Option key={time?.id} value={time?.id}>
-                        {time?.label}
+                    {Times.filter(time => !initialTime || time.label > initialTime).map((time) => (
+                      <Select.Option key={time.id} value={time.id}>
+                        {time.label}
                       </Select.Option>
                     ))}
                   </Select>

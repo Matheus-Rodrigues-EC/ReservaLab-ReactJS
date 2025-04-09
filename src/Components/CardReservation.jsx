@@ -37,7 +37,7 @@ const CardReservation = (Data) => {
 
   const renderPurpose = (id) => {
     const found = Purposes.find((purpose) => purpose.id == id);
-    return found ? ` - ${found?.label}` : " - Aula Padrão";
+    return found ? `${found?.label}` : " - Aula Padrão";
   }
 
   // const actions = [
@@ -67,7 +67,7 @@ const CardReservation = (Data) => {
         <Col span={19} offset={1}>
           <Row>
             <Typography.Title style={{ fontSize: '2.25vw' }} className="TitleResv">
-              {data?.Classroom?.name} - {data?.User?.subject}{renderPurpose(data?.purpose)}
+              {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {data?.date.match(/\d{2}\/\d{2}\/\d{4}/)[0]}
             </Typography.Title>
           </Row>
           <Row justify="space-between">
@@ -98,7 +98,7 @@ const CardReservation = (Data) => {
             </Col>
             <Col span={8}>
               <Typography.Text ellipsis className="TextCommon">
-                {data?.User?.surname || data?.User?.name}
+                {data?.User?.surname || data?.User?.name} - {data?.User?.subject}
               </Typography.Text>
             </Col>
           </Row>
