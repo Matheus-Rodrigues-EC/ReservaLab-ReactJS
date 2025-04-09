@@ -61,8 +61,6 @@ const UpdatePassword = () => {
     }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
     updatePasswordProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
