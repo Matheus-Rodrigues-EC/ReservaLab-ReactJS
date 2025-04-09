@@ -35,8 +35,8 @@ const UpdatePassword = () => {
         await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body, config);
     
         api.success({
-          message: 'Perfil atualizado!',
-          description: 'As informações do perfil foram salvas com sucesso.',
+          message: 'Senha atualizado!',
+          description: 'A nova senha foi salva com sucesso.',
           showProgress: true,
           duration: 2,
           placement: "top"
@@ -49,7 +49,7 @@ const UpdatePassword = () => {
         console.error(error);
     
         api.error({
-          message: 'Erro ao atualizar perfil',
+          message: 'Erro ao atualizar senha',
           description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
           showProgress: true,
           duration: 2,
@@ -113,7 +113,7 @@ const UpdatePassword = () => {
               autoComplete="on"
             >
               <Form.Item
-                name='password'
+                name='CurrentPassword'
                 rules={[
                   { required: true, message: "Por favor, insira seu nome" },
                 ]}
@@ -130,7 +130,7 @@ const UpdatePassword = () => {
               </Form.Item>
 
               <Form.Item
-                name='NewPassword'
+                name='password'
                 rules={[
                   { required: true, message: 'Por favor, insira sua senha.' },
                   { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
@@ -155,7 +155,7 @@ const UpdatePassword = () => {
                   { required: true, message: 'Por favor, insira sua senha.' },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
-                      if (!value || getFieldValue('NewPassword') === value) {
+                      if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
                       }
                       return Promise.reject(new Error('As senhas não correspondem!'));
