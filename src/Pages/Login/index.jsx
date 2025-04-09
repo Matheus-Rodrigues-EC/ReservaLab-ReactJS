@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import packageJson from '../../../package.json';
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
@@ -8,14 +9,14 @@ import Logo from '../../assets/Logo.jpg';
 import { UserDataContext } from '../../Providers/UserData';
 
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button } from 'antd';
+import { Row, Col, Avatar, Form, Input, Button, Typography } from 'antd';
 
 
 const Login = () => {
   const inputRef = useRef(null);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  const {setUserData} = React.useContext(UserDataContext);
+  const { setUserData } = React.useContext(UserDataContext);
 
 
   const Navigate = useNavigate()
@@ -28,12 +29,12 @@ const Login = () => {
     console.log(body)
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
     console.log(response.data);
-    
-    const user = {id:response.data.user.id ,name: response.data.user.name, email: response.data.user.email, token: response.data.token.token};
+
+    const user = { id: response.data.user.id, name: response.data.user.name, email: response.data.user.email, token: response.data.token.token };
     console.log('USER: ', user);
     const serializableUser = JSON.stringify(user);
     localStorage.setItem("userData", serializableUser);
-    setUserData (user);
+    setUserData(user);
     goToHome();
   }
 
@@ -150,7 +151,11 @@ const Login = () => {
             <Link to="/register" className="LinkButton">
               Ainda não possui cadastro? Clique aqui.
             </Link>
-
+          </Row>
+          <Row>
+            <Typography.Text className="Version" style={{ marginTop: "29%" }}>
+              Versão: {packageJson.version}
+            </Typography.Text>
           </Row>
 
         </Col>

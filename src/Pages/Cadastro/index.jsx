@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import packageJson from '../../../package.json';
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
@@ -12,7 +13,7 @@ import {
   UserAddOutlined, 
   LockOutlined,
 } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button } from 'antd';
+import { Row, Col, Avatar, Form, Input, Button, Typography } from 'antd';
 
 
 const Cadastro = () => {
@@ -197,9 +198,12 @@ const Cadastro = () => {
             <Link to="/login" className="LinkButton">
               Já possui cadastro? Acesse aqui.
             </Link>
-
           </Row>
-
+          <Row>
+            <Typography.Text className="Version" style={{ marginTop: "10%" }}>
+              Versão: {packageJson.version}
+            </Typography.Text>
+          </Row>
         </Col>
       </Row>
     </Container>
