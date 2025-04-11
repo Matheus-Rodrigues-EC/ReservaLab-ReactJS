@@ -11,7 +11,9 @@ import dayjs from "dayjs";
 
 import {
   FuncionalidadesList as Finalidades,
-  Times,
+  // Times,
+  Fundamental_1_Times,
+  Fundamental_2_Times,
   removerAcentos,
 } from "../../Utils/Constants";
 
@@ -22,8 +24,6 @@ const Reservation = () => {
   const [loading, setLoading] = useState(false);
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
-  const [initialTime, setInitialTime] = useState('');
-  const [endTime, setEndTime] = useState('');
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
   const [filteredClasses, setFilteredClasses] = useState(turmas);
   const [filteredSalas, setFilteredSalas] = useState(salas);
@@ -32,7 +32,6 @@ const Reservation = () => {
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
   const dateFormat = 'dddd, DD/MM/YYYY';
-  // const timeFormat = 'HH:mm';
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
 
@@ -92,7 +91,6 @@ const Reservation = () => {
   }
 
   const disabledDate = (current) => {
-    // Desativa datas anteriores a hoje e finais de semana (sábado = 6, domingo = 0)
     return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
   };
 
@@ -118,6 +116,7 @@ const Reservation = () => {
         placement: "top"
       });
       setTimeout(() => {
+        setLoading(false);
         goToHome();
       }, 2250);
     } catch (error) {
@@ -129,21 +128,18 @@ const Reservation = () => {
         duration: 3,
         placement: "top"
       });
-
-    } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2750);
     }
   }
 
   const onFinish = (values) => {
-    const dataFormatada = dayjs(values.date).format("dddd, DD/MM/YYYY");
-    const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
-    form.setFieldValue('time', `${initialTime} - ${endTime}`);
+    const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
     createReservation({ ...values, date: dataCapitalizada });
   };
 
   const onFinishFailed = (errorInfo) => {
-    form.setFieldValue('time', `${initialTime} - ${endTime}`);
     console.log('Failed:');
     console.table(errorInfo?.values);
   };
@@ -154,6 +150,9 @@ const Reservation = () => {
     handleSearchClasses('');
     handleSearchSalas('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
   }, []);
 
   return (
@@ -191,8 +190,7 @@ const Reservation = () => {
             </Row>
 
             <Button
-              type="danger"
-              className="CanceldButton"
+              className="CanceldButtonReservation"
               onClick={goToHome}
               loading={loading}
               disabled={loading}
@@ -221,6 +219,7 @@ const Reservation = () => {
                   needConfirm
                   size="large"
                   placeholder={dataCapitalizada}
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   disabledDate={disabledDate}
@@ -238,10 +237,11 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Sala"
+                  disabled={loading}
                   filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onClick={() => fetchSalas()}
+                  // onClick={() => fetchSalas()}
                   onSearch={handleSearchSalas}
                 >
                   {(filteredSalas.length > 0 ? filteredSalas : salas).map((sala) => (
@@ -263,10 +263,11 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Turma"
+                  disabled={loading}
                   filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onClick={() => fetchTurmas()}
+                  // onClick={() => fetchTurmas()}
                   onSearch={handleSearchClasses}
                 >
                   {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
@@ -283,43 +284,20 @@ const Reservation = () => {
                   rules={[
                     { required: true, message: "Por favor selecione um horário." }
                   ]}
-                  className="FormItemTimeProfile"
+                  className="FormItemProfile"
                 >
                   <Select
                     size="large"
                     placeholder="De: "
-                    style={{ width: '40%', height: 40 }}
+                    disabled={loading}
+                    style={{ width: '80%', height: 40 }}
                     allowClear
-                    onClick={() => fetchTurmas()}
-                    onChange={(value, option) => {
-                      setInitialTime(option?.children);
-                      if (endTime && option?.children >= endTime) {
-                        setEndTime(null); // Reseta a hora final se for inválida
-                      }
-                    }}
+                    onClick={() => null}
+                    mode="multiple"
+                    maxCount={2}
                   >
-                    {Times.filter(time => !endTime || time.label < endTime).map((time) => (
-                      <Select.Option key={time.id} value={time.id}>
-                        {time.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    size="large"
-                    placeholder="Até: "
-                    style={{ width: '40%', height: 40, marginLeft: '4%' }}
-                    allowClear
-                    onClick={() => fetchTurmas()}
-                    onChange={(value, option) => {
-                      setEndTime(option?.children);
-                      if (initialTime && option?.children <= initialTime) {
-                        setInitialTime(null); // Reseta a hora inicial se for inválida
-                      }
-                    }}
-                  >
-                    {Times.filter(time => !initialTime || time.label > initialTime).map((time) => (
-                      <Select.Option key={time.id} value={time.id}>
+                    {Fundamental_1_Times.map((time) => (
+                      <Select.Option key={time.label} value={time.label}>
                         {time.label}
                       </Select.Option>
                     ))}
@@ -338,6 +316,7 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Finalidade"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onSearch={handleSearchFinalidades}
@@ -361,6 +340,7 @@ const Reservation = () => {
                 <Input
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="textarea"
@@ -370,8 +350,7 @@ const Reservation = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="SaveReservationButton"
-                onClick={() => form.setFieldValue('time', `${initialTime} - ${endTime}`)}
+                className="SaveButtonReservation"
                 loading={loading}
                 disabled={loading}
               >
