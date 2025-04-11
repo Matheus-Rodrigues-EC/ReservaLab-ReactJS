@@ -65,8 +65,7 @@ const Classroom = () => {
   }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
     createClassroom(values);
   };
   const onFinishFailed = (errorInfo) => {

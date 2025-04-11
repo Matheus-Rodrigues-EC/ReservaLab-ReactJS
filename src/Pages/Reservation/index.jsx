@@ -36,7 +36,6 @@ const Reservation = () => {
   const userData = JSON.parse(localStorage.getItem('userData'));
 
   const handleSearchSalas = (value) => {
-    console.log(salas)
     if (!value) {
       setFilteredSalas(salas);
     } else {

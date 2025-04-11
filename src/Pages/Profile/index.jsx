@@ -102,7 +102,6 @@ const Profile = () => {
 
   const onFinish = (values) => {
     // console.log('Success:');
-    // console.table(values);
     updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {

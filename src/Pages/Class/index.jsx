@@ -69,8 +69,7 @@ const Class = () => {
   }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
     createClass(values);
   };
   const onFinishFailed = (errorInfo) => {
