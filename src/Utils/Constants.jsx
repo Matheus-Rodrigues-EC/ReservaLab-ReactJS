@@ -15,6 +15,11 @@ export const removerAcentos = (str) => {
     .replace(/Ç/g, 'C');
 };
 
+export const FilterReservations = [
+	{id: 1, label: 'Hoje'},
+	{id: 2, label: 'Reservas Futuras'},
+	{id: 3, label: 'Todas as Reservas'},
+]
 
 export const CargosList = [
 	{id: 1, label: 'Diretor(a)'},
