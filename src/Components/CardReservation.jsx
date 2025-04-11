@@ -3,8 +3,9 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { Col, Row, Card, Image, Typography } from "antd";
+import { Col, Row, Card, Image, Typography, Tag } from "antd";
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import dayjs from "dayjs";
 import "./Style.less";
 const userData = JSON.parse(localStorage.getItem('userData'));
 import { FuncionalidadesList as Purposes } from "../Utils/Constants";
@@ -50,6 +51,9 @@ const CardReservation = (Data) => {
     // console.log(data)
   }, [data])
 
+  const formattedDate = dayjs(data.date).format("dddd, DD/MM/YYYY");
+  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
   return (
     <>
       <Card
@@ -67,7 +71,7 @@ const CardReservation = (Data) => {
         <Col span={19} offset={1}>
           <Row>
             <Typography.Title style={{ fontSize: '2.25vw' }} className="TitleResv">
-              {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {data?.date.match(/\d{2}\/\d{2}\/\d{4}/)[0]}
+              {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {capitalizedDate}
             </Typography.Title>
           </Row>
           <Row justify="space-between">
@@ -82,7 +86,18 @@ const CardReservation = (Data) => {
             </Col>
             <Col span={8}>
               <Typography.Text className="TextCommon">
-                {data?.time} Hs
+                {data?.time?.slice().sort().map((time) => {
+                  return(
+                    <Tag
+                      color="blue"
+                      style={{
+                        fontSize: 16
+                      }}
+                    >
+                      {time} Hs
+                    </Tag>
+                  )
+                })}
               </Typography.Text>
             </Col>
           </Row>

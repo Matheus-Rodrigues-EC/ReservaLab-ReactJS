@@ -75,18 +75,26 @@ export const classTypes = [
 	{id: 5, label: 'Recuperação/Reforço'},
 ]
 
-export const Times = [
+export const Fundamental_1_Times = [
 	
-	{id: 1, label: '07:00'},
-	{id: 2, label: '07:50'},
-	{id: 3, label: '08:40'},
-	{id: 4, label: '09:20'},
-	{id: 5, label: '10:00'},
-	{id: 6, label: '10:50'},
-	{id: 7, label: '13:00'},
-	{id: 8, label: '13:50'},
-	{id: 9, label: '14:40'},
-	{id: 10, label: '15:30'},
-	{id: 11, label: '16:20'},
-	{id: 12, label: '17:00'},
+	{id: 1,  label: '07:00 às 07:50'},
+	{id: 2,  label: '07:50 às 08:40'},
+	{id: 3,  label: '09:00 às 10:00'},
+	{id: 4,  label: '10:00 às 11:00'},
+	{id: 5,  label: '13:00 às 13:50'},
+	{id: 6,  label: '13:50 às 14:40'},
+	{id: 7,  label: '15:00 às 16:00'},
+	{id: 8,  label: '16:00 às 17:00'},
+]
+
+export const Fundamental_2_Times = [
+	
+	{id: 1,  label: '07:10 às 08:00'},
+	{id: 2,  label: '08:00 às 08:50'},
+	{id: 3,  label: '08:50 às 10:00'},
+	{id: 4,  label: '10:00 às 10:50'},
+	{id: 5,  label: '13:10 às 14:00'},
+	{id: 6,  label: '14:00 às 14:50'},
+	{id: 7,  label: '14:50 às 16:00'},
+	{id: 8,  label: '14:50 às 16:50'},
 ]
