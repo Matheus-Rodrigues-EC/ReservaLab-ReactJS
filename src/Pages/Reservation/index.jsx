@@ -337,13 +337,14 @@ const Reservation = () => {
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 />
               </Form.Item>
 

@@ -68,7 +68,6 @@ const UpdatePassword = () => {
   };
 
   useEffect(() => {
-
   }, [data]);
 
   return (

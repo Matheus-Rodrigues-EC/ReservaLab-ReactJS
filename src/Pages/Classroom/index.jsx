@@ -24,16 +24,16 @@ const Classroom = () => {
 
   const createClassroom = async (data) => {
     const body = {
-      ...data, 
+      ...data,
       capacity: Number(data.capacity)
     }
     const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
+      headers: { Authorization: `Bearer ${userData.token}` },
     }
     setLoading(true)
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body, config );
-  
+      await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body, config);
+
       api.success({
         message: 'Sala Cadastrada!',
         description: 'A sala cadastrada foi salva com sucesso.',
@@ -41,15 +41,15 @@ const Classroom = () => {
         duration: 2,
         placement: "top"
       });
-      
+
       setTimeout(() => {
         setLoading(false);
         goToHome();
       }, 2250);
-  
+
     } catch (error) {
       console.error(error);
-  
+
       api.error({
         message: 'Erro ao cadastrar sala',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -57,8 +57,10 @@ const Classroom = () => {
         duration: 2,
         placement: "top"
       });
-    }finally{
-      setLoading(false);
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
     }
   }
 
@@ -183,13 +185,14 @@ const Classroom = () => {
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <Input.TextArea
                   showSearch
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
-                  style={{ width: '80%', height: 40 }}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 />
               </Form.Item>
 

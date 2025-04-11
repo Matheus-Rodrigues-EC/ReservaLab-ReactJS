@@ -61,8 +61,10 @@ const Class = () => {
         duration: 2,
         placement: "top"
       });
-    }finally{
-      setLoading(false);
+      
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
     }
   }
 
@@ -192,15 +194,16 @@ const Class = () => {
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <Input.TextArea
                   showSearch
                   size="large"
                   placeholder="Gostaria de adicionar alguma Obervação?"
-                  style={{ width: '80%', height: 40 }}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 >
-                </Input>
+                </Input.TextArea>
               </Form.Item>
 
               <Button
