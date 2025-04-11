@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.32](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.31...v0.0.32) (2025-04-11)
+
+
+### Features
+
+* Added a selec to change wich reservations will are loading ([f08845c](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/f08845c320df8c6c223f10d55adbb3c7f80dfc7b))
+
 ### [0.0.31](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.30...v0.0.31) (2025-04-11)
 
 ### [0.0.30](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.29...v0.0.30) (2025-04-11)
