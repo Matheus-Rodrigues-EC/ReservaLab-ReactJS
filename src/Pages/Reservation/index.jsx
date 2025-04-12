@@ -11,9 +11,10 @@ import dayjs from "dayjs";
 
 import {
   FuncionalidadesList as Finalidades,
-  // Times,
-  Fundamental_1_Times,
-  Fundamental_2_Times,
+  Fundamental_Morning_Times,
+  Fundamental_Afternoom_Times,
+  Fundamental_Integral_Times,
+  EJA_Times,
   removerAcentos,
 } from "../../Utils/Constants";
 
@@ -22,6 +23,7 @@ import SideMenu from "../../Components/SideMenu";
 const Reservation = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [Times, setTimes] = useState(Fundamental_Integral_Times);
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
@@ -91,6 +93,18 @@ const Reservation = () => {
 
   const disabledDate = (current) => {
     return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
+  };
+
+  const shiftTimeMap = {
+    'Manhã': Fundamental_Morning_Times,
+    'Tarde': Fundamental_Afternoom_Times,
+    'Noite': EJA_Times,
+  };
+  
+  const changeTimes = (id) => {
+    const classe = turmas.find((turma) => turma?.id == id);
+    const times = shiftTimeMap[classe?.shift] || Fundamental_Integral_Times;
+    setTimes(times);
   };
 
   const createReservation = async (data) => {
@@ -266,7 +280,7 @@ const Reservation = () => {
                   filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  // onClick={() => fetchTurmas()}
+                  onChange={(value) => {changeTimes(value); form.setFieldValue('time', [])}}
                   onSearch={handleSearchClasses}
                 >
                   {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
@@ -287,7 +301,7 @@ const Reservation = () => {
                 >
                   <Select
                     size="large"
-                    placeholder="De: "
+                    placeholder="Selecione um ou dois horários "
                     disabled={loading}
                     style={{ width: '80%', height: 40 }}
                     allowClear
@@ -295,7 +309,7 @@ const Reservation = () => {
                     mode="multiple"
                     maxCount={2}
                   >
-                    {Fundamental_1_Times.map((time) => (
+                    {Times?.map((time) => (
                       <Select.Option key={time.label} value={time.label}>
                         {time.label}
                       </Select.Option>

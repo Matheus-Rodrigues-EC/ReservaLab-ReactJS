@@ -51,7 +51,6 @@ export const TurnoList = [
 	{id: 2, label: 'Tarde'},
 	{id: 3, label: 'Noite'},
 	{id: 4, label: 'Integral'},
-	{id: 5, label: 'EJA'},
 ]
 
 export const TurmaList = [
@@ -63,13 +62,13 @@ export const TurmaList = [
 export const FuncionalidadesList = [
 	{id: 1, label: '2ª Chamada'},
 	{id: 2, label: 'Educação Especial'},
-	{id: 3, label: 'EJA'},
 	{id: 4, label: 'Esporte'},
 	{id: 5, label: 'Estudo'},
 	{id: 6, label: 'Informática'},
 	{id: 7, label: 'Leitura'},
-	{id: 8, label: 'Recuperação'},
-	{id: 9, label: 'Reforço'},
+	{id: 8, label: 'Prova externa'},
+	{id: 9, label: 'Recuperação'},
+  {id: 10, label: 'Reforço'},
 ]
 
 export const classTypes = [
@@ -80,26 +79,34 @@ export const classTypes = [
 	{id: 5, label: 'Recuperação/Reforço'},
 ]
 
-export const Fundamental_1_Times = [
-	
+export const Fundamental_Morning_Times = [
 	{id: 1,  label: '07:00 às 07:50'},
 	{id: 2,  label: '07:50 às 08:40'},
-	{id: 3,  label: '09:00 às 10:00'},
+	{id: 3,  label: '08:40 às 10:00'},
+	{id: 4,  label: '10:00 às 10:50'},
+]
+
+export const Fundamental_Afternoom_Times = [
+	{id: 1,  label: '13:00 às 13:50'},
+	{id: 2,  label: '13:50 às 14:40'},
+	{id: 3,  label: '14:40 às 16:00'},
+	{id: 4,  label: '16:00 às 16:50'},
+]
+
+export const Fundamental_Integral_Times = [
+	{id: 1,  label: '07:00 às 07:50'},
+	{id: 2,  label: '07:50 às 08:40'},
+	{id: 3,  label: '08:40 às 10:00'},
 	{id: 4,  label: '10:00 às 11:00'},
 	{id: 5,  label: '13:00 às 13:50'},
 	{id: 6,  label: '13:50 às 14:40'},
-	{id: 7,  label: '15:00 às 16:00'},
-	{id: 8,  label: '16:00 às 17:00'},
+	{id: 7,  label: '14:40 às 16:00'},
+	{id: 8,  label: '16:00 às 16:50'},
 ]
 
-export const Fundamental_2_Times = [
-	
-	{id: 1,  label: '07:10 às 08:00'},
-	{id: 2,  label: '08:00 às 08:50'},
-	{id: 3,  label: '08:50 às 10:00'},
-	{id: 4,  label: '10:00 às 10:50'},
-	{id: 5,  label: '13:10 às 14:00'},
-	{id: 6,  label: '14:00 às 14:50'},
-	{id: 7,  label: '14:50 às 16:00'},
-	{id: 8,  label: '14:50 às 16:50'},
+export const EJA_Times = [
+	{id: 1,  label: '18:00 às 18:50'},
+	{id: 2,  label: '18:50 às 19:40'},
+	{id: 3,  label: '20:00 às 20:40'},
+	{id: 4,  label: '20:40 às 21:30'},
 ]
