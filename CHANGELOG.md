@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.35...v0.1.0) (2025-04-13)
+
+
+### Features
+
+* Setting protect routes, add route to not_found page, and configured validate token with backend ([de592b5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/de592b573669d6107f278d1ed6200888e9cb5485))
+
 ### [0.0.35](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.34...v0.0.35) (2025-04-13)
 
 ### [0.0.34](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.0.33...v0.0.34) (2025-04-12)
