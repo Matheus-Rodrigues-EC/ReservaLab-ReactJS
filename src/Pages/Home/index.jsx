@@ -15,7 +15,6 @@ const Home = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
-  const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const dateFormat = 'DD/MM/YYYY';
 
@@ -33,13 +32,10 @@ const Home = () => {
   }
 
   const getReservations = async (date = null) => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` }
-    };
 
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`, config);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`);
 
       const allReservations = response?.data;
       let filtered = [];
@@ -113,7 +109,7 @@ const Home = () => {
               dataSource={reservations}
               className="ListReservations"
               renderItem={(item) => (
-                <List.Item>
+                <List.Item key={item.id}>
                   <CardReservation data={item} />
                 </List.Item>
               )}

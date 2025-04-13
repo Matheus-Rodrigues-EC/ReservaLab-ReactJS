@@ -72,18 +72,12 @@ const Reservation = () => {
   };
 
   const fetchSalas = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`, config);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`);
     setSalas(response.data);
   }
 
   const fetchTurmas = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`, config);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`);
     setTurmas(response?.data);
   }
 
@@ -114,12 +108,9 @@ const Reservation = () => {
       classroomId: Number(data.classroomId),
       classId: Number(data.classId),
     }
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
+      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body);
 
       api.success({
         message: 'Reserva Cadastrada!',

@@ -33,17 +33,18 @@ const Login = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
       const user = { 
-        id: response.data.user.id, 
-        name: response.data.user.name, 
-        email: response.data.user.email, 
-        surname: response.data.user.surname, 
-        rulets: response.data.user.rulets, 
-        shift: response.data.user.shift, 
-        subject: response.data.user.subject, 
-        token: response.data.token.token 
+        id: response?.data?.user?.id, 
+        name: response?.data?.user?.name, 
+        email: response?.data?.user?.email, 
+        surname: response?.data?.user?.surname, 
+        rulets: response?.data?.user?.rulets, 
+        shift: response?.data?.user?.shift, 
+        subject: response?.data?.user?.subject,
       };
       const serializableUser = JSON.stringify(user);
       localStorage.setItem("userData", serializableUser);
+      localStorage.setItem("token", response?.data?.token?.token);
+
       setUserData(user);
       goToHome();
 

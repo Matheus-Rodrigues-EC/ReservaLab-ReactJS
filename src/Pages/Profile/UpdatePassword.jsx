@@ -26,13 +26,9 @@ const UpdatePassword = () => {
   }
 
   const updatePasswordProfile = async (id, body) => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` }
-    }
-
     setLoading(true);
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body, config);
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body);
 
       api.success({
         message: 'Senha atualizado!',

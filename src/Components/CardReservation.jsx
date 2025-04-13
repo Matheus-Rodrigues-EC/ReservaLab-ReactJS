@@ -60,7 +60,7 @@ const CardReservation = (Data) => {
     <>
       <Card
         className="Reservation"
-        bodyStyle={{ display: 'flex' }}
+        styles={{ body: { display: 'flex' } }}
         
         // actions={userData?.id === data?.userId ? actions : null}
       >
@@ -92,6 +92,7 @@ const CardReservation = (Data) => {
                   return(
                     <Tag
                       color="blue"
+                      key={time}
                       style={{
                         fontSize: 16
                       }}
@@ -105,7 +106,7 @@ const CardReservation = (Data) => {
           </Row>
           <Row justify="space-between">
             <Col span={14} className="TextCommon">
-              <Typography.Text el className="TextResv">
+              <Typography.Text ellipsis  className="TextResv">
                 Professor(a):
               </Typography.Text>
             </Col>
