@@ -19,7 +19,6 @@ import SideMenu from "../../Components/SideMenu";
 const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-  const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -32,11 +31,8 @@ const Class = () => {
       ...data,
       grade: Number(data.grade)
     }
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body, config);
+      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body);
   
       api.success({
         message: 'Turma Cadastrada!',

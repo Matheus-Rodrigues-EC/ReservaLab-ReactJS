@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
+import { Col, Row, Form, Input, Button, Typography, notification } from "antd";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -14,7 +14,6 @@ import SideMenu from "../../Components/SideMenu";
 const Classroom = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-  const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -27,12 +26,9 @@ const Classroom = () => {
       ...data,
       capacity: Number(data.capacity)
     }
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
     setLoading(true)
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body, config);
+      await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body);
 
       api.success({
         message: 'Sala Cadastrada!',

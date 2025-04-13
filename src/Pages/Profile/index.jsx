@@ -27,21 +27,14 @@ const Profile = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const getProfile = async (id) => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`, config);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
     setUserData(response.data)
   }
 
   const updateProfile = async (id, body) => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` }
-    }
-
     setLoading(true);
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
 
       api.success({
         message: 'Perfil atualizado!',
@@ -111,7 +104,6 @@ const Profile = () => {
   useEffect(() => {
     setFilteredCargos(Cargos);
     getProfile(userData.id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {

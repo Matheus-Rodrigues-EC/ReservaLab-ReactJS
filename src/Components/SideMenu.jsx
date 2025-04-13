@@ -18,6 +18,7 @@ const SideMenu = () => {
   const [user, setUser] = useState('Professor(a)');
   const Navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const navigate = useNavigate();
 
   const SetDate = () => {
     const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
@@ -45,9 +46,18 @@ const SideMenu = () => {
     Navigate("/class");
   };
 
+
+  const handleLogout = () => {
+    // Limpar dados do localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+
+    // Redirecionar para a página de login
+    navigate("/login");
+  };
+
   const Exit = () => {
-    localStorage.clear();
-    Navigate("/");
+    handleLogout();
   }
 
   useEffect(() => {
