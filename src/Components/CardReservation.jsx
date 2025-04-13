@@ -3,8 +3,12 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { Col, Row, Card, Skeleton, Image, Typography } from "antd";
+import { Col, Row, Card, Image, Typography, Tag } from "antd";
+import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import dayjs from "dayjs";
 import "./Style.less";
+const userData = JSON.parse(localStorage.getItem('userData'));
+import { FuncionalidadesList as Purposes } from "../Utils/Constants";
 
 import {
   ClockCircleOutlined,
@@ -12,93 +16,142 @@ import {
   ContactsOutlined,
 } from '@ant-design/icons';
 
-import Info from '../assets/Informática.png';
+import Classroom from '../assets/Classroom.jpg';
+import Computer from '../assets/Informática.png';
+import Library from '../assets/Biblioteca.png';
+import Recap from '../assets/Reforco.png';
+import Special from '../assets/Especial.jpeg';
 import Sport from '../assets/Quadra.png'
-import Libr from '../assets/Biblioteca.png';
+import Test from '../assets/Prova.png';
 
 const CardReservation = (Data) => {
   const { data } = Data;
-  const [loading, setLoading] = useState(false);
+
+  const renderImage = (id) => {
+    if (id === '1' || id === '7') return Test;
+    else if (id === '2') return Special;
+    else if (id === '3') return Sport;
+    else if (id === '4') return Library;
+    else if (id === '5') return Computer;
+    else if (id === '6') return Library;
+    else if (id === '8' || id === '9') return Recap;
+    else return Classroom;
+  }
+
+  const renderPurpose = (id) => {
+    const found = Purposes.find((purpose) => purpose.id == id);
+    return found ? `${found?.label}` : "Aula Padrão";
+  }
+
+  // const actions = [
+  //   <EditOutlined key="edit" />,
+  //   <SettingOutlined key="setting" />,
+  //   <EllipsisOutlined key="ellipsis" />,
+  // ];
 
   useEffect(() => {
+    // console.log(data)
   }, [data])
+
+  const formattedDate = dayjs(data.date).format("dddd, DD/MM/YYYY");
+  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   return (
     <>
-      {loading ? (
+      <Card
+        className="Reservation"
+        styles={{ body: { display: 'flex' } }}
+        
+        // actions={userData?.id === data?.userId ? actions : null}
+      >
+        <Col span={4} style={{ margin: 'auto' }}>
+          <Image
+            src={renderImage(data?.purpose) || Classroom}
+            className="ImageResv"
+          />
+        </Col>
+        <Col span={19} offset={1}>
+          <Row>
+            <Typography.Title style={{ fontSize: '2.15vw' }} className="TitleResv">
+              {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {capitalizedDate}
+            </Typography.Title>
+          </Row>
+          <Row justify="space-between">
+            <Col span={14} className="TextCommon">
+              <Typography.Text className="TextResv">
+                Horário:
+              </Typography.Text>
+            </Col>
 
-        <Skeleton loading={loading} active avatar>
-        </Skeleton>
-      ) : (
-        <Card
-          className="Reservation"
-          bodyStyle={{ display: 'flex' }}
-        >
+            <Col span={1} className="TextCommon">
+              <ClockCircleOutlined />
+            </Col>
+            <Col span={8}>
+              <Typography.Text className="TextCommon">
+                {data?.time?.slice().sort().map((time) => {
+                  return(
+                    <Tag
+                      color="blue"
+                      key={time}
+                      style={{
+                        fontSize: 16
+                      }}
+                    >
+                      {time} Hs
+                    </Tag>
+                  )
+                })}
+              </Typography.Text>
+            </Col>
+          </Row>
+          <Row justify="space-between">
+            <Col span={14} className="TextCommon">
+              <Typography.Text ellipsis  className="TextResv">
+                Professor(a):
+              </Typography.Text>
+            </Col>
 
-          <Col span={4} >
-            <Image
-              src={(data?.type) !== 'Info' ? (data?.type === 'Sport' ? Sport : Libr) : Info}
-              className="ImageResv"
-            />
-          </Col>
-          <Col span={19} offset={1}>
-            <Row>
-              <Typography.Title style={{ fontSize: '2.25vw' }} className="TitleResv">
-                {data?.sala} - {data?.disciplina}
-              </Typography.Title>
-            </Row>
+            <Col span={1} className="TextCommon">
+              <ReadOutlined />
+            </Col>
+            <Col span={8}>
+              <Typography.Text ellipsis className="TextCommon">
+                {data?.User?.surname || data?.User?.name} - {data?.User?.subject}
+              </Typography.Text>
+            </Col>
+          </Row>
+          <Row justify="space-between">
+            <Col span={14} className="TextCommon">
+              <Typography.Text className="TextResv">
+                Turma:
+              </Typography.Text>
+            </Col>
+
+            <Col span={1} className="TextCommon">
+              <ContactsOutlined />
+            </Col>
+            <Col span={8}>
+              <Typography.Text className="TextCommon">
+                {data?.Class?.grade}º {data?.Class.className} - {data?.Class?.shift}
+              </Typography.Text>
+            </Col>
+          </Row>
+          {data?.description && (
             <Row justify="space-between">
-              <Col span={14} className="TextCommon">
+              <Col span={3} className="TextCommon">
                 <Typography.Text className="TextResv">
-                  Horário:
+                  Descrição:
                 </Typography.Text>
               </Col>
-
-              <Col span={1} className="TextCommon">
-                <ClockCircleOutlined />
-              </Col>
-              <Col span={8}>
+              <Col span={20}>
                 <Typography.Text className="TextCommon">
-                  {data?.horario} Hs
+                  {data?.description}
                 </Typography.Text>
               </Col>
             </Row>
-            <Row justify="space-between">
-              <Col span={14} className="TextCommon">
-                <Typography.Text el className="TextResv">
-                  Professor(a):
-                </Typography.Text>
-              </Col>
-
-              <Col span={1} className="TextCommon">
-                <ReadOutlined />
-              </Col>
-              <Col span={8}>
-                <Typography.Text ellipsis className="TextCommon">
-                  {data?.name}
-                </Typography.Text>
-              </Col>
-            </Row>
-            <Row justify="space-between">
-              <Col span={14} className="TextCommon">
-                <Typography.Text className="TextResv">
-                  Turma:
-                </Typography.Text>
-              </Col>
-
-              <Col span={1} className="TextCommon">
-                <ContactsOutlined />
-              </Col>
-              <Col span={8}>
-                <Typography.Text className="TextCommon">
-                  {data?.turma}
-                </Typography.Text>
-              </Col>
-            </Row>
-          </Col>
-
-        </Card>
-      )}
+          )}
+        </Col>
+      </Card>
     </>
   )
 }

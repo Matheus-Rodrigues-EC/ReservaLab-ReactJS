@@ -3,44 +3,71 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
+import { Col, Row, Form, Input, Button, Typography, notification } from "antd";
+import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 
-import {
-  FuncionalidadesList as Funcionalidades,
-} from "../../Utils/Constants";
-
 import SideMenu from "../../Components/SideMenu";
 
 const Classroom = () => {
-  const [filteredFuncionalidades, setFilteredFuncionalidades] = useState(Funcionalidades);
   const data = Constants?.data;
   const Navigate = useNavigate()
-
-  const handleSearchFuncionalidades = (value) => {
-    if (!value) {
-      setFilteredFuncionalidades(Funcionalidades);
-    } else {
-      const filtered = Funcionalidades?.filter((funcionalidade) =>
-        funcionalidade.value.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredFuncionalidades(filtered);
-    }
-  };
+  const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(false);
 
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const createClassroom = async (data) => {
+    const body = {
+      ...data,
+      capacity: Number(data.capacity)
+    }
+    setLoading(true)
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/classroom/create`, body);
+
+      api.success({
+        message: 'Sala Cadastrada!',
+        description: 'A sala cadastrada foi salva com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+        goToHome();
+      }, 2250);
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao cadastrar sala',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  }
+
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
+    createClassroom(values);
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
   };
+
 
   useEffect(() => {
 
@@ -49,18 +76,15 @@ const Classroom = () => {
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
       <Col span={20}>
-        <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+        <div className="ContainerClassroom">
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Funcionalidade</Typography.Title>
             </Row>
 
             <Row justify='space-between'>
@@ -72,12 +96,14 @@ const Classroom = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="CancelClassroomButton"
-                onClick={goToHome}
-              >
-                Cancelar
-              </Button>
+              type="danger"
+              className="CancelClassroomButton"
+              onClick={goToHome}
+              loading={loading}
+              disabled={loading}
+            >
+              Cancelar
+            </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
@@ -87,7 +113,7 @@ const Classroom = () => {
               autoComplete="on"
             >
               <Form.Item
-                name='Classroom Name'
+                name='name'
                 rules={[
                   { required: true, message: "Por favor, insira um nome para a sala" },
                 ]}
@@ -104,31 +130,7 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
-                name='Funcionalidade'
-                rules={[
-                  { required: true, message: "Por favor insira a funcionalidade que a sala terá." }
-                ]}
-                className="FormItemProfile"
-              >
-                <Select
-                  showSearch
-                  size="large"
-                  placeholder="Funcionalidade"
-                  style={{ width: '80%', height: 40 }}
-                  allowClear
-                  onSearch={handleSearchFuncionalidades}
-                  filterOption={false}
-                >
-                  {filteredFuncionalidades.map((funcionalidade) => (
-                    <Select.Option key={funcionalidade?.id} values={funcionalidade?.id} >
-                      {funcionalidade?.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                name='Capacidade_da_Sala'
+                name='capacity'
                 rules={[
                   { required: true, message: "Por favor selecione a capacidade da sala." },
                   { pattern: Constants.numberRegex, message: "Por favor, insira um valor válido!" },
@@ -147,19 +149,19 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
-                name='Descrição'
+                name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
                 className="FormItemProfile"
               >
-                <Input
-                  showSearch
+                <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
-                  style={{ width: '80%', height: 40 }}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 />
               </Form.Item>
 
@@ -167,6 +169,8 @@ const Classroom = () => {
                 type="primary"
                 htmlType="submit"
                 className="ClassroomButton"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>

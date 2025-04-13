@@ -3,8 +3,8 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography } from "antd";
-import * as Constants from '../../Utils/Constants';
+import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
+import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
 
@@ -17,10 +17,52 @@ import {
 import SideMenu from "../../Components/SideMenu";
 
 const Profile = () => {
+  const [form] = Form.useForm();
   const [filteredCargos, setFilteredCargos] = useState([]);
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
-  const data = Constants?.data;
+  const [loading, setLoading] = useState(false);
+  const [UserData, setUserData] = useState();
   const Navigate = useNavigate()
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const [api, contextHolder] = notification.useNotification();
+
+  const getProfile = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
+    setUserData(response.data)
+  }
+
+  const updateProfile = async (id, body) => {
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
+
+      api.success({
+        message: 'Perfil atualizado!',
+        description: 'As informações do perfil foram salvas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        getProfile(userData.id)
+        setLoading(false);
+      }, 1750);
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao atualizar perfil',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  }
 
   const handleSearchCargos = (value) => {
     if (!value) {
@@ -47,28 +89,45 @@ const Profile = () => {
   const goToUpdatePassword = () => {
     Navigate('/profile/updatePassword')
   }
+  // const goToHome = () => {
+  //   Navigate('/home')
+  // }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
+    updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    console.error(errorInfo?.values);
   };
 
   useEffect(() => {
     setFilteredCargos(Cargos);
-  }, [data]);
+    getProfile(userData.id)
+  }, [userData.id]);
+
+  useEffect(() => {
+    if (UserData) {
+      form.setFieldsValue({
+        name: UserData.name,
+        rulets: UserData.rulets,
+        surname: UserData.surname,
+        subject: UserData.subject,
+        shift: UserData.shift,
+      });
+    }
+  }, [UserData, form]);
 
   return (
 
     <Container>
+      {contextHolder}
       <Col span={4}>
         <SideMenu />
       </Col>
       <Col span={20}>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Nome completo</Typography.Title>
             </Row>
@@ -90,22 +149,25 @@ const Profile = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="EditPasswordButton"
-                onClick={goToUpdatePassword}
-              >
-                Alterar Senha
-              </Button>
+              className="EditPasswordButton"
+              onClick={goToUpdatePassword}
+              loading={loading}
+              disabled={loading}
+            >
+              Alterar Senha
+            </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
+              form={form}
               name="Profile"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='FullName'
+                name='name'
+                initialValue={UserData?.name}
                 rules={[
                   { required: true, message: "Por favor, insira seu nome" },
                 ]}
@@ -115,6 +177,7 @@ const Profile = () => {
                 <Input
                   size="large"
                   placeholder="Nome Completo"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="text"
@@ -122,7 +185,8 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Cargo'
+                name='rulets'
+                initialValue={UserData?.rulets}
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -132,13 +196,14 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Cargo"
+                  disabled={loading || UserData?.rulets}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onSearch={handleSearchCargos}
                   filterOption={false}
                 >
                   {filteredCargos.map((cargo) => (
-                    <Select.Option key={cargo?.id} values={cargo?.id} >
+                    <Select.Option key={cargo?.label} values={cargo?.label} >
                       {cargo?.label}
                     </Select.Option>
                   ))}
@@ -146,7 +211,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Apelido'
+                name='surname'
                 rules={[
                   { required: false, message: "Por favor digite seu Apelido." }
                 ]}
@@ -155,6 +220,7 @@ const Profile = () => {
                 <Input
                   size="large"
                   placeholder="Apelido"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="text"
@@ -162,7 +228,8 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Disciplina'
+                name='subject'
+                initialValue={UserData?.subject}
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -172,13 +239,14 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Disciplina"
+                  disabled={loading || UserData?.subject}
                   style={{ width: '80%', height: 40 }}
                   // allowClear
                   onSearch={handleSearchDisciplinas}
                   filterOption={false}
                 >
                   {filteredDisciplinas.map((disciplina) => (
-                    <Select.Option key={disciplina?.id} value={disciplina?.id}>
+                    <Select.Option key={disciplina?.label} value={disciplina?.label}>
                       {disciplina?.label}
                     </Select.Option>
                   ))}
@@ -186,7 +254,8 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
-                name='Turno'
+                name='shift'
+                initialValue={UserData?.shift}
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -196,21 +265,23 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
+                  disabled={loading || UserData?.shift}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                 >
                   {Turnos.map((turno) => (
-                    <Select.Option key={turno?.key} value={turno?.key}>
-                      {turno?.value}
+                    <Select.Option key={turno?.label} value={turno?.label}>
+                      {turno?.label}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
 
               <Button
-                type="primary"
                 htmlType="submit"
-                className="SaveButton"
+                className="SaveButtonProfile"
+                loading={loading}
+                disabled={loading}
               >
                 Salvar Alterações
               </Button>
