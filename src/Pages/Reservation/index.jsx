@@ -133,7 +133,7 @@ const Reservation = () => {
         goToHome();
       }, 2250);
     } catch (error) {
-      console.error(error);
+      console.error("Erro:", error?.response?.data?.message || error?.message || error);
       api.error({
         message: 'Erro ao cadastrar reserva',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -149,7 +149,7 @@ const Reservation = () => {
 
   const onFinish = (values) => {
     const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
-    createReservation({ ...values, date: dataCapitalizada });
+    createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -258,7 +258,7 @@ const Reservation = () => {
                   onSearch={handleSearchSalas}
                 >
                   {(filteredSalas.length > 0 ? filteredSalas : salas).map((sala) => (
-                    <Select.Option key={sala?.id} values={sala?.id} >
+                    <Select.Option key={sala?.id} value={sala?.id} >
                       {sala?.name}
                     </Select.Option>
                   ))}
@@ -284,7 +284,7 @@ const Reservation = () => {
                   onSearch={handleSearchClasses}
                 >
                   {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
-                    <Select.Option key={turma?.id} values={turma?.id} >
+                    <Select.Option key={turma?.id} value={turma?.id} >
                       {turma?.grade}º {turma?.className} - {turma?.shift}
                     </Select.Option>
                   ))}
@@ -336,7 +336,7 @@ const Reservation = () => {
                   filterOption={false}
                 >
                   {filteredFinalidades.map((finalidade) => (
-                    <Select.Option key={finalidade?.id} values={finalidade?.id} >
+                    <Select.Option key={finalidade?.id} value={finalidade?.id} >
                       {finalidade?.label}
                     </Select.Option>
                   ))}

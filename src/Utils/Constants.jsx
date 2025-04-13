@@ -15,12 +15,6 @@ export const removerAcentos = (str) => {
     .replace(/Ç/g, 'C');
 };
 
-export const FilterReservations = [
-	{id: 1, label: 'Hoje'},
-	{id: 2, label: 'Reservas Futuras'},
-	{id: 3, label: 'Todas as Reservas'},
-]
-
 export const CargosList = [
 	{id: 1, label: 'Diretor(a)'},
 	{id: 2, label: 'Coordenador(a)'},
@@ -62,13 +56,13 @@ export const TurmaList = [
 export const FuncionalidadesList = [
 	{id: 1, label: '2ª Chamada'},
 	{id: 2, label: 'Educação Especial'},
-	{id: 4, label: 'Esporte'},
-	{id: 5, label: 'Estudo'},
-	{id: 6, label: 'Informática'},
-	{id: 7, label: 'Leitura'},
-	{id: 8, label: 'Prova externa'},
-	{id: 9, label: 'Recuperação'},
-  {id: 10, label: 'Reforço'},
+	{id: 3, label: 'Esporte'},
+	{id: 4, label: 'Estudo'},
+	{id: 5, label: 'Informática'},
+	{id: 6, label: 'Leitura'},
+	{id: 7, label: 'Prova externa'},
+	{id: 8, label: 'Recuperação'},
+  {id: 9, label: 'Reforço'},
 ]
 
 export const classTypes = [

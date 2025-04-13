@@ -194,6 +194,7 @@ const Profile = () => {
 
               <Form.Item
                 name='rulets'
+                initialValue={UserData?.rulets}
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -203,7 +204,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Cargo"
-                  disabled={loading}
+                  disabled={loading || UserData?.rulets}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onSearch={handleSearchCargos}
@@ -236,6 +237,7 @@ const Profile = () => {
 
               <Form.Item
                 name='subject'
+                initialValue={UserData?.subject}
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -245,7 +247,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Disciplina"
-                  disabled={loading}
+                  disabled={loading || UserData?.subject}
                   style={{ width: '80%', height: 40 }}
                   // allowClear
                   onSearch={handleSearchDisciplinas}
@@ -261,6 +263,7 @@ const Profile = () => {
 
               <Form.Item
                 name='shift'
+                initialValue={UserData?.shift}
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -270,7 +273,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
-                  disabled={loading}
+                  disabled={loading || UserData?.shift}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                 >

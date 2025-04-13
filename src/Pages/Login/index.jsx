@@ -32,7 +32,16 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
-      const user = { id: response.data.user.id, name: response.data.user.name, email: response.data.user.email, token: response.data.token.token };
+      const user = { 
+        id: response.data.user.id, 
+        name: response.data.user.name, 
+        email: response.data.user.email, 
+        surname: response.data.user.surname, 
+        rulets: response.data.user.rulets, 
+        shift: response.data.user.shift, 
+        subject: response.data.user.subject, 
+        token: response.data.token.token 
+      };
       const serializableUser = JSON.stringify(user);
       localStorage.setItem("userData", serializableUser);
       setUserData(user);
@@ -45,11 +54,12 @@ const Login = () => {
         message: 'Erro ao fazer Login',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
-        duration: 3.5,
+        duration: 2.5,
         placement: "top"
       });
-    } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2250);
     }
   }
 
@@ -119,6 +129,8 @@ const Login = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
+                  loading={loading}
+                  disabled={loading}
                 >
 
                 </Input>
@@ -141,6 +153,8 @@ const Login = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="password"
+                  loading={loading}
+                  disabled={loading}
                 >
 
                 </Input.Password>

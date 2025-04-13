@@ -92,10 +92,6 @@ const Classroom = () => {
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Tipo de Sala</Typography.Title>
-            </Row>
-
-            <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Capacidade da Sala</Typography.Title>
             </Row>
 
@@ -138,27 +134,6 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
-                name='classType'
-                rules={[
-                  { required: true, message: "Por favor selecione o tipo de sala." }
-                ]}
-                className="FormItemProfile"
-              >
-                <Select
-                  size="large"
-                  placeholder="Tipo de sala"
-                  style={{ width: '80%', height: 40 }}
-                  allowClear
-                >
-                  {Constants.classTypes.map((tipo) => (
-                    <Select.Option key={tipo?.id} values={tipo?.id} >
-                      {tipo?.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
                 name='capacity'
                 rules={[
                   { required: true, message: "Por favor selecione a capacidade da sala." },
@@ -185,7 +160,6 @@ const Classroom = () => {
                 className="FormItemProfile"
               >
                 <Input.TextArea
-                  showSearch
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   style={{ width: '80%', heigh: '80px' }}

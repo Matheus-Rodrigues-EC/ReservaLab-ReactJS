@@ -2,51 +2,59 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Col, List, Empty, Typography, notification, Select } from "antd";
+import { Col, List, Empty, Typography, notification, Tooltip, DatePicker } from "antd";
 import dayjs from "dayjs";
 import axios from "axios";
 import styled from "styled-components";
 import { CardSkeleton } from "../../Components/CardSkeleton";
 import "./Style.less";
-import { FilterReservations } from "../../Utils/Constants";
 import SideMenu from "../../Components/SideMenu";
 import CardReservation from "../../Components/CardReservation";
 
 const Home = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filterReservations, setFilterReservations] = useState(1);
+  const [selectedDate, setSelectedDate] = useState(null);
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
+  const dateFormat = 'DD/MM/YYYY';
 
-  function filtrarSomenteHoje(list) {
+  const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
+  const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
+
+  const disabledDate = (current) => {
+    return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
+  };
+
+  function filteredToday(list) {
     return list?.filter((item) =>
       dayjs(item.date).isSame(dayjs(), 'day')
     );
   }
 
-  function filtrarHojeEFuturas(list) {
-    return list?.filter((item) =>
-      dayjs(item.date).isSame(dayjs(), 'day') || dayjs(item.date).isAfter(dayjs(), 'day')
-    );
-  }
-
-  const getReservations = async () => {
+  const getReservations = async (date = null) => {
     const config = {
       headers: { Authorization: `Bearer ${userData.token}` }
     };
 
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`, config);
-      // filteredReservationsToday(response?.data)
-      const Today = filtrarSomenteHoje(response?.data);
-      const Future = filtrarHojeEFuturas(response?.data);
 
-      if (filterReservations === 1) setReservations(Today);
-      else if (filterReservations === 2) setReservations(Future);
-      else if (filterReservations === 3) setReservations(response?.data);
-      else setReservations(response?.data);
+      const allReservations = response?.data;
+      let filtered = [];
+
+      if (date) {
+        // Se há uma data selecionada, filtra por ela
+        filtered = allReservations.filter((item) =>
+          dayjs(item.date).isSame(dayjs(date), 'day')
+        );
+      } else {
+        // Caso contrário, filtra pelas reservas de hoje
+        filtered = filteredToday(allReservations);
+      }
+
+      setReservations(filtered);
 
     } catch (error) {
       console.error(error);
@@ -60,12 +68,13 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
+
 
   useEffect(() => {
-    getReservations(1);
+    getReservations(selectedDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterReservations]);
+  }, [selectedDate]);
 
   return (
 
@@ -76,24 +85,23 @@ const Home = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerHome">
-          <Select
-            size="large"
-            placeholder="Tipo de sala"
-            style={{ width: '50%', margin: '0 25%' }}
-            defaultValue={1}
-            allowClear
-            onChange={(value) => { getReservations(value); setFilterReservations(value); }}
-            options={(FilterReservations || []).map(reservation => ({
-              value: reservation?.id,
-              label: reservation?.label,
-            }))}
-          >
-            {/* {FilterReservations?.map((reservation) => (
-              <Select.Option key={reservation?.id} values={reservation?.id} >
-                {reservation?.label}
-              </Select.Option>
-            ))} */}
-          </Select>
+          <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
+            <DatePicker
+              format={dateFormat}
+              defaultValue={dayjs()}
+              size="large"
+              placeholder={dataCapitalizada}
+              disabled={loading}
+              style={{ width: '290px', display: 'flex', margin: '0 auto' }}
+              allowClear
+              onChange={(value) => {
+                // value será `null` se o usuário limpar o campo
+                setSelectedDate(value);
+              }}
+              disabledDate={disabledDate}
+            />
+          </Tooltip>
+
           {loading ? (
             [...Array(4)].map((_, index) => (
               <CardSkeleton key={index} />
@@ -118,7 +126,11 @@ const Home = () => {
                   className="EmpityMessage"
                   color="#A5BFA4"
                 >
-                  Nenhuma Reserva Agendada para hoje
+                  {selectedDate ? (
+                    'Nenhuma Reserva Agendada Para a Data Selecionada '
+                  ) : (
+                    'Nenhuma Reserva Agendada Para Hoje'
+                  )}
                 </Typography.Text>
               }
             />

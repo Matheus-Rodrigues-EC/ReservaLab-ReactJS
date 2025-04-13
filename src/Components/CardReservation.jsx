@@ -28,13 +28,13 @@ const CardReservation = (Data) => {
   const { data } = Data;
 
   const renderImage = (id) => {
-    if (id === '1' || id === '8') return Test;
+    if (id === '1' || id === '7') return Test;
     else if (id === '2') return Special;
-    else if (id === '4') return Sport;
-    else if (id === '5') return Library;
-    else if (id === '6') return Computer;
-    else if (id === '7') return Library;
-    else if (id === '9' || id === '10') return Recap;
+    else if (id === '3') return Sport;
+    else if (id === '4') return Library;
+    else if (id === '5') return Computer;
+    else if (id === '6') return Library;
+    else if (id === '8' || id === '9') return Recap;
     else return Classroom;
   }
 

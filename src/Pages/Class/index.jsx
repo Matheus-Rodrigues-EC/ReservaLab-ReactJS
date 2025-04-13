@@ -194,7 +194,6 @@ const Class = () => {
                 className="FormItemProfile"
               >
                 <Input.TextArea
-                  showSearch
                   size="large"
                   placeholder="Gostaria de adicionar alguma Obervação?"
                   style={{ width: '80%', heigh: '80px' }}
