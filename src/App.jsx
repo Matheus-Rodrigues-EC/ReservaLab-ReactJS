@@ -12,7 +12,7 @@ import UpdatePassword from "./Pages/Profile/UpdatePassword";
 import Classroom from "./Pages/Classroom";
 import Class from "./Pages/Class";
 import Reservation from "./Pages/Reservation";
-import PrivateRoute from "./Components/Privateroute";
+import PrivateRoute from "./Components/PrivateRoute";
 import NotFound from "./Utils/NotFound";
 
 function App() {
