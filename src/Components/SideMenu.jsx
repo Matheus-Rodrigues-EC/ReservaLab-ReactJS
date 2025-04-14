@@ -118,7 +118,7 @@ const SideMenu = () => {
         Fazer Reserva
       </Button>
 
-      {userData?.rulets !== 'Professor(a)' &&
+      {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
         <Button
           className="ButtonMenu"
           onClick={goToClassroom}
@@ -127,7 +127,7 @@ const SideMenu = () => {
         </Button>
       }
 
-      {userData?.rulets !== 'Professor(a)' &&
+      {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
         <Button
           className="ButtonMenu"
           onClick={goToclass}
