@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.1...v0.1.2) (2025-04-14)
+
+
+### Features
+
+* Created button to reload reservations and configure access by rules ([111808d](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/111808dfeec01293ac041ea28850d507410ee8a2))
+
 ### 0.1.1 (2025-04-14)
 
 

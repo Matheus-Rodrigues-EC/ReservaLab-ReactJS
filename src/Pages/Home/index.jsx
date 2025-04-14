@@ -2,7 +2,8 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Col, List, Empty, Typography, notification, Tooltip, DatePicker } from "antd";
+import { Col, List, Empty, Typography, notification, Tooltip, DatePicker, Button } from "antd";
+import { ReloadOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 import axios from "axios";
 import styled from "styled-components";
@@ -30,6 +31,10 @@ const Home = () => {
       dayjs(item.date).isSame(dayjs(), 'day')
     );
   }
+
+  const handleSetToday = () => {
+    setSelectedDate(dayjs());
+  };
 
   const getReservations = async (date = null) => {
 
@@ -81,22 +86,33 @@ const Home = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerHome">
-          <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
-            <DatePicker
-              format={dateFormat}
-              defaultValue={dayjs()}
-              size="large"
-              placeholder={dataCapitalizada}
-              disabled={loading}
-              style={{ width: '290px', display: 'flex', margin: '0 auto' }}
-              allowClear
-              onChange={(value) => {
-                // value será `null` se o usuário limpar o campo
-                setSelectedDate(value);
-              }}
-              disabledDate={disabledDate}
-            />
-          </Tooltip>
+          <div style={{ display: 'flex', margin: '0 auto', alignItems: 'center', justifyContent: 'center' }}>
+            <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
+              <DatePicker
+                format={dateFormat}
+                defaultValue={dayjs()}
+                value={selectedDate}
+                size="large"
+                placeholder={dataCapitalizada}
+                disabled={loading}
+                style={{ width: '290px' }}
+                allowClear
+                onChange={(value) => {
+                  // value será `null` se o usuário limpar o campo
+                  setSelectedDate(value);
+                }}
+                disabledDate={disabledDate}
+              />
+            </Tooltip>
+            <Tooltip placement="bottom" title={'Clique aqui para recarregar as reservas'}>
+              <Button
+                style={{ height: '40px', margin: '0 10px' }}
+                onClick={() => { getReservations(); handleSetToday(); }}
+              >
+                <ReloadOutlined width='40' />
+              </Button>
+            </Tooltip>
+          </div>
 
           {loading ? (
             [...Array(4)].map((_, index) => (
