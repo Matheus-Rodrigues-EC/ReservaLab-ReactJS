@@ -19,7 +19,6 @@ import SideMenu from "../../Components/SideMenu";
 const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-  const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -32,11 +31,8 @@ const Class = () => {
       ...data,
       grade: Number(data.grade)
     }
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body, config);
+      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body);
   
       api.success({
         message: 'Turma Cadastrada!',
@@ -61,14 +57,15 @@ const Class = () => {
         duration: 2,
         placement: "top"
       });
-    }finally{
-      setLoading(false);
+      
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
     }
   }
 
   const onFinish = (values) => {
-    console.log('Success:');
-    console.table(values);
+    // console.log('Success:');
     createClass(values);
   };
   const onFinishFailed = (errorInfo) => {
@@ -192,15 +189,15 @@ const Class = () => {
                 ]}
                 className="FormItemProfile"
               >
-                <Input
-                  showSearch
+                <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma Obervação?"
-                  style={{ width: '80%', height: 40 }}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 >
-                </Input>
+                </Input.TextArea>
               </Form.Item>
 
               <Button

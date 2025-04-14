@@ -5,7 +5,7 @@ import React, {
 import { useNavigate } from "react-router";
 import { Col, Row, Form, Input, notification, Button, Typography } from "antd";
 import axios from "axios";
-import { 
+import {
   LockOutlined,
 } from '@ant-design/icons';
 import * as Constants from '../../Utils/Constants';
@@ -17,7 +17,7 @@ import SideMenu from "../../Components/SideMenu";
 const UpdatePassword = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
 
@@ -26,39 +26,37 @@ const UpdatePassword = () => {
   }
 
   const updatePasswordProfile = async (id, body) => {
-      const config = {
-        headers: {Authorization: `Bearer ${userData.token}`}
-      }
-      
-      setLoading(true);
-      try {
-        await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body, config);
-    
-        api.success({
-          message: 'Senha atualizado!',
-          description: 'A nova senha foi salva com sucesso.',
-          showProgress: true,
-          duration: 2,
-          placement: "top"
-        });
-        setTimeout(() => {
-          goToProfile();
-        }, 2250);
-    
-      } catch (error) {
-        console.error(error);
-    
-        api.error({
-          message: 'Erro ao atualizar senha',
-          description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
-          showProgress: true,
-          duration: 2,
-          placement: "top"
-        });
-      }finally{
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update-password`, body);
+
+      api.success({
+        message: 'Senha atualizado!',
+        description: 'A nova senha foi salva com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
         setLoading(false);
-      }
+        goToProfile();
+      }, 2250);
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao atualizar senha',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
     }
+  }
 
   const onFinish = (values) => {
     updatePasswordProfile(userData.id, values)
@@ -68,7 +66,6 @@ const UpdatePassword = () => {
   };
 
   useEffect(() => {
-
   }, [data]);
 
   return (
@@ -94,7 +91,6 @@ const UpdatePassword = () => {
             </Row>
 
             <Button
-              type="danger"
               className="CancelSavePasswordButton"
               onClick={goToProfile}
               loading={loading}
@@ -122,6 +118,7 @@ const UpdatePassword = () => {
                   prefix={<LockOutlined />}
                   size="large"
                   placeholder="Senha Atual"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                 />
@@ -139,6 +136,7 @@ const UpdatePassword = () => {
                   prefix={<LockOutlined />}
                   size="large"
                   placeholder="Nova Senha"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                 >
@@ -166,6 +164,7 @@ const UpdatePassword = () => {
                   prefix={<LockOutlined />}
                   size="large"
                   placeholder="Confirme a nova Senha"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   dependencies={['password']}
                   allowClear
@@ -175,7 +174,6 @@ const UpdatePassword = () => {
               </Form.Item>
 
               <Button
-                type="primary"
                 htmlType="submit"
                 className="SavePasswordButton"
                 loading={loading}

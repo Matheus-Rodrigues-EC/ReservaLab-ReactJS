@@ -41,14 +41,15 @@ const Cadastro = () => {
 
       api.success({
         message: 'Usuário cadastrado com sucesso!',
-        description: 'As do novo foram salvas com sucesso, você será redirecionado para fazer login.',
+        description: 'As informações do novo usuário foram salvas com sucesso, você será redirecionado para fazer login.',
         showProgress: true,
-        duration: 3.5,
+        duration: 2.5,
         placement: "top"
       });
       setTimeout(() => {
         goToLogin();
-      }, 3750);
+        setLoading(false);
+      }, 2500);
 
     } catch (error) {
       console.error(error);
@@ -57,11 +58,12 @@ const Cadastro = () => {
         message: 'Erro ao Cadastrar usuário',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
-        duration: 3.5,
+        duration: 2.5,
         placement: "top"
       });
-    } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2250);
     }
   }
 
@@ -131,6 +133,8 @@ const Cadastro = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
+                  disabled={loading}
+                  loading={loading}
                 >
 
                 </Input>
@@ -152,6 +156,8 @@ const Cadastro = () => {
                   style={{ width: '40vw', height: 60 }}
                   allowClear
                   type="text"
+                  disabled={loading}
+                  loading={loading}
                 >
 
                 </Input>
@@ -172,6 +178,8 @@ const Cadastro = () => {
 
                   style={{ width: '40vw', height: 60 }}
                   allowClear
+                  disabled={loading}
+                  loading={loading}
                 >
 
                 </Input.Password>
@@ -200,6 +208,8 @@ const Cadastro = () => {
 
                   style={{ width: '40vw', height: 60 }}
                   allowClear
+                  disabled={loading}
+                  loading={loading}
                 // onChange={() => validatePassword()}
                 >
 

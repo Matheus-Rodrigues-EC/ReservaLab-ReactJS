@@ -11,7 +11,10 @@ import dayjs from "dayjs";
 
 import {
   FuncionalidadesList as Finalidades,
-  Times,
+  Fundamental_Morning_Times,
+  Fundamental_Afternoom_Times,
+  Fundamental_Integral_Times,
+  EJA_Times,
   removerAcentos,
 } from "../../Utils/Constants";
 
@@ -20,10 +23,9 @@ import SideMenu from "../../Components/SideMenu";
 const Reservation = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
+  const [Times, setTimes] = useState(Fundamental_Integral_Times);
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
-  const [initialTime, setInitialTime] = useState('');
-  const [endTime, setEndTime] = useState('');
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
   const [filteredClasses, setFilteredClasses] = useState(turmas);
   const [filteredSalas, setFilteredSalas] = useState(salas);
@@ -32,13 +34,10 @@ const Reservation = () => {
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
   const dateFormat = 'dddd, DD/MM/YYYY';
-  // const timeFormat = 'HH:mm';
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
 
-  
   const handleSearchSalas = (value) => {
-    console.log(salas)
     if (!value) {
       setFilteredSalas(salas);
     } else {
@@ -73,39 +72,45 @@ const Reservation = () => {
   };
 
   const fetchSalas = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`, config);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`);
     setSalas(response.data);
   }
 
   const fetchTurmas = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`, config);
-    setTurmas(response.data);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`);
+    setTurmas(response?.data);
   }
 
   const goToHome = () => {
     Navigate('/home')
   }
 
+  const disabledDate = (current) => {
+    return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
+  };
+
+  const shiftTimeMap = {
+    'Manhã': Fundamental_Morning_Times,
+    'Tarde': Fundamental_Afternoom_Times,
+    'Noite': EJA_Times,
+  };
+  
+  const changeTimes = (id) => {
+    const classe = turmas.find((turma) => turma?.id == id);
+    const times = shiftTimeMap[classe?.shift] || Fundamental_Integral_Times;
+    setTimes(times);
+  };
+
   const createReservation = async (data) => {
     const body = {
       ...data,
-      date: dataCapitalizada,
       userId: Number(userData.id),
       classroomId: Number(data.classroomId),
       classId: Number(data.classId),
     }
-    const config = {
-      headers: { Authorization: `Bearer ${userData.token}` },
-    }
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body, config);
+      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body);
 
       api.success({
         message: 'Reserva Cadastrada!',
@@ -115,10 +120,11 @@ const Reservation = () => {
         placement: "top"
       });
       setTimeout(() => {
+        setLoading(false);
         goToHome();
       }, 2250);
     } catch (error) {
-      console.error(error);
+      console.error("Erro:", error?.response?.data?.message || error?.message || error);
       api.error({
         message: 'Erro ao cadastrar reserva',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -126,20 +132,18 @@ const Reservation = () => {
         duration: 3,
         placement: "top"
       });
-
-    } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2750);
     }
   }
 
   const onFinish = (values) => {
-    // console.log('Success:');
-    // console.log(values);
-    form.setFieldValue('time', `${initialTime} - ${endTime}`);
-    createReservation(values);
+    const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
+    createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
   };
+
   const onFinishFailed = (errorInfo) => {
-    form.setFieldValue('time', `${initialTime} - ${endTime}`);
     console.log('Failed:');
     console.table(errorInfo?.values);
   };
@@ -150,6 +154,9 @@ const Reservation = () => {
     handleSearchClasses('');
     handleSearchSalas('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
   }, []);
 
   return (
@@ -187,8 +194,7 @@ const Reservation = () => {
             </Row>
 
             <Button
-              type="danger"
-              className="CanceldButton"
+              className="CanceldButtonReservation"
               onClick={goToHome}
               loading={loading}
               disabled={loading}
@@ -213,13 +219,14 @@ const Reservation = () => {
                 className="FormItemProfile"
               >
                 <DatePicker
-                  // defaultValue={dayjs()}
                   format={dateFormat}
                   needConfirm
                   size="large"
                   placeholder={dataCapitalizada}
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
+                  disabledDate={disabledDate}
                 />
               </Form.Item>
 
@@ -234,14 +241,15 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Sala"
+                  disabled={loading}
                   filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onClick={() => fetchSalas()}
+                  // onClick={() => fetchSalas()}
                   onSearch={handleSearchSalas}
                 >
                   {(filteredSalas.length > 0 ? filteredSalas : salas).map((sala) => (
-                    <Select.Option key={sala?.id} values={sala?.id} >
+                    <Select.Option key={sala?.id} value={sala?.id} >
                       {sala?.name}
                     </Select.Option>
                   ))}
@@ -259,14 +267,15 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Turma"
+                  disabled={loading}
                   filterOption={false}
                   style={{ width: '80%', height: 40 }}
                   allowClear
-                  onClick={() => fetchTurmas()}
+                  onChange={(value) => {changeTimes(value); form.setFieldValue('time', [])}}
                   onSearch={handleSearchClasses}
                 >
                   {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
-                    <Select.Option key={turma?.id} values={turma?.id} >
+                    <Select.Option key={turma?.id} value={turma?.id} >
                       {turma?.grade}º {turma?.className} - {turma?.shift}
                     </Select.Option>
                   ))}
@@ -279,36 +288,21 @@ const Reservation = () => {
                   rules={[
                     { required: true, message: "Por favor selecione um horário." }
                   ]}
-                  className="FormItemTimeProfile"
+                  className="FormItemProfile"
                 >
                   <Select
                     size="large"
-                    placeholder="Horário"
-                    style={{ width: '40%', height: 40 }}
-                    prefix="De: "
+                    placeholder="Selecione um ou dois horários "
+                    disabled={loading}
+                    style={{ width: '80%', height: 40 }}
                     allowClear
-                    onClick={() => fetchTurmas()}
-                    onChange={(value, option) => setInitialTime(option.children)}
+                    onClick={() => null}
+                    mode="multiple"
+                    maxCount={2}
                   >
-                    {Times.map((time) => (
-                      <Select.Option key={time?.label} values={time?.id} >
-                        {time?.label}
-                      </Select.Option>
-                    ))}
-                  </Select>
-
-                  <Select
-                    size="large"
-                    placeholder="Horário"
-                    style={{ width: '40%', height: 40, marginLeft: '4%' }}
-                    prefix="às: "
-                    allowClear
-                    onClick={() => fetchTurmas()}
-                    onChange={(value, option) => setEndTime(option.children)}
-                  >
-                    {Times.map((time) => (
-                      <Select.Option key={time?.id} value={time?.id}>
-                        {time?.label}
+                    {Times?.map((time) => (
+                      <Select.Option key={time.label} value={time.label}>
+                        {time.label}
                       </Select.Option>
                     ))}
                   </Select>
@@ -326,13 +320,14 @@ const Reservation = () => {
                   showSearch
                   size="large"
                   placeholder="Finalidade"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onSearch={handleSearchFinalidades}
                   filterOption={false}
                 >
                   {filteredFinalidades.map((finalidade) => (
-                    <Select.Option key={finalidade?.id} values={finalidade?.id} >
+                    <Select.Option key={finalidade?.id} value={finalidade?.id} >
                       {finalidade?.label}
                     </Select.Option>
                   ))}
@@ -346,20 +341,21 @@ const Reservation = () => {
                 ]}
                 className="FormItemProfile"
               >
-                <Input
+                <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
-                  style={{ width: '80%', height: 40 }}
+                  disabled={loading}
+                  style={{ width: '80%', heigh: '80px' }}
                   allowClear
-                  type="textarea"
+                  showCount
+                  maxLength={250}
                 />
               </Form.Item>
 
               <Button
                 type="primary"
                 htmlType="submit"
-                className="SaveReservationButton"
-                onClick={() => form.setFieldValue('time', `${initialTime} - ${endTime}`)}
+                className="SaveButtonReservation"
                 loading={loading}
                 disabled={loading}
               >

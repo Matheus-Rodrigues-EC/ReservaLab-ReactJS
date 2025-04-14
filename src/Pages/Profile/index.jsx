@@ -27,22 +27,15 @@ const Profile = () => {
   const [api, contextHolder] = notification.useNotification();
 
   const getProfile = async (id) => {
-    const config = {
-      headers: {Authorization: `Bearer ${userData.token}`},
-    }
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`, config);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
     setUserData(response.data)
   }
 
   const updateProfile = async (id, body) => {
-    const config = {
-      headers: {Authorization: `Bearer ${userData.token}`}
-    }
-    
     setLoading(true);
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body, config);
-  
+      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
+
       api.success({
         message: 'Perfil atualizado!',
         description: 'As informações do perfil foram salvas com sucesso.',
@@ -51,12 +44,13 @@ const Profile = () => {
         placement: "top"
       });
       setTimeout(() => {
-        goToHome();
-      }, 2250);
-  
+        getProfile(userData.id)
+        setLoading(false);
+      }, 1750);
+
     } catch (error) {
       console.error(error);
-  
+
       api.error({
         message: 'Erro ao atualizar perfil',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -64,8 +58,9 @@ const Profile = () => {
         duration: 2,
         placement: "top"
       });
-    }finally{
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
     }
   }
 
@@ -94,13 +89,12 @@ const Profile = () => {
   const goToUpdatePassword = () => {
     Navigate('/profile/updatePassword')
   }
-  const goToHome = () => {
-    Navigate('/home')
-  }
+  // const goToHome = () => {
+  //   Navigate('/home')
+  // }
 
   const onFinish = (values) => {
     // console.log('Success:');
-    // console.table(values);
     updateProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
@@ -110,7 +104,6 @@ const Profile = () => {
   useEffect(() => {
     setFilteredCargos(Cargos);
     getProfile(userData.id)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {
@@ -134,7 +127,7 @@ const Profile = () => {
       </Col>
       <Col span={20}>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px'}}>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Title level={4} style={{ margin: 0 }}>Nome completo</Typography.Title>
             </Row>
@@ -156,14 +149,13 @@ const Profile = () => {
             </Row>
 
             <Button
-            type="danger"
-                className="EditPasswordButton"
-                onClick={goToUpdatePassword}
-                loading={loading}
-                disabled={loading}
-              >
-                Alterar Senha
-              </Button>
+              className="EditPasswordButton"
+              onClick={goToUpdatePassword}
+              loading={loading}
+              disabled={loading}
+            >
+              Alterar Senha
+            </Button>
           </Col>
           <Col span={14} offset={2} style={{}}>
             <Form
@@ -185,6 +177,7 @@ const Profile = () => {
                 <Input
                   size="large"
                   placeholder="Nome Completo"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="text"
@@ -193,6 +186,7 @@ const Profile = () => {
 
               <Form.Item
                 name='rulets'
+                initialValue={UserData?.rulets}
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -202,6 +196,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Cargo"
+                  disabled={loading || UserData?.rulets}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   onSearch={handleSearchCargos}
@@ -225,6 +220,7 @@ const Profile = () => {
                 <Input
                   size="large"
                   placeholder="Apelido"
+                  disabled={loading}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                   type="text"
@@ -233,6 +229,7 @@ const Profile = () => {
 
               <Form.Item
                 name='subject'
+                initialValue={UserData?.subject}
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -242,6 +239,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Disciplina"
+                  disabled={loading || UserData?.subject}
                   style={{ width: '80%', height: 40 }}
                   // allowClear
                   onSearch={handleSearchDisciplinas}
@@ -257,6 +255,7 @@ const Profile = () => {
 
               <Form.Item
                 name='shift'
+                initialValue={UserData?.shift}
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -266,6 +265,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
+                  disabled={loading || UserData?.shift}
                   style={{ width: '80%', height: 40 }}
                   allowClear
                 >
@@ -278,9 +278,8 @@ const Profile = () => {
               </Form.Item>
 
               <Button
-                type="primary"
                 htmlType="submit"
-                className="SaveButton"
+                className="SaveButtonProfile"
                 loading={loading}
                 disabled={loading}
               >

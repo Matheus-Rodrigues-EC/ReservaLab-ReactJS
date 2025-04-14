@@ -1,5 +1,5 @@
-import React, { 
-  useState, 
+import React, {
+  useState,
   useEffect,
 } from "react";
 import packageJson from '../../package.json';
@@ -17,6 +17,8 @@ const SideMenu = () => {
   const [today, setToday] = useState();
   const [user, setUser] = useState('Professor(a)');
   const Navigate = useNavigate();
+  const userData = JSON.parse(localStorage.getItem('userData'));
+  const navigate = useNavigate();
 
   const SetDate = () => {
     const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
@@ -44,17 +46,27 @@ const SideMenu = () => {
     Navigate("/class");
   };
 
+
+  const handleLogout = () => {
+    // Limpar dados do localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+
+    // Redirecionar para a página de login
+    navigate("/login");
+  };
+
   const Exit = () => {
-    localStorage.clear();
-    Navigate("/");
+    handleLogout();
   }
 
   useEffect(() => {
     setToday(SetDate);
-    setUser('Professor(a)');
+    setUser(userData?.surname || userData?.name);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today, user])
 
-  return(
+  return (
     <Container>
       <Row justify="center" style={{ marginTop: "50px" }} >
         <Avatar
@@ -64,7 +76,8 @@ const SideMenu = () => {
             md: 125,
             lg: 150,
             xl: 175,
-            xxl: 200 }}
+            xxl: 200
+          }}
           src={Logo}
         />
       </Row>
@@ -80,57 +93,60 @@ const SideMenu = () => {
       </Row>
       <Row justify="center" >
         <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
-          Bem vindo(a) {user}
+          Bem vindo(a) {user}.
         </Typography.Title>
       </Row>
 
-      <Button 
-        className="ButtonMenu" 
+      <Button
+        className="ButtonMenu"
         onClick={goToHome}
       >
         Inicio
       </Button>
 
-      <Button 
-        className="ButtonMenu" 
+      <Button
+        className="ButtonMenu"
         onClick={goToProfile}
       >
         Perfil
       </Button>
 
-      <Button 
-        className="ButtonMenu" 
+      <Button
+        className="ButtonMenu"
         onClick={goToReservation}
       >
         Fazer Reserva
       </Button>
 
-      <Button 
-        className="ButtonMenu" 
-        onClick={goToClassroom}
-      >
-        Cadastrar Sala
-      </Button>
+      {userData?.rulets !== 'Professor(a)' &&
+        <Button
+          className="ButtonMenu"
+          onClick={goToClassroom}
+        >
+          Cadastrar Sala
+        </Button>
+      }
 
-      <Button 
-        className="ButtonMenu" 
-        onClick={goToclass}
-      >
-        Cadastrar Turma
-      </Button>
-
-      <Button 
-        className="ButtonMenuExit" 
+      {userData?.rulets !== 'Professor(a)' &&
+        <Button
+          className="ButtonMenu"
+          onClick={goToclass}
+        >
+          Cadastrar Turma
+        </Button>
+      }
+      <Button
+        className="ButtonMenuExit"
         onClick={Exit}
       >
         Sair
       </Button>
-      
+
       <Typography.Text className="Version">
         Versão: {packageJson.version}
       </Typography.Text>
 
-    
+
     </Container>
   )
 }

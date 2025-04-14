@@ -15,7 +15,6 @@ export const removerAcentos = (str) => {
     .replace(/Ç/g, 'C');
 };
 
-
 export const CargosList = [
 	{id: 1, label: 'Diretor(a)'},
 	{id: 2, label: 'Coordenador(a)'},
@@ -46,7 +45,6 @@ export const TurnoList = [
 	{id: 2, label: 'Tarde'},
 	{id: 3, label: 'Noite'},
 	{id: 4, label: 'Integral'},
-	{id: 5, label: 'EJA'},
 ]
 
 export const TurmaList = [
@@ -58,13 +56,13 @@ export const TurmaList = [
 export const FuncionalidadesList = [
 	{id: 1, label: '2ª Chamada'},
 	{id: 2, label: 'Educação Especial'},
-	{id: 3, label: 'EJA'},
-	{id: 4, label: 'Esporte'},
-	{id: 5, label: 'Estudo'},
-	{id: 6, label: 'Informática'},
-	{id: 7, label: 'Leitura'},
+	{id: 3, label: 'Esporte'},
+	{id: 4, label: 'Estudo'},
+	{id: 5, label: 'Informática'},
+	{id: 6, label: 'Leitura'},
+	{id: 7, label: 'Prova externa'},
 	{id: 8, label: 'Recuperação'},
-	{id: 9, label: 'Reforço'},
+  {id: 9, label: 'Reforço'},
 ]
 
 export const classTypes = [
@@ -75,18 +73,34 @@ export const classTypes = [
 	{id: 5, label: 'Recuperação/Reforço'},
 ]
 
-export const Times = [
-	
-	{id: 1, label: '07:00'},
-	{id: 2, label: '07:50'},
-	{id: 3, label: '08:40'},
-	{id: 4, label: '09:20'},
-	{id: 5, label: '10:00'},
-	{id: 6, label: '10:50'},
-	{id: 7, label: '13:00'},
-	{id: 8, label: '13:50'},
-	{id: 9, label: '14:40'},
-	{id: 10, label: '15:30'},
-	{id: 11, label: '16:20'},
-	{id: 12, label: '17:00'},
+export const Fundamental_Morning_Times = [
+	{id: 1,  label: '07:00 às 07:50'},
+	{id: 2,  label: '07:50 às 08:40'},
+	{id: 3,  label: '08:40 às 10:00'},
+	{id: 4,  label: '10:00 às 10:50'},
+]
+
+export const Fundamental_Afternoom_Times = [
+	{id: 1,  label: '13:00 às 13:50'},
+	{id: 2,  label: '13:50 às 14:40'},
+	{id: 3,  label: '14:40 às 16:00'},
+	{id: 4,  label: '16:00 às 16:50'},
+]
+
+export const Fundamental_Integral_Times = [
+	{id: 1,  label: '07:00 às 07:50'},
+	{id: 2,  label: '07:50 às 08:40'},
+	{id: 3,  label: '08:40 às 10:00'},
+	{id: 4,  label: '10:00 às 11:00'},
+	{id: 5,  label: '13:00 às 13:50'},
+	{id: 6,  label: '13:50 às 14:40'},
+	{id: 7,  label: '14:40 às 16:00'},
+	{id: 8,  label: '16:00 às 16:50'},
+]
+
+export const EJA_Times = [
+	{id: 1,  label: '18:00 às 18:50'},
+	{id: 2,  label: '18:50 às 19:40'},
+	{id: 3,  label: '20:00 às 20:40'},
+	{id: 4,  label: '20:40 às 21:30'},
 ]
