@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.4...v0.1.5) (2025-04-15)
+
+
+### Features
+
+* added auto open page on browser ([1dc0923](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/1dc09232d29e3a8490d6d6cc2419c285e64b0bb8))
+
 ### [0.1.4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.3...v0.1.4) (2025-04-15)
 
 
