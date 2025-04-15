@@ -3,7 +3,7 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm install --only=production && npm install --only=dev
 COPY . .
 
 # Copia .env ou .env.production (dependendo do que você usar)
