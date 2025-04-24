@@ -2,7 +2,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { Col, List, Empty, Typography, notification, Tooltip, DatePicker, Button } from "antd";
+import { Row, Col, List, Empty, Typography, notification, Tooltip, DatePicker, Button, Drawer } from "antd";
 import { ReloadOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 import axios from "axios";
@@ -10,11 +10,13 @@ import styled from "styled-components";
 import { CardSkeleton } from "../../Components/CardSkeleton";
 import "./Style.less";
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 import CardReservation from "../../Components/CardReservation";
 
 const Home = () => {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [Visible, setVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [api, contextHolder] = notification.useNotification();
   const dateFormat = 'DD/MM/YYYY';
@@ -81,10 +83,17 @@ const Home = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
+      {window.innerWidth < 1024 && (
+      <Row className="TopMenu" >
+        <TopMenu visible={Visible} setVisible={setVisible} />
+      </Row>
+      )}
+      {window.innerWidth >= 1024 && (
+      <Col span={4} className="SideMenu" >
         <SideMenu />
       </Col>
-      <Col span={20}>
+      )}
+      <Col span={ window.innerWidth < 1024 ? 24 : 20} style={window.innerWidth < 1024 ? { marginTop: '10vh'} : {marginTop: '1vh'}}>
         <div className="ContainerHome">
           <div style={{ display: 'flex', margin: '0 auto', alignItems: 'center', justifyContent: 'center' }}>
             <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
@@ -98,7 +107,6 @@ const Home = () => {
                 style={{ width: '290px' }}
                 allowClear
                 onChange={(value) => {
-                  // value será `null` se o usuário limpar o campo
                   setSelectedDate(value);
                 }}
                 disabledDate={disabledDate}
@@ -150,6 +158,16 @@ const Home = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        bodyStyle={{ padding: 0 }}
+      >
+  <SideMenu />
+</Drawer>
     </Container>
   )
 }

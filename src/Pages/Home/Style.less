@@ -1,5 +1,11 @@
 @Background: url(../../assets/Background.png);
 
+.TopMenu {
+  display: block;
+  position: absolute;
+  top: 0;
+}
+
 .ContainerHome {
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
@@ -22,4 +28,51 @@
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   color: #A5BFA4;
+}
+
+@media (max-width: 1024px) {
+  .ContainerHome {
+  width: 95vw;
+  height: 85vh;
+}
+
+.ListReservations {
+  margin-top: 10px;
+  max-height: 65vh;
+  overflow-y: scroll;
+}
+
+.EmpityMessage {
+  margin-top: 20%;
+  font-size: 36px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  color: #A5BFA4;
+}
+}
+
+@media (max-width: 425px) {
+  .ContainerHome {
+  background-color: rgba(234, 234, 234, 0.85);
+  margin: auto;
+  width: 80vw;
+  height: 85vh;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 25px;
+}
+
+.ListReservations {
+  margin-top: 10px;
+  max-height: 85vh;
+  overflow-y: scroll;
+}
+
+.EmpityMessage {
+  margin-top: 20%;
+  font-size: 36px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  color: #A5BFA4;
+}
 }

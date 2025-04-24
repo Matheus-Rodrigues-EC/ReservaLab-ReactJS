@@ -60,11 +60,14 @@ const CardReservation = (Data) => {
     <>
       <Card
         className="Reservation"
-        styles={{ body: { display: 'flex' } }}
+        
+        styles={ window.innerWidth > 1024 ? { 
+          body: { display: 'flex' } } : {
+          body: { display: 'flex', flexDirection: 'column' }}}
         
         // actions={userData?.id === data?.userId ? actions : null}
       >
-        <Col span={4} style={{ margin: 'auto' }}>
+        <Col span={window.innerWidth > 1024 ? 4 : 20} style={{ margin: 'auto' }}>
           <Image
             src={renderImage(data?.purpose) || Classroom}
             className="ImageResv"
@@ -72,14 +75,14 @@ const CardReservation = (Data) => {
         </Col>
         <Col span={19} offset={1}>
           <Row>
-            <Typography.Title style={{ fontSize: '2.15vw' }} className="TitleResv">
+            <Typography.Title style={{ fontSize: '3vh' }} className="TitleResv">
               {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {capitalizedDate}
             </Typography.Title>
           </Row>
           <Row justify="space-between">
             <Col span={14} className="TextCommon">
               <Typography.Text className="TextResv">
-                Horário:
+                Horário(s):
               </Typography.Text>
             </Col>
 

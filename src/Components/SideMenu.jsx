@@ -67,32 +67,25 @@ const SideMenu = () => {
   }, [today, user])
 
   return (
-    <Container>
-      <Row justify="center" style={{ marginTop: "50px" }} >
+    <Container style={ window.innerWidth > 1024 ? { height: '100vh' } : { height: '100%'}}>
+      <Row justify="center" >
         <Avatar
-          size={{
-            xs: 75,
-            sm: 100,
-            md: 125,
-            lg: 150,
-            xl: 175,
-            xxl: 200
-          }}
+          className="AvatarSideMenu"
           src={Logo}
         />
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2vw' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '3vh' }}>
           ReservaLab
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2.5vh' }}>
           {today}
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '1.15vw' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '2.5vh' }}>
           Bem vindo(a) {user}.
         </Typography.Title>
       </Row>
@@ -158,6 +151,6 @@ const Container = styled.div`
   margin: auto;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* height: 100vh; */
   background-color: rgba(121, 199, 217, 0.8);
 `
