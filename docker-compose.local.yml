@@ -1,0 +1,17 @@
+# ⚠️ Este compose é para rodar o frontend isoladamente em ambiente local.
+# Para rodar toda a aplicação, use o docker-compose do repositório orquestrador.
+
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+    container_name: reserva-frontend-local
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    volumes:
+      - .:/app
+      - /app/node_modules

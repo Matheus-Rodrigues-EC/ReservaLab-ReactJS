@@ -34,7 +34,20 @@ const Profile = () => {
   const updateProfile = async (id, body) => {
     setLoading(true);
     try {
-      await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
+      const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
+
+      console.log(response.data);
+      const user = {
+        id: response?.data?.id,
+        name: response?.data?.name,
+        email: response?.data?.email,
+        surname: response?.data?.surname,
+        rulets: response?.data?.rulets,
+        shift: response?.data?.shift,
+        subject: response?.data?.subject,
+      };
+      const serializableUser = JSON.stringify(user);
+      localStorage.setItem("userData", serializableUser);
 
       api.success({
         message: 'Perfil atualizado!',
