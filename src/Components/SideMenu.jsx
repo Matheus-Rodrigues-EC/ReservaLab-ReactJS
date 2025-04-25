@@ -67,7 +67,7 @@ const SideMenu = () => {
   }, [today, user])
 
   return (
-    <Container style={ window.innerWidth > 1024 ? { height: '100vh' } : { height: '100%'}}>
+    <Container style={ window.innerWidth > 1025 ? { height: '100vh' } : { height: '100%'}}>
       <Row justify="center" >
         <Avatar
           className="AvatarSideMenu"
@@ -80,12 +80,12 @@ const SideMenu = () => {
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2.5vh' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2.25vh' }}>
           {today}
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '2.5vh' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '2.25vh' }}>
           Bem vindo(a) {user}.
         </Typography.Title>
       </Row>
