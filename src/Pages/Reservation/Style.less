@@ -4,11 +4,16 @@
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
-  width: 55%;
+  width: 50vw;
   height: 60%;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
+  position: relative;
+}
+
+.inputTextAreaReservation {
+  margin-bottom: 50px;
 }
 
 .FormItemProfile {
@@ -26,10 +31,12 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 40%;
+  width: 10vw;
+  height: 2vw;
   font-size: 1vw;
-  margin-left: 40%;
-  margin-top: 3%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .CanceldButtonReservation {
@@ -37,10 +44,12 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 40%;
+  width: 7vw;
+  height: 2vw;
   font-size: 1vw;
   position: absolute;
   bottom: 0;
+  left: 0;
 }
 
 @media (max-width: 1024px){
@@ -58,6 +67,12 @@
     font-size: 2vh;
   }
   
+  .InputDateReservation {
+    width: 40vw !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+  
   .InputReservation {
     width: 100% !important;
     height: 5vh !important;
@@ -72,12 +87,14 @@
   
   .SaveButtonReservation {
     width: 35vw;
+    height: 4vh;
     font-size: 1.75vh;
     margin-left: 5vw;
   }
   
   .CanceldButtonReservation {
     width: 25vw;
+    height: 4vh;
     font-size: 1.75vh;
   }
 }

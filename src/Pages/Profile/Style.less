@@ -4,20 +4,16 @@
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
-  width: 75vw;
+  width: 50vw;
   height: 60vh;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
+  position: relative;
 }
 
 .FormItemProfile {
   width: 100%;
-}
-
-.TextProfile {
-  font-size: 1.80rem;
-  margin: 0;
 }
 
 .InputProfile {
@@ -36,8 +32,12 @@
   background-color: rgba(242, 185, 12, 0.25);
   border: 2px solid #F2B90C;
   border-radius: 5px;
-  width: 50%;
+  width: 10vw;
+  height: 2vw;
   font-size: 1vw;
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .SaveButtonProfile {
@@ -45,10 +45,12 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 40%;
+  width: 15vw;
+  height: 2vw;
   font-size: 1vw;
-  margin-left: 40%;
-  margin-top: 2.5%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .CancelSavePasswordButton {
@@ -60,6 +62,7 @@
   font-size: 1vw;
   position: absolute;
   bottom: 0;
+  left: 0;
 }
 
 .SavePasswordButton {
@@ -69,7 +72,9 @@
   border-radius: 5px;
   width: 45%;
   font-size: 1vw;
-  margin-left: 35%
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 @media (max-width: 1024px){
@@ -84,43 +89,40 @@
     height: auto;
     padding: 50px 10px;
   }
-
   .InputProfile {
     width: 85% !important;
     height: 5vh !important;
     font-size: 2vh !important;
   }
-
   .TextProfile {
     font-size: 2vh;
   }
-  
   .RowItemProfile {
     display: flex;
     width: 100%;
     justify-content: space-between;
   }
-  
   .EditPasswordButton {
     width: 30vw;
+    height: 4vh;
     font-size: 1.75vh;
     position: absolute;
     bottom: 0;
   }
-  
   .SaveButtonProfile {
     width: 35vw;
+    height: 4vh;
     font-size: 1.75vh;
-    margin-left: 10vw;
+    margin-left: 1vw;
   }
-  
   .CancelSavePasswordButton {
     width: 25vw;
+    height: 4vh;
     font-size: 1.75vh;
   }
-  
   .SavePasswordButton {
     width: 35vw;
+    height: 4vh;
     font-size: 1.75vh;
     margin-left: 4vw;
   }

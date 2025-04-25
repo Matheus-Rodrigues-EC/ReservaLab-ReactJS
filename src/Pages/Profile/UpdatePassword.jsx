@@ -174,8 +174,8 @@ const UpdatePassword = () => {
                   disabled={loading}
                   dependencies={['password']}
                   allowClear
+                  style={{ marginBottom: '50px'}}
                 >
-
                 </Input.Password>
               </Form.Item>
 

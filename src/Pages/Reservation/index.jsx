@@ -233,7 +233,8 @@ const Reservation = () => {
                   size="large"
                   placeholder={dataCapitalizada}
                   disabled={loading}
-                  className="InputReservation"
+                  className="InputDateReservation"
+                  style={{ width: '100%'}}
                   allowClear
                   disabledDate={disabledDate}
                 />

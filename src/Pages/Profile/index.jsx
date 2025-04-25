@@ -179,7 +179,7 @@ const Profile = () => {
               Alterar Senha
             </Button>
           </Col>
-          <Col span={16}>
+          <Col span={12} offset={2}>
             <Form
               form={form}
               name="Profile"
@@ -289,6 +289,7 @@ const Profile = () => {
                   placeholder="Turno"
                   disabled={loading || UserData?.shift}
                   className="InputProfile"
+                  style={{ marginBottom: '50px'}}
                   allowClear
                 >
                   {Turnos.map((turno) => (
