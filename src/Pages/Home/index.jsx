@@ -25,7 +25,7 @@ const Home = () => {
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
 
   const disabledDate = (current) => {
-    return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
+    return current && (current.day() === 0 || current.day() === 6);
   };
 
   function filteredToday(list) {
@@ -83,17 +83,17 @@ const Home = () => {
 
     <Container>
       {contextHolder}
-      {window.innerWidth < 1024 && (
-      <Row className="TopMenu" >
-        <TopMenu visible={Visible} setVisible={setVisible} />
-      </Row>
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
       )}
-      {window.innerWidth >= 1024 && (
-      <Col span={4} className="SideMenu" >
-        <SideMenu />
-      </Col>
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
       )}
-      <Col span={ window.innerWidth < 1024 ? 24 : 20} style={window.innerWidth < 1024 ? { marginTop: '10vh'} : {marginTop: '1vh'}}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
         <div className="ContainerHome">
           <div style={{ display: 'flex', margin: '0 auto', alignItems: 'center', justifyContent: 'center' }}>
             <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
@@ -123,9 +123,17 @@ const Home = () => {
           </div>
 
           {loading ? (
-            [...Array(4)].map((_, index) => (
-              <CardSkeleton key={index} />
-            ))
+            <List
+              itemLayout="horizontal"
+              size="large"
+              dataSource={reservations}
+              className="ListReservations"
+              renderItem={() => (
+                [...Array(4)].map((_, index) => (
+                  <CardSkeleton key={index} />
+                ))
+              )}
+            />
           ) : reservations?.length > 0 ? (
             <List
               itemLayout="horizontal"
@@ -164,10 +172,10 @@ const Home = () => {
         placement="left"
         onClose={() => setVisible(false)}
         open={Visible}
-        bodyStyle={{ padding: 0 }}
+        styles={{ body: { padding: 0 } }}
       >
-  <SideMenu />
-</Drawer>
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }
