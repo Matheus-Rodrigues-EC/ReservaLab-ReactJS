@@ -4,8 +4,8 @@
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
-  width: 75%;
-  height: 60%;
+  width: 75vw;
+  height: 60vh;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
@@ -13,6 +13,16 @@
 
 .FormItemProfile {
   width: 100%;
+}
+
+.TextProfile {
+  font-size: 1.80rem;
+  margin: 0;
+}
+
+.InputProfile {
+  width: 100% !important;
+  height: 5vh !important;
 }
 
 .RowItemProfile {
@@ -58,4 +68,63 @@
   width: 45%;
   font-size: 1vw;
   margin-left: 35%
+}
+
+@media (max-width: 1024px){
+
+}
+
+@media (max-width: 425px){
+  .ContainerProfile {
+    background-color: rgba(234, 234, 234, 0.85);
+    margin: auto;
+    width: 85vw;
+    height: auto;
+    padding: 50px 10px;
+  }
+  .FormItemProfile {
+    width: 100%;
+  }
+
+  .InputProfile {
+    width: 85% !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+
+  .TextProfile {
+    font-size: 2vh;
+  }
+  
+  .RowItemProfile {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .EditPasswordButton {
+    width: 70%;
+    font-size: 1.75vh;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .SaveButtonProfile {
+    width: 70%;
+    font-size: 1.75vh;
+    margin-left: 15%;
+  }
+  
+  .CancelSavePasswordButton {
+    width: 70%;
+    font-size: 1.75vh;
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .SavePasswordButton {
+    width: 70%;
+    font-size: 1.75vh;
+    margin-left: 30%;
+  }
 }

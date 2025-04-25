@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, notification, Button, Typography } from "antd";
+import { Col, Row, Form, Input, notification, Button, Typography, Drawer } from "antd";
 import axios from "axios";
 import {
   LockOutlined,
@@ -13,11 +13,13 @@ import styled from "styled-components";
 import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 
 const UpdatePassword = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
   const [loading, setLoading] = useState(false);
+  const [Visible, setVisible] = useState(false);
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
 
@@ -72,22 +74,29 @@ const UpdatePassword = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
-        <SideMenu />
-      </Col>
-      <Col span={20}>
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
+      )}
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
+      )}
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '35px' }}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Senha Atual</Typography.Title>
+              <Typography.Text className="TextProfile">Senha Atual</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Nova senha</Typography.Title>
+              <Typography.Text className="TextProfile">Nova senha</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Confirmar nova Senha</Typography.Title>
+              <Typography.Text className="TextProfile">Confirmar nova Senha</Typography.Text>
             </Row>
 
             <Button
@@ -99,7 +108,7 @@ const UpdatePassword = () => {
               Cancelar
             </Button>
           </Col>
-          <Col span={14} offset={2} style={{}}>
+          <Col span={12} offset={2}>
             <Form
               name="Profile"
               onFinish={onFinish}
@@ -119,7 +128,6 @@ const UpdatePassword = () => {
                   size="large"
                   placeholder="Senha Atual"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
                   allowClear
                 />
               </Form.Item>
@@ -137,7 +145,6 @@ const UpdatePassword = () => {
                   size="large"
                   placeholder="Nova Senha"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
                   allowClear
                 >
 
@@ -165,7 +172,6 @@ const UpdatePassword = () => {
                   size="large"
                   placeholder="Confirme a nova Senha"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
                   dependencies={['password']}
                   allowClear
                 >
@@ -187,6 +193,16 @@ const UpdatePassword = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        styles={{ body: { padding: 0 } }}
+      >
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }

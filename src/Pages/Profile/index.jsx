@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, notification, Drawer } from "antd";
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
@@ -15,6 +15,7 @@ import {
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 
 const Profile = () => {
   const [form] = Form.useForm();
@@ -22,6 +23,7 @@ const Profile = () => {
   const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
   const [loading, setLoading] = useState(false);
   const [UserData, setUserData] = useState();
+  const [Visible, setVisible] = useState(false);
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
@@ -135,30 +137,37 @@ const Profile = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
-        <SideMenu />
-      </Col>
-      <Col span={20}>
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
+      )}
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
+      )}
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Nome completo</Typography.Title>
+          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '35px' }}>
+            <Row>
+              <Typography.Text className="TextProfile" >Nome completo</Typography.Text>
             </Row>
 
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Cargo</Typography.Title>
+            <Row>
+              <Typography.Text className="TextProfile" >Cargo</Typography.Text>
             </Row>
 
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Apelido</Typography.Title>
+            <Row>
+              <Typography.Text className="TextProfile" >Apelido</Typography.Text>
             </Row>
 
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Disciplina</Typography.Title>
+            <Row>
+              <Typography.Text className="TextProfile" >Disciplina</Typography.Text>
             </Row>
 
-            <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Turno</Typography.Title>
+            <Row>
+              <Typography.Text className="TextProfile" >Turno</Typography.Text>
             </Row>
 
             <Button
@@ -170,7 +179,7 @@ const Profile = () => {
               Alterar Senha
             </Button>
           </Col>
-          <Col span={14} offset={2} style={{}}>
+          <Col span={16}>
             <Form
               form={form}
               name="Profile"
@@ -191,7 +200,7 @@ const Profile = () => {
                   size="large"
                   placeholder="Nome Completo"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputProfile"
                   allowClear
                   type="text"
                 />
@@ -210,7 +219,7 @@ const Profile = () => {
                   size="large"
                   placeholder="Cargo"
                   disabled={loading || UserData?.rulets}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputProfile"
                   allowClear
                   onSearch={handleSearchCargos}
                   filterOption={false}
@@ -234,7 +243,7 @@ const Profile = () => {
                   size="large"
                   placeholder="Apelido"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputProfile"
                   allowClear
                   type="text"
                 />
@@ -253,7 +262,7 @@ const Profile = () => {
                   size="large"
                   placeholder="Disciplina"
                   disabled={loading || UserData?.subject}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputProfile"
                   // allowClear
                   onSearch={handleSearchDisciplinas}
                   filterOption={false}
@@ -279,7 +288,7 @@ const Profile = () => {
                   size="large"
                   placeholder="Turno"
                   disabled={loading || UserData?.shift}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputProfile"
                   allowClear
                 >
                   {Turnos.map((turno) => (
@@ -304,6 +313,16 @@ const Profile = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        styles={{ body: { padding: 0 } }}
+      >
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }
