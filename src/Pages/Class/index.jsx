@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography, notification } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, notification, Drawer } from "antd";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -15,10 +15,12 @@ import {
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 
 const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
+  const [Visible, setVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +35,7 @@ const Class = () => {
     }
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body);
-  
+
       api.success({
         message: 'Turma Cadastrada!',
         description: 'A turma cadastrada foi salva com sucesso.',
@@ -41,15 +43,15 @@ const Class = () => {
         duration: 2,
         placement: "top"
       });
-      
+
       setTimeout(() => {
         setLoading(false);
         goToHome();
       }, 2250);
-  
+
     } catch (error) {
       console.error(error);
-  
+
       api.error({
         message: 'Erro ao cadastrar turma',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -57,7 +59,7 @@ const Class = () => {
         duration: 2,
         placement: "top"
       });
-      
+
       setTimeout(() => {
         setLoading(false);
       }, 1750);
@@ -80,26 +82,33 @@ const Class = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
-        <SideMenu />
-      </Col>
-      <Col span={20}>
-        <div className="ContainerProfile">
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
+      )}
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
+      )}
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+        <div className="ContainerClass">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Série/Ano</Typography.Title>
+              <Typography.Text className="TextClass">Série/Ano</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Turma</Typography.Title>
+              <Typography.Text className="TextClass">Turma</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Turno</Typography.Title>
+              <Typography.Text className="TextClass">Turno</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Obervação</Typography.Title>
+              <Typography.Text className="TextClass">Obervação</Typography.Text>
             </Row>
 
             <Button
@@ -112,7 +121,7 @@ const Class = () => {
               Cancelar
             </Button>
           </Col>
-          <Col span={14} offset={2} style={{}}>
+          <Col span={12} offset={2}>
             <Form
               name="Série"
               onFinish={onFinish}
@@ -132,7 +141,7 @@ const Class = () => {
                   size="large"
                   placeholder="Série/Ano"
                   suffix='º'
-                  style={{ width: '80%', height: 40 }}
+                  className="InputClass"
                   allowClear
                   type="number"
                   min='1'
@@ -150,7 +159,7 @@ const Class = () => {
                 <Select
                   size="large"
                   placeholder="Turma"
-                  style={{ width: '80%', height: 40 }}
+                  className="InputClass"
                   allowClear
                 >
                   {Turmas.map((turma) => (
@@ -171,7 +180,7 @@ const Class = () => {
                 <Select
                   size="large"
                   placeholder="Turno"
-                  style={{ width: '80%', height: 40 }}
+                  className="InputClass"
                   allowClear
                 >
                   {Turnos.map((turno) => (
@@ -192,7 +201,7 @@ const Class = () => {
                 <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma Obervação?"
-                  style={{ width: '80%', heigh: '80px' }}
+                  className="inputTextAreaClass"
                   allowClear
                   showCount
                   maxLength={250}
@@ -215,6 +224,16 @@ const Class = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        styles={{ body: { padding: 0 } }}
+      >
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }

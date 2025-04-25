@@ -3,17 +3,19 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Button, Typography, notification } from "antd";
+import { Col, Row, Form, Input, Button, Typography, notification, Drawer } from "antd";
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 
 const Classroom = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
+  const [Visible, setVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
@@ -77,22 +79,29 @@ const Classroom = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
-        <SideMenu />
-      </Col>
-      <Col span={20}>
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
+      )}
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
+      )}
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
         <div className="ContainerClassroom">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Nome da Sala</Typography.Title>
+              <Typography.Text className="TextClassroom">Nome da Sala</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Capacidade da Sala</Typography.Title>
+              <Typography.Text className="TextClassroom">Capacidade da Sala</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Descrição</Typography.Title>
+              <Typography.Text className="TextClassroom">Descrição</Typography.Text>
             </Row>
 
             <Button
@@ -105,7 +114,7 @@ const Classroom = () => {
               Cancelar
             </Button>
           </Col>
-          <Col span={14} offset={2} style={{}}>
+          <Col span={12} offset={2}>
             <Form
               name="Create_Classroom"
               onFinish={onFinish}
@@ -123,7 +132,7 @@ const Classroom = () => {
                 <Input
                   size="large"
                   placeholder="Nome da Sala"
-                  style={{ width: '80%', height: 40 }}
+                  className="InputClassroom"
                   allowClear
                   type="text"
                 />
@@ -140,7 +149,7 @@ const Classroom = () => {
                 <Input
                   size="large"
                   placeholder="Capacidade da Sala"
-                  style={{ width: '80%', height: 40 }}
+                  className="InputClassroom"
                   allowClear
                   type="number"
                   min='10'
@@ -158,7 +167,7 @@ const Classroom = () => {
                 <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
-                  style={{ width: '80%', heigh: '80px' }}
+                  className="inputTextAreaClassroom"
                   allowClear
                   showCount
                   maxLength={250}
@@ -180,6 +189,16 @@ const Classroom = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        styles={{ body: { padding: 0 } }}
+      >
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }

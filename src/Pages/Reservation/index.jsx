@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, notification } from "antd";
+import { Col, Row, Form, Input, Select, Button, Typography, DatePicker, notification, Drawer } from "antd";
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
@@ -19,6 +19,7 @@ import {
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
+import TopMenu from "../../Components/TopMenu";
 
 const Reservation = () => {
   const [form] = Form.useForm();
@@ -29,6 +30,7 @@ const Reservation = () => {
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
   const [filteredClasses, setFilteredClasses] = useState(turmas);
   const [filteredSalas, setFilteredSalas] = useState(salas);
+  const [Visible, setVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
@@ -94,7 +96,7 @@ const Reservation = () => {
     'Tarde': Fundamental_Afternoom_Times,
     'Noite': EJA_Times,
   };
-  
+
   const changeTimes = (id) => {
     const classe = turmas.find((turma) => turma?.id == id);
     const times = shiftTimeMap[classe?.shift] || Fundamental_Integral_Times;
@@ -163,34 +165,41 @@ const Reservation = () => {
 
     <Container>
       {contextHolder}
-      <Col span={4}>
-        <SideMenu />
-      </Col>
-      <Col span={20}>
+      {window.innerWidth < 1025 && (
+        <Row className="TopMenu" >
+          <TopMenu visible={Visible} setVisible={setVisible} />
+        </Row>
+      )}
+      {window.innerWidth >= 1025 && (
+        <Col span={4} className="SideMenu" >
+          <SideMenu />
+        </Col>
+      )}
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
         <div className="ContainerReservation">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a data</Typography.Title>
+              <Typography.Text className="TextReservation" >Selecione a data</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a sala</Typography.Title>
+              <Typography.Text className="TextReservation" >Selecione a sala</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Selecione a turma</Typography.Title>
+              <Typography.Text className="TextReservation" >Selecione a turma</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Selecione o  horário</Typography.Title>
+              <Typography.Text className="TextReservation" >Selecione o  horário</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Finalidade</Typography.Title>
+              <Typography.Text className="TextReservation" >Finalidade</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Title level={4} style={{ margin: 0 }}>Descrição</Typography.Title>
+              <Typography.Text className="TextReservation" >Descrição</Typography.Text>
             </Row>
 
             <Button
@@ -203,7 +212,7 @@ const Reservation = () => {
             </Button>
           </Col>
 
-          <Col span={14} offset={2} style={{}}>
+          <Col span={12} offset={2} style={{}}>
             <Form
               form={form}
               name="Reservation"
@@ -224,7 +233,7 @@ const Reservation = () => {
                   size="large"
                   placeholder={dataCapitalizada}
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputReservation"
                   allowClear
                   disabledDate={disabledDate}
                 />
@@ -243,7 +252,7 @@ const Reservation = () => {
                   placeholder="Sala"
                   disabled={loading}
                   filterOption={false}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputReservation"
                   allowClear
                   // onClick={() => fetchSalas()}
                   onSearch={handleSearchSalas}
@@ -269,9 +278,9 @@ const Reservation = () => {
                   placeholder="Turma"
                   disabled={loading}
                   filterOption={false}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputReservation"
                   allowClear
-                  onChange={(value) => {changeTimes(value); form.setFieldValue('time', [])}}
+                  onChange={(value) => { changeTimes(value); form.setFieldValue('time', []) }}
                   onSearch={handleSearchClasses}
                 >
                   {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
@@ -294,7 +303,7 @@ const Reservation = () => {
                     size="large"
                     placeholder="Selecione um ou dois horários "
                     disabled={loading}
-                    style={{ width: '80%', height: 40 }}
+                    className="InputReservation"
                     allowClear
                     onClick={() => null}
                     mode="multiple"
@@ -321,7 +330,7 @@ const Reservation = () => {
                   size="large"
                   placeholder="Finalidade"
                   disabled={loading}
-                  style={{ width: '80%', height: 40 }}
+                  className="InputReservation"
                   allowClear
                   onSearch={handleSearchFinalidades}
                   filterOption={false}
@@ -345,7 +354,7 @@ const Reservation = () => {
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   disabled={loading}
-                  style={{ width: '80%', heigh: '80px' }}
+                  className="inputTextAreaReservation"
                   allowClear
                   showCount
                   maxLength={250}
@@ -367,6 +376,16 @@ const Reservation = () => {
         </div>
 
       </Col>
+
+      <Drawer
+        title="ReservaLab"
+        placement="left"
+        onClose={() => setVisible(false)}
+        open={Visible}
+        styles={{ body: { padding: 0 } }}
+      >
+        <SideMenu />
+      </Drawer>
     </Container>
   )
 }

@@ -1,6 +1,6 @@
 @Background: url(../../assets/Background.png);
 
-.ContainerProfile {
+.ContainerClass {
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
@@ -30,4 +30,42 @@
   font-size: 1vw;
   position: absolute;
   bottom: 0;
+}
+
+@media (max-width: 1024px){
+  
+}
+
+@media (max-width: 425px){
+  .ContainerClass {
+    width: 95vw;
+    height: auto;
+  }
+
+  .TextClass {
+    font-size: 2vh;
+  }
+  
+  .InputClass {
+    width: 100% !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+
+  .inputTextAreaClass {
+    width: 100% !important;
+    height: 15vh !important;
+    font-size: 2vh !important;
+  }
+  
+  .ClassButton {
+    width: 35vw;
+    font-size: 1.75vh;
+    margin-left: 3vw;
+  }
+  
+  .CancelClassButton {
+    width: 25vw;
+    font-size: 1.75vh;
+  }
 }
