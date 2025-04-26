@@ -38,7 +38,15 @@ const TopMenu = (props) => {
         className="AvatarTopMenu"
         src={Logo}
       />
-      <Typography.Title style={{ display: 'flex', fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '3vw', alignItems: 'center' }}>
+      <Typography.Title 
+        style={{ 
+          display: 'flex', 
+          fontFamily: "Poppins, sans-serif", 
+          marginTop: '10px', 
+          fontSize: '3vw', 
+          alignItems: 'center' 
+        }}
+      >
         {today}
       </Typography.Title>
       <Button
