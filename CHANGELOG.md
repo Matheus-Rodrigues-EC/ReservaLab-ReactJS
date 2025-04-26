@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.0...v0.2.0) (2025-04-26)
+
+
+### Features
+
+* added auto open page on browser ([1dc0923](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/1dc09232d29e3a8490d6d6cc2419c285e64b0bb8))
+* Adjusted Layout Mobile Complete to Smartphones and Tablets ([16410fe](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/16410feea72e4bfc430e450c3564b26126d61343))
+* Adjusted layout to mobile, only miss 1024px ([3bac90a](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/3bac90ae6aef58da79546b5bd4d1488f9e0945db))
+* Ajusted mobile layout only miss 1024px ([14c5a8b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/14c5a8bd350117cda9e3049a8d539861193a2f44))
+* Ajusted mobile layout only miss 1024px ([df5d59b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/df5d59b5c62fa0b47420de1f18fa72c155ca8d36))
+* Ajusted mobile layout only miss 1024px ([690e708](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/690e708263ad2f67dd05f408b2382e78ff1248fa))
+* Configured layout to mobile on Login and Register ([4990c96](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/4990c96876ec90d397a58bcaf034d72c24477d8b))
+* Created button to reload reservations and configure access by rules ([111808d](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/111808dfeec01293ac041ea28850d507410ee8a2))
+* Created settings to docker ([9507be5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/9507be572bf7b38ea48f79da753a9b4b1b076f67))
+
+
+### Bug Fixes
+
+* adjust install dependencies on dockerfile ([5dfd34b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/5dfd34b772f629e6ed639e7a5a39048ac5eeb259))
+* adjuste broke layouts ([84464dc](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/84464dc944a9419a84fcd4097d91507395cf4600))
+* adjusted .env.example ([83ecc60](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/83ecc60e12153bb5b141e0202bd9cc82ff018dd3))
+* fixed errors on docker files ([835815f](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/835815f713942cd62b5779005d4bc7cc2376176f))
+
 ### [0.1.5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.4...v0.1.5) (2025-04-15)
 
 
