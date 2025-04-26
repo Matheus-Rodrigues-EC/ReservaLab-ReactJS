@@ -1,14 +1,19 @@
 @Background: url(../../assets/Background.png);
 
-.ContainerProfile {
+.ContainerClass {
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
-  width: 55%;
+  width: 50vw;
   height: 60%;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
+  position: relative;
+}
+
+.inputTextAreaClass {
+  margin-bottom: 50px;
 }
 
 .ClassButton {
@@ -16,9 +21,12 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 35%;
+  width: 10vw;
+  height: 2vw;
   font-size: 1vw;
-  margin-left: 45%
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 .CancelClassButton {
@@ -26,8 +34,74 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 25%;
+  width: 5vw;
+  height: 2vw;
   font-size: 1vw;
   position: absolute;
   bottom: 0;
+  left: 0;
+}
+
+@media (max-width: 1024px){
+  .ContainerClass {
+    width: 95vw;
+    height: auto;
+    margin-top: 5vh;
+  }
+  .TextClass {
+    font-size: 2.25vh;
+  }
+  .InputClass {
+    width: 100% !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+    text-align: start;
+  }
+  .inputTextAreaClass {
+    width: 100% !important;
+    height: 15vh !important;
+    font-size: 2vh !important;
+  }
+  .ClassButton {
+    width: 17vw;
+    height: 4vh;
+    font-size: 1.75vh;
+    margin-left: 3vw;
+  }
+  .CancelClassButton {
+    width: 12vw;
+    height: 4vh;
+    font-size: 1.75vh;
+  }
+}
+
+@media (max-width: 425px){
+  .ContainerClass {
+    width: 95vw;
+    height: auto;
+  }
+  .TextClass {
+    font-size: 2vh;
+  }
+  .InputClass {
+    width: 100% !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+  .inputTextAreaClass {
+    width: 100% !important;
+    height: 15vh !important;
+    font-size: 2vh !important;
+  }
+  .ClassButton {
+    width: 35vw;
+    height: 4vh;
+    font-size: 1.75vh;
+    margin-left: 3vw;
+  }
+  .CancelClassButton {
+    width: 25vw;
+    height: 4vh;
+    font-size: 1.75vh;
+  }
 }

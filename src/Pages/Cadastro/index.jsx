@@ -92,14 +92,7 @@ const Cadastro = () => {
         <Col span={14}>
           <Row justify="center">
             <Avatar
-              size={{
-                xs: 75,
-                sm: 100,
-                md: 150,
-                lg: 200,
-                xl: 250,
-                xxl: 300
-              }}
+              className="AvatarRegister"
               src={Logo || undefined}
               icon={!Logo ? <CalendarOutlined /> : undefined}
             />
@@ -130,11 +123,11 @@ const Cadastro = () => {
                   size="large"
                   placeholder="Nome copleto"
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputRegister"
                   allowClear
                   type="text"
-                  disabled={loading}
-                  loading={loading}
+                  disabled={loading ? true : false}
+                  loading={loading ? true : false}
                 >
 
                 </Input>
@@ -153,11 +146,11 @@ const Cadastro = () => {
                   size="large"
                   placeholder="Email"
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputRegister"
                   allowClear
                   type="text"
-                  disabled={loading}
-                  loading={loading}
+                  disabled={loading ? true : false}
+                  loading={loading ? true : false}
                 >
 
                 </Input>
@@ -176,10 +169,10 @@ const Cadastro = () => {
                   size="large"
                   placeholder="Senha"
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputRegister"
                   allowClear
-                  disabled={loading}
-                  loading={loading}
+                  disabled={loading ? true : false}
+                  loading={loading ? true : false}
                 >
 
                 </Input.Password>
@@ -206,11 +199,10 @@ const Cadastro = () => {
                   placeholder="Confirme a Senha"
                   dependencies={['password']}
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputRegister"
                   allowClear
-                  disabled={loading}
-                  loading={loading}
-                // onChange={() => validatePassword()}
+                  disabled={loading ? true : false}
+                  loading={loading ? true : false}
                 >
 
                 </Input.Password>
@@ -220,9 +212,9 @@ const Cadastro = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="SubmitButton"
-                  loading={loading}
-                  disabled={loading}
+                  className="SubmitButtonRegister"
+                  disabled={loading ? true : false}
+                  loading={loading ? true : false}
                 >
                   Cadastrar
                 </Button>
@@ -234,7 +226,7 @@ const Cadastro = () => {
           </Row>
           <Row justify='center'>
 
-            <Link to="/login" className="LinkButton">
+            <Link to="/login" className="LinkButtonRegister">
               Já possui cadastro? Acesse aqui.
             </Link>
           </Row>

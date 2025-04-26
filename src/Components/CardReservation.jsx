@@ -60,85 +60,127 @@ const CardReservation = (Data) => {
     <>
       <Card
         className="Reservation"
-        styles={{ body: { display: 'flex' } }}
-        
-        // actions={userData?.id === data?.userId ? actions : null}
+
+        styles={window.innerWidth > 1025 ? {
+          body: { display: 'flex' }
+        } : window.innerWidth > 415 ? {
+          body: { display: 'flex', flexDirection: 'row', padding: '15px 10px', height: 'auto' }
+        } : {
+          body: { display: 'flex', flexDirection: 'column', padding: '15px 10px', height: 'auto' }
+        }}
+
+      // actions={userData?.id === data?.userId ? actions : null}
       >
-        <Col span={4} style={{ margin: 'auto' }}>
+        <Col
+          span={window.innerWidth > 1025 ? 4 : window.innerWidth > 415 ? 10 : 20}
+          style={
+            window.innerWidth > 1025 ? { margin: 'auto' } : 
+            window.innerWidth > 415 ? { margin: 'auto' } : 
+            { margin: 'auto' }
+          }
+        >
           <Image
             src={renderImage(data?.purpose) || Classroom}
             className="ImageResv"
           />
         </Col>
-        <Col span={19} offset={1}>
+        <Col
+          span={window.innerWidth > 1025 ? 19 : window.innerWidth > 415 ? 12 : 24} offset={1}
+          style={
+            window.innerWidth > 1025 ? { margin: 'auto' } : 
+            window.innerWidth > 415 ? { margin: 'auto', justifyContent: 'space-between' } : 
+            { margin: 'auto' }
+          }
+        >
           <Row>
-            <Typography.Title style={{ fontSize: '2.15vw' }} className="TitleResv">
-              {data?.Classroom?.name} - {renderPurpose(data?.purpose)} - {capitalizedDate}
-            </Typography.Title>
+            <Typography.Text className="TitleResv">
+              {data?.Classroom?.name} | {renderPurpose(data?.purpose)} | {capitalizedDate}
+            </Typography.Text>
           </Row>
           <Row justify="space-between">
-            <Col span={14} className="TextCommon">
+            <Col
+              span={window.innerWidth > 1025 ? 14 : 12}
+              className="TextCommon"
+            >
               <Typography.Text className="TextResv">
-                Horário:
+                Horário(s):
               </Typography.Text>
             </Col>
 
-            <Col span={1} className="TextCommon">
-              <ClockCircleOutlined />
-            </Col>
-            <Col span={8}>
-              <Typography.Text className="TextCommon">
-                {data?.time?.slice().sort().map((time) => {
-                  return(
-                    <Tag
-                      color="blue"
-                      key={time}
-                      style={{
-                        fontSize: 16
-                      }}
-                    >
-                      {time} Hs
-                    </Tag>
-                  )
-                })}
-              </Typography.Text>
+            <Col
+              span={window.innerWidth > 1025 ? 7 : 12}
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <div style={{ display: 'flex'}}>
+                <ClockCircleOutlined />
+              </div>
+              <div style={{ textAlign: 'end', gap: '10px' }}>
+                <Typography.Text className="TextCommon">
+                  {data?.time?.slice().sort().map((time) => {
+                    return (
+                      <Tag
+                        color="blue"
+                        key={time}
+                        style={
+                          window.innerWidth > 1280 ? {
+                            fontSize: 24,
+                            padding: 5
+                          } :
+                            window.innerWidth > 415 ? {
+                              fontSize: 14,
+                              padding: 3
+                            } : {
+                              fontSize: 10,
+                              padding: 3
+                            }}
+                      >
+                        {time} Hs
+                      </Tag>
+                    )
+                  })}
+                </Typography.Text>
+              </div>
             </Col>
           </Row>
           <Row justify="space-between">
-            <Col span={14} className="TextCommon">
-              <Typography.Text ellipsis  className="TextResv">
+            <Col
+              span={window.innerWidth > 1025 ? 14 : 12} className="TextCommon"
+            >
+              <Typography.Text ellipsis className="TextResv">
                 Professor(a):
               </Typography.Text>
             </Col>
 
-            <Col span={1} className="TextCommon">
+            <Col
+              span={window.innerWidth > 1025 ? 7 : 12}
+              style={{ display: 'flex' }}
+            >
               <ReadOutlined />
-            </Col>
-            <Col span={8}>
-              <Typography.Text ellipsis className="TextCommon">
+              <Typography.Text ellipsis className="TextCommon" style={{ textAlign: 'end', marginRight: '2.5vw' }}>
                 {data?.User?.surname || data?.User?.name} - {data?.User?.subject}
               </Typography.Text>
             </Col>
           </Row>
           <Row justify="space-between">
-            <Col span={14} className="TextCommon">
+            <Col span={window.innerWidth > 1025 ? 14 : 12} className="TextCommon">
               <Typography.Text className="TextResv">
                 Turma:
               </Typography.Text>
             </Col>
 
-            <Col span={1} className="TextCommon">
+            <Col
+              span={window.innerWidth > 1025 ? 7 : 12}
+              style={{ display: 'flex' }}
+            >
               <ContactsOutlined />
-            </Col>
-            <Col span={8}>
-              <Typography.Text className="TextCommon">
+              <Typography.Text className="TextCommon" style={{ textAlign: 'end', marginRight: '2.5vw' }}>
                 {data?.Class?.grade}º {data?.Class.className} - {data?.Class?.shift}
               </Typography.Text>
             </Col>
           </Row>
           {data?.description && (
             <Row justify="space-between">
-              <Col span={3} className="TextCommon">
+              <Col span={2} className="TextCommon">
                 <Typography.Text className="TextResv">
                   Descrição:
                 </Typography.Text>
