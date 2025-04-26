@@ -88,14 +88,7 @@ const Login = () => {
         <Col span={14}>
           <Row justify="center">
             <Avatar
-              size={{
-                xs: 75,
-                sm: 100,
-                md: 150,
-                lg: 200,
-                xl: 250,
-                xxl: 300
-              }}
+              className="AvatarLogin"
               src={Logo || undefined}
               icon={!Logo ? <CalendarOutlined /> : undefined}
             />
@@ -127,7 +120,7 @@ const Login = () => {
                     });
                   }}
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputLogin"
                   allowClear
                   type="text"
                   loading={loading}
@@ -151,7 +144,7 @@ const Login = () => {
                   size="large"
                   placeholder="Senha"
 
-                  style={{ width: '40vw', height: 60 }}
+                  className="InputLogin"
                   allowClear
                   type="password"
                   loading={loading}
@@ -165,7 +158,7 @@ const Login = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="SubmitButton"
+                  className="SubmitButtonLogin"
                   loading={loading}
                   disabled={loading}
                 >
@@ -179,7 +172,7 @@ const Login = () => {
           </Row>
           <Row justify='center'>
 
-            <Link to="/register" className="LinkButton" >
+            <Link to="/register" className="LinkButtonLogin" >
               Ainda não possui cadastro? Clique aqui.
             </Link>
           </Row>
