@@ -26,11 +26,12 @@ const Profile = () => {
   const [Visible, setVisible] = useState(false);
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const editUser = JSON.parse(localStorage.getItem('EditUser'));
   const [api, contextHolder] = notification.useNotification();
 
   const getProfile = async (id) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
-    setUserData(response.data)
+    setUserData(response?.data)
   }
 
   const updateProfile = async (id, body) => {
@@ -38,18 +39,19 @@ const Profile = () => {
     try {
       const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
 
-      console.log(response.data);
-      const user = {
-        id: response?.data?.id,
-        name: response?.data?.name,
-        email: response?.data?.email,
-        surname: response?.data?.surname,
-        rulets: response?.data?.rulets,
-        shift: response?.data?.shift,
-        subject: response?.data?.subject,
-      };
-      const serializableUser = JSON.stringify(user);
-      localStorage.setItem("userData", serializableUser);
+      if(!editUser) {
+        const user = {
+          id: response?.data?.id,
+          name: response?.data?.name,
+          email: response?.data?.email,
+          surname: response?.data?.surname,
+          rulets: response?.data?.rulets,
+          shift: response?.data?.shift,
+          subject: response?.data?.subject,
+        };
+        const serializableUser = JSON.stringify(user);
+        localStorage.setItem("userData", serializableUser);
+      }
 
       api.success({
         message: 'Perfil atualizado!',
@@ -59,7 +61,7 @@ const Profile = () => {
         placement: "top"
       });
       setTimeout(() => {
-        getProfile(userData.id)
+        getProfile(editUser || userData.id)
         setLoading(false);
       }, 1750);
 
@@ -110,7 +112,7 @@ const Profile = () => {
 
   const onFinish = (values) => {
     // console.log('Success:');
-    updateProfile(userData.id, values)
+    updateProfile((editUser || userData.id), values)
   };
   const onFinishFailed = (errorInfo) => {
     console.error(errorInfo?.values);
@@ -118,8 +120,8 @@ const Profile = () => {
 
   useEffect(() => {
     setFilteredCargos(Cargos);
-    getProfile(userData.id)
-  }, [userData.id]);
+    getProfile(editUser || userData.id)
+  }, [editUser, userData.id]);
 
   useEffect(() => {
     if (UserData) {
@@ -189,7 +191,7 @@ const Profile = () => {
             >
               <Form.Item
                 name='name'
-                initialValue={UserData?.name}
+                initialValue={UserData?.name || ''}
                 rules={[
                   { required: true, message: "Por favor, insira seu nome" },
                 ]}
@@ -208,7 +210,7 @@ const Profile = () => {
 
               <Form.Item
                 name='rulets'
-                initialValue={UserData?.rulets}
+                initialValue={UserData?.rulets || ''}
                 rules={[
                   { required: true, message: "Por favor selecione um cargo." }
                 ]}
@@ -218,7 +220,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Cargo"
-                  disabled={loading || UserData?.rulets}
+                  disabled={loading || (userData?.rulets === 'Professor(a)') || (userData?.rulets === 'Apoio')}
                   className="InputProfile"
                   allowClear
                   onSearch={handleSearchCargos}
@@ -251,7 +253,7 @@ const Profile = () => {
 
               <Form.Item
                 name='subject'
-                initialValue={UserData?.subject}
+                initialValue={UserData?.subject || ''}
                 rules={[
                   { required: true, message: "Por favor selecione um disciplina." }
                 ]}
@@ -261,7 +263,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Disciplina"
-                  disabled={loading || UserData?.subject}
+                  disabled={loading || (userData?.rulets === 'Professor(a)') || (userData?.rulets === 'Apoio')}
                   className="InputProfile"
                   // allowClear
                   onSearch={handleSearchDisciplinas}
@@ -277,7 +279,7 @@ const Profile = () => {
 
               <Form.Item
                 name='shift'
-                initialValue={UserData?.shift}
+                initialValue={UserData?.shift || ''}
                 rules={[
                   { required: true, message: "Por favor selecione um turno." }
                 ]}
@@ -287,7 +289,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
-                  disabled={loading || UserData?.shift}
+                  disabled={loading || (userData?.rulets === 'Professor(a)') || (userData?.rulets === 'Apoio')}
                   className="InputProfile"
                   style={{ marginBottom: '50px'}}
                   allowClear
@@ -305,6 +307,7 @@ const Profile = () => {
                 className="SaveButtonProfile"
                 loading={loading}
                 disabled={loading}
+                onClick={() => localStorage.removeItem("EditUser")}
               >
                 Salvar Alterações
               </Button>

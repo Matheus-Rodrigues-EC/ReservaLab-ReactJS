@@ -18,7 +18,6 @@ const SideMenu = () => {
   const [user, setUser] = useState('Professor(a)');
   const Navigate = useNavigate();
   const userData = JSON.parse(localStorage.getItem('userData'));
-  const navigate = useNavigate();
 
   const SetDate = () => {
     const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
@@ -32,6 +31,10 @@ const SideMenu = () => {
 
   const goToProfile = () => {
     Navigate("/Profile");
+  };
+
+  const goToUsers = () => {
+    Navigate("/Users");
   };
 
   const goToReservation = () => {
@@ -51,9 +54,10 @@ const SideMenu = () => {
     // Limpar dados do localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("userData");
+    localStorage.removeItem("EditUser");
 
     // Redirecionar para a página de login
-    navigate("/login");
+    Navigate("/login");
   };
 
   const Exit = () => {
@@ -80,12 +84,12 @@ const SideMenu = () => {
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2.25vh' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '10px', fontSize: '2vh' }}>
           {today}
         </Typography.Title>
       </Row>
       <Row justify="center" >
-        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '2.25vh' }}>
+        <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '2vh' }}>
           Bem vindo(a) {user}.
         </Typography.Title>
       </Row>
@@ -99,17 +103,28 @@ const SideMenu = () => {
 
       <Button
         className="ButtonMenu"
-        onClick={goToProfile}
-      >
-        Perfil
-      </Button>
-
-      <Button
-        className="ButtonMenu"
         onClick={goToReservation}
       >
         Fazer Reserva
       </Button>
+
+      {(userData?.rulets === 'Professor(a)' || userData?.rulets === 'Apoio' || userData?.rulets == null ) &&
+      <Button
+        className="ButtonMenu"
+        onClick={goToProfile}
+      >
+        Perfil
+      </Button>
+      }
+      
+      {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
+      <Button
+        className="ButtonMenu"
+        onClick={goToUsers}
+      >
+        Usuários
+      </Button>
+      }
 
       {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
         <Button

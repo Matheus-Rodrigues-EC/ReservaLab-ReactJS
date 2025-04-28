@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.0...v0.2.1) (2025-04-28)
+
+
+### Features
+
+* Upgrade settings on Users, now is possible edit and delete any user when admin ([85612e8](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/85612e88703c5c138d14cc7de216a5e086d6ac44))
+
 ## [0.2.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.0...v0.2.0) (2025-04-26)
 
 
