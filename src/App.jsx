@@ -8,6 +8,7 @@ import Login from './Pages/Login'
 import Cadastro from './Pages/Cadastro';
 import Home from "./Pages/Home"
 import Profile from "./Pages/Profile";
+import Users from "./Pages/Profile/Users";
 import UpdatePassword from "./Pages/Profile/UpdatePassword";
 import Classroom from "./Pages/Classroom";
 import Class from "./Pages/Class";
@@ -39,6 +40,11 @@ function App() {
           <Route path="/home" element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          } />
+          <Route path="/users" element={
+            <PrivateRoute>
+              <Users />
             </PrivateRoute>
           } />
           <Route path="/profile" element={
