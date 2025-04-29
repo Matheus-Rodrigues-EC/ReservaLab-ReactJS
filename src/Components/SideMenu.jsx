@@ -46,7 +46,7 @@ const SideMenu = () => {
   };
 
   const goToclass = () => {
-    Navigate("/class");
+    Navigate("/classes");
   };
 
 
@@ -131,7 +131,7 @@ const SideMenu = () => {
           className="ButtonMenu"
           onClick={goToClassroom}
         >
-          Cadastrar Sala
+          Salas
         </Button>
       }
 
@@ -140,7 +140,7 @@ const SideMenu = () => {
           className="ButtonMenu"
           onClick={goToclass}
         >
-          Cadastrar Turma
+          Turmas
         </Button>
       }
       <Button
