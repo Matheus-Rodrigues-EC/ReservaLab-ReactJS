@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.2](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.1...v0.2.2) (2025-04-29)
+
+
+### Features
+
+* Upgrade classes to edit and delete classes ([e6424cf](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/e6424cfa06305397ee9898632154a18d047f91d2))
+
+
+### Bug Fixes
+
+* Adjusts overflow Y on Users ([e66b2f4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/e66b2f4b598d42dfdb7155e630b77bd3f5f4cabd))
+
 ### [0.2.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.0...v0.2.1) (2025-04-28)
 
 

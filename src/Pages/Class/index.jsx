@@ -18,14 +18,17 @@ import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
 const Class = () => {
+  const [form] = Form.useForm();
   const data = Constants?.data;
   const Navigate = useNavigate()
   const [Visible, setVisible] = useState(false);
+  const [ClassData, setClassData] = useState();
+  const editClass = JSON.parse(localStorage.getItem('EditClass'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
-  const goToHome = () => {
-    Navigate('/home')
+  const goToClasses = () => {
+    Navigate('/classes')
   }
 
   const createClass = async (data) => {
@@ -46,7 +49,7 @@ const Class = () => {
 
       setTimeout(() => {
         setLoading(false);
-        goToHome();
+        goToClasses();
       }, 2250);
 
     } catch (error) {
@@ -66,6 +69,11 @@ const Class = () => {
     }
   }
 
+  const getClass = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
+    setClassData(response?.data)
+  }
+
   const onFinish = (values) => {
     // console.log('Success:');
     createClass(values);
@@ -75,8 +83,21 @@ const Class = () => {
   };
 
   useEffect(() => {
+    getClass(editClass);
+    localStorage.removeItem("EditClasses");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
-  }, [data]);
+  useEffect(() => {
+    if (ClassData) {
+      form.setFieldsValue({
+        grade: ClassData.grade,
+        className: ClassData.className,
+        shift: ClassData.shift,
+        description: ClassData.description,
+      });
+    }
+  }, [ClassData, form, data]);
 
   return (
 
@@ -114,22 +135,24 @@ const Class = () => {
             <Button
               type="danger"
               className="CancelClassButton"
-              onClick={goToHome}
+              onClick={goToClasses}
               loading={loading}
               disabled={loading}
             >
               Cancelar
             </Button>
           </Col>
-          <Col span={12} offset={2}>
+          <Col span={12} offset={1}>
             <Form
-              name="Série"
+              form={form}
+              name="Serie"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
                 name='grade'
+                initialValue={ClassData?.grade || ''}
                 rules={[
                   { required: true, message: "Por favor, insira a série/ano da turma." },
                   { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
@@ -151,6 +174,7 @@ const Class = () => {
 
               <Form.Item
                 name='className'
+                initialValue={ClassData?.className || ''}
                 rules={[
                   { required: true, message: "Por favor insira a turma referente a série." }
                 ]}
@@ -172,6 +196,7 @@ const Class = () => {
 
               <Form.Item
                 name='shift'
+                initialValue={ClassData?.shift || ''}
                 rules={[
                   { required: true, message: "Por favor selecione o turno da turma." },
                 ]}
@@ -193,6 +218,7 @@ const Class = () => {
 
               <Form.Item
                 name='description'
+                initialValue={ClassData?.description || ''}
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}
