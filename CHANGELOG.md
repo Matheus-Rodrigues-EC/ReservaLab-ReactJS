@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.3...v0.2.4) (2025-05-05)
+
+
+### Bug Fixes
+
+* Adjusting settings to correctly router on vercel service ([c0b6c13](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/c0b6c130e46d85750eb6bfe8f4d3543eea19f1f7))
+
 ### [0.2.3](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.2...v0.2.3) (2025-05-05)
 
 
