@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.2...v0.2.3) (2025-05-05)
+
+
+### Features
+
+* Created pages to better organization, adjusts mobiles layout, and fiz bug on update classes ([95b3ebb](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/95b3ebbbf6124fb5cc7e0546ef27e4a5ab83ea65))
+
 ### [0.2.2](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.1...v0.2.2) (2025-04-29)
 
 
