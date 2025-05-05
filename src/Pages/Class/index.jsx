@@ -18,14 +18,17 @@ import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
 const Class = () => {
+  const [form] = Form.useForm();
   const data = Constants?.data;
   const Navigate = useNavigate()
   const [Visible, setVisible] = useState(false);
+  const [ClassData, setClassData] = useState();
+  const editClass = JSON.parse(localStorage.getItem('EditClass'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
-  const goToHome = () => {
-    Navigate('/home')
+  const goToClasses = () => {
+    Navigate('/classes')
   }
 
   const createClass = async (data) => {
@@ -46,7 +49,7 @@ const Class = () => {
 
       setTimeout(() => {
         setLoading(false);
-        goToHome();
+        goToClasses();
       }, 2250);
 
     } catch (error) {
@@ -66,17 +69,85 @@ const Class = () => {
     }
   }
 
+  const updateClass = async () => {
+    const body = {
+      grade: form.getFieldValue('grade'),
+      className: form.getFieldValue('className'),
+      shift: form.getFieldValue('shift'),
+      description: form.getFieldValue('description'),
+    };
+  
+    try {
+      setLoading(true);
+  
+      await axios.patch(`${import.meta.env.VITE_API_URL}/classes/${editClass}/update`, body);
+  
+      api.success({
+        message: 'Turma Atualizada!',
+        description: 'As informações da turma foram atualizadas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: 'top',
+      });
+  
+      setTimeout(() => {
+        setLoading(false);
+        goToClasses();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao atualizar turma',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: 'top',
+      });
+  
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  };
+  
+
+  const getClass = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
+    setClassData(response?.data)
+  }
+
   const onFinish = (values) => {
     // console.log('Success:');
-    createClass(values);
+    if (editClass) {
+      updateClass(values);
+      console.log(Number(ClassData.grade));
+      console.log('update')
+    } else {
+      createClass(values);
+      console.log('create')
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
   };
 
   useEffect(() => {
+    getClass(editClass);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
-  }, [data]);
+  useEffect(() => {
+    if (ClassData) {
+      form.setFieldsValue({
+        grade: ClassData.grade,
+        className: ClassData.className,
+        shift: ClassData.shift,
+        description: ClassData.description,
+      });
+    }
+  }, [ClassData, form, data]);
 
   return (
 
@@ -114,22 +185,24 @@ const Class = () => {
             <Button
               type="danger"
               className="CancelClassButton"
-              onClick={goToHome}
+              onClick={goToClasses}
               loading={loading}
               disabled={loading}
             >
               Cancelar
             </Button>
           </Col>
-          <Col span={12} offset={2}>
+          <Col span={12} offset={1}>
             <Form
-              name="Série"
+              form={form}
+              name="Serie"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
                 name='grade'
+                initialValue={ClassData?.grade || ''}
                 rules={[
                   { required: true, message: "Por favor, insira a série/ano da turma." },
                   { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
@@ -151,6 +224,7 @@ const Class = () => {
 
               <Form.Item
                 name='className'
+                initialValue={ClassData?.className || ''}
                 rules={[
                   { required: true, message: "Por favor insira a turma referente a série." }
                 ]}
@@ -172,6 +246,7 @@ const Class = () => {
 
               <Form.Item
                 name='shift'
+                initialValue={ClassData?.shift || ''}
                 rules={[
                   { required: true, message: "Por favor selecione o turno da turma." },
                 ]}
@@ -193,6 +268,7 @@ const Class = () => {
 
               <Form.Item
                 name='description'
+                initialValue={ClassData?.description || ''}
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}
@@ -209,15 +285,27 @@ const Class = () => {
                 </Input.TextArea>
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="ClassButton"
-                loading={loading}
-                disabled={loading}
-              >
-                Salvar Alterações
-              </Button>
+              {editClass ? (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Atualizar Turma
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Cadastrar Turma
+                </Button>
+              )}
 
             </Form>
           </Col>

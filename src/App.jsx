@@ -11,6 +11,8 @@ import Profile from "./Pages/Profile";
 import Users from "./Pages/Profile/Users";
 import UpdatePassword from "./Pages/Profile/UpdatePassword";
 import Classroom from "./Pages/Classroom";
+import Classrooms from "./Pages/Classroom/Classrooms";
+import Classes from "./Pages/Class/Classes";
 import Class from "./Pages/Class";
 import Reservation from "./Pages/Reservation";
 import PrivateRoute from "./Components/PrivateRoute";
@@ -57,9 +59,19 @@ function App() {
               <UpdatePassword />
             </PrivateRoute>
           } />
+          <Route path="/classrooms" element={
+            <PrivateRoute>
+              <Classrooms />
+            </PrivateRoute>
+          } />
           <Route path="/classroom" element={
             <PrivateRoute>
               <Classroom />
+            </PrivateRoute>
+          } />
+          <Route path="/classes" element={
+            <PrivateRoute>
+              <Classes />
             </PrivateRoute>
           } />
           <Route path="/class" element={

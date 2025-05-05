@@ -13,14 +13,22 @@ import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
 const Classroom = () => {
+  const [form] = Form.useForm();
   const data = Constants?.data;
   const Navigate = useNavigate()
   const [Visible, setVisible] = useState(false);
+  const [ClassroomData, setClassroomData] = useState();
+  const editClassroom = JSON.parse(localStorage.getItem('EditClassroom'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
-  const goToHome = () => {
-    Navigate('/home')
+  const goToClassrooms = () => {
+    Navigate('/classrooms')
+  }
+
+  const getClassroom = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list/${id}`);
+    setClassroomData(response?.data)
   }
 
   const createClassroom = async (data) => {
@@ -42,7 +50,7 @@ const Classroom = () => {
 
       setTimeout(() => {
         setLoading(false);
-        goToHome();
+        goToClassrooms();
       }, 2250);
 
     } catch (error) {
@@ -62,18 +70,73 @@ const Classroom = () => {
     }
   }
 
+  const updateClassroom = async (data) => {
+    const body = {
+      ...data,
+      capacity: Number(data.capacity)
+    }
+    setLoading(true)
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/classroom/${editClassroom}/update`, body);
+
+      api.success({
+        message: 'Sala Atualizada!',
+        description: 'As informações da sala foram atualizadas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+        goToClassrooms();
+      }, 2250);
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao atualizar sala',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  }
+
   const onFinish = (values) => {
     // console.log('Success:');
-    createClassroom(values);
+    if(editClassroom){
+      updateClassroom(values);
+      console.log('update')
+    }else{
+      createClassroom(values);
+      console.log('create')
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
   };
 
+  useEffect(() => {
+    getClassroom(editClassroom)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   useEffect(() => {
-
-  }, [data]);
+    if (ClassroomData) {
+      form.setFieldsValue({
+        name: ClassroomData.name,
+        capacity: ClassroomData.capacity,
+        description: ClassroomData.description,
+      });
+    }
+  }, [ClassroomData, form, data]);
 
   return (
 
@@ -107,7 +170,7 @@ const Classroom = () => {
             <Button
               type="danger"
               className="CancelClassroomButton"
-              onClick={goToHome}
+              onClick={goToClassrooms}
               loading={loading}
               disabled={loading}
             >
@@ -116,6 +179,7 @@ const Classroom = () => {
           </Col>
           <Col span={12} offset={2}>
             <Form
+              form={form}
               name="Create_Classroom"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
@@ -123,6 +187,7 @@ const Classroom = () => {
             >
               <Form.Item
                 name='name'
+                initialValue={ClassroomData?.name || ''}
                 rules={[
                   { required: true, message: "Por favor, insira um nome para a sala" },
                 ]}
@@ -140,6 +205,7 @@ const Classroom = () => {
 
               <Form.Item
                 name='capacity'
+                initialValue={ClassroomData?.capacity || ''}
                 rules={[
                   { required: true, message: "Por favor selecione a capacidade da sala." },
                   { pattern: Constants.numberRegex, message: "Por favor, insira um valor válido!" },
@@ -159,6 +225,7 @@ const Classroom = () => {
 
               <Form.Item
                 name='description'
+                initialValue={ClassroomData?.description || ''}
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
@@ -174,15 +241,28 @@ const Classroom = () => {
                 />
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="ClassroomButton"
-                loading={loading}
-                disabled={loading}
-              >
-                Salvar Alterações
-              </Button>
+              {editClassroom ? (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassroomButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Salvar Alterações
+                </Button>
+              ) : (
+
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassroomButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Cadastrar Sala
+                </Button>
+              )}
 
             </Form>
           </Col>
