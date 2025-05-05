@@ -69,6 +69,50 @@ const Class = () => {
     }
   }
 
+  const updateClass = async () => {
+    const body = {
+      grade: form.getFieldValue('grade'),
+      className: form.getFieldValue('className'),
+      shift: form.getFieldValue('shift'),
+      description: form.getFieldValue('description'),
+    };
+  
+    try {
+      setLoading(true);
+  
+      await axios.patch(`${import.meta.env.VITE_API_URL}/classes/${editClass}/update`, body);
+  
+      api.success({
+        message: 'Turma Atualizada!',
+        description: 'As informações da turma foram atualizadas com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: 'top',
+      });
+  
+      setTimeout(() => {
+        setLoading(false);
+        goToClasses();
+      }, 2250);
+  
+    } catch (error) {
+      console.error(error);
+  
+      api.error({
+        message: 'Erro ao atualizar turma',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: 'top',
+      });
+  
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  };
+  
+
   const getClass = async (id) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
     setClassData(response?.data)
@@ -76,7 +120,14 @@ const Class = () => {
 
   const onFinish = (values) => {
     // console.log('Success:');
-    createClass(values);
+    if (editClass) {
+      updateClass(values);
+      console.log(Number(ClassData.grade));
+      console.log('update')
+    } else {
+      createClass(values);
+      console.log('create')
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.table(errorInfo?.values);
@@ -84,8 +135,7 @@ const Class = () => {
 
   useEffect(() => {
     getClass(editClass);
-    localStorage.removeItem("EditClasses");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   useEffect(() => {
@@ -235,15 +285,27 @@ const Class = () => {
                 </Input.TextArea>
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="ClassButton"
-                loading={loading}
-                disabled={loading}
-              >
-                Salvar Alterações
-              </Button>
+              {editClass ? (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Atualizar Turma
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="ClassButton"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Cadastrar Turma
+                </Button>
+              )}
 
             </Form>
           </Col>

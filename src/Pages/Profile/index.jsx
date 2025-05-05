@@ -63,6 +63,7 @@ const Profile = () => {
       setTimeout(() => {
         getProfile(editUser || userData.id)
         setLoading(false);
+        goToUsers();
       }, 1750);
 
     } catch (error) {
@@ -106,9 +107,9 @@ const Profile = () => {
   const goToUpdatePassword = () => {
     Navigate('/profile/updatePassword')
   }
-  // const goToHome = () => {
-  //   Navigate('/home')
-  // }
+  const goToUsers = () => {
+    Navigate('/users')
+  }
 
   const onFinish = (values) => {
     // console.log('Success:');

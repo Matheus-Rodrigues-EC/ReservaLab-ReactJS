@@ -3,7 +3,7 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Tag, Button, Typography, notification, Drawer, Popconfirm, List  } from "antd";
+import { Col, Row, Tag, Button, Typography, notification, Drawer, Popconfirm, List, message  } from "antd";
 import { EditTwoTone, DeleteTwoTone, QuestionCircleOutlined  } from '@ant-design/icons'
 import axios from "axios";
 import styled from "styled-components";
@@ -20,6 +20,7 @@ const Users = () => {
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
+  const [messageApi, contextHolder2] = message.useMessage();
 
   const getProfile = async (id) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
@@ -30,7 +31,11 @@ const Users = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/list/`);
-      setUsers(response?.data);
+      const sortedUsers = response?.data.sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+  
+      setUsers(sortedUsers);
       
       setLoading(false);
 
@@ -49,6 +54,13 @@ const Users = () => {
       }, 1750);
     }
   }
+
+  const cancel = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Exclusão cancelada',
+    });
+  };
 
   const editUser = async (id) => {
     localStorage.setItem("EditUser", id);
@@ -103,6 +115,7 @@ const Users = () => {
 
     <Container>
       {contextHolder}
+      {contextHolder2}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -135,16 +148,19 @@ const Users = () => {
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir o usuário,
+                            Tem certeza que deseja excluir o usuário, todas as reservas
                           </Typography.Text>
                           <br/>
                           <Typography.Text>
-                            todas as reservas ligadas a este usuário serão deletadas?
+                            ligadas a este usuário serão deletadas?
                           </Typography.Text>
                         </>
                       }
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                       onConfirm={() => deleteUser(user?.id)}
+                      onCancel={cancel}
+                      okText="Deletar"
+                      cancelText="Cancelar"
                     >
                       <Button 
                         type="icon" 
@@ -158,9 +174,8 @@ const Users = () => {
               >
                 <List.Item.Meta
                   title={
-                  <>
-                  <Typography.Title level={4}>{user?.name} {user?.surname? ` -  ${user.surname}` : null}</Typography.Title>
-                  </>}
+                    <Typography.Text style={{ fontSize: '1.25rem'}} >{user?.name} {user?.surname? ` -  ${user.surname}` : null}</Typography.Text>
+                  }
                   description={
                     <Col span={8} style={{display: 'flex', justifyContent: 'space-between'}}>
                       <Tag color="volcano">{user.subject}</Tag>
@@ -172,7 +187,6 @@ const Users = () => {
             )}
           />
         </div>
-
       </Col>
 
       <Drawer

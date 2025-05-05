@@ -12,19 +12,19 @@ import "./Style.less";
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
-const Classes = () => {
+const Classrooms = () => {
   const [loading, setLoading] = useState(false);
   const [UserData, setUserData] = useState();
   const [FilteredClasses, setFilteredClasses] = useState();
-  const [classes, setClasses] = useState();
+  const [classrooms, setClassrooms] = useState();
   const [Visible, setVisible] = useState(false);
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
 
-  const goToClass = () => {
-    Navigate('/class')
+  const goToClassroom = () => {
+    Navigate('/classroom')
   }
 
   const getProfile = async (id) => {
@@ -35,8 +35,8 @@ const Classes = () => {
   const getClasses = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/`);
-      setClasses(response?.data);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list/`);
+      setClassrooms(response?.data);
 
       setLoading(false);
 
@@ -56,17 +56,13 @@ const Classes = () => {
     }
   }
 
-  const filterClasses = (data) => {
-    if (!classes || classes.length === 0) return classes;
+  const filterClassrooms = (data) => {
+    if (!classrooms || classrooms.length === 0) return classrooms;
 
-    const filtered = classes.filter((classe) => {
+    const filtered = classrooms.filter((classroom) => {
       const searchData = String(data).toLowerCase();
-
-      const gradeMatch = classe?.grade === Number(data);
-      const classNameMatch = classe?.className?.toLowerCase().includes(searchData);
-      const shiftMatch = classe?.shift?.toLowerCase().includes(searchData);
-
-      return gradeMatch || classNameMatch || shiftMatch;
+      const nameMatch = classroom?.name?.toLowerCase().includes(searchData);
+      return nameMatch;
     });
 
     setFilteredClasses(filtered);
@@ -80,19 +76,19 @@ const Classes = () => {
     });
   };
 
-  const editClass = async (id) => {
-    localStorage.setItem("EditClass", id);
-    Navigate(`/class`);
+  const editClassroom = async (id) => {
+    localStorage.setItem("EditClassroom", id);
+    Navigate(`/classroom`);
   }
 
-  const deleteClass = async (id) => {
+  const deleteClassroom = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/classroom/list/${id}`);
 
       api.success({
-        message: 'Turma excluida com sucesso!',
-        description: 'As informações da turma foram deletadas.',
+        message: 'Sala excluida com sucesso!',
+        description: 'As informações da sala foram deletadas.',
         showProgress: true,
         duration: 2,
         placement: "top",
@@ -106,7 +102,7 @@ const Classes = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao excluir turma',
+        message: 'Erro ao excluir sala',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -121,13 +117,13 @@ const Classes = () => {
   useEffect(() => {
     getProfile(userData.id)
     getClasses();
-    localStorage.removeItem("EditClass");
+    localStorage.removeItem("EditClassroom");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {
-    localStorage.removeItem("EditClass");
-  }, [loading, classes]);
+    localStorage.removeItem("EditClassroom");
+  }, [loading, classrooms]);
 
   return (
 
@@ -150,27 +146,27 @@ const Classes = () => {
             <Input.Search
               className="InputSearchClasses"
               placeholder="Filtre as turmas"
-              onSearch={filterClasses}
+              onSearch={filterClassrooms}
               loading={loading}
               allowClear
             />
             <Button
               className="CreateClassButton"
-              onClick={() => goToClass()}
-            >Cadastrar turma</Button>
+              onClick={() => goToClassroom()}
+            >Cadastrar Sala</Button>
           </Row>
           <List
             loading={loading}
-            dataSource={FilteredClasses || classes}
-            className="ListClasses"
-            renderItem={(classe) => (
+            dataSource={FilteredClasses || classrooms}
+            className="ListClassroom"
+            renderItem={(classroom) => (
               <List.Item
                 extra={
                   <>
                     <Button
                       type="icon"
                       style={{ fontSize: '1.25rem' }}
-                      onClick={() => editClass(classe?.id)}
+                      onClick={() => editClassroom(classroom?.id)}
                     >
                       <EditTwoTone twoToneColor="#FFA500" />
                     </Button>
@@ -179,17 +175,17 @@ const Classes = () => {
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir a turma, todas as reservas
+                            Tem certeza que deseja excluir a sala, todas as reservas
                           </Typography.Text>
                           <br />
                           <Typography.Text>
-                            ligadas a esta turma serão deletadas?
+                            ligadas a esta sala serão deletadas?
                           </Typography.Text>
                         </>
                       }
                       autoAdjustOverflow
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteClass(classe?.id)}
+                      onConfirm={() => deleteClassroom(classroom?.id)}
                       onCancel={cancel}
                       okText="Deletar"
                       cancelText="Cancelar"
@@ -205,34 +201,29 @@ const Classes = () => {
                 }
               >
                 <List.Item.Meta
-                  title={`${classe.grade}º ${classe?.className}`}
+                  title={`${classroom.name}`}
                   description={
                     <>
-                      <Col span={8} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Tag color={
-                          classe?.shift === 'Manhã' ? 'green' :
-                            classe?.shift === 'Tarde' ? 'orange' :
-                              classe?.shift === 'Integral' ? 'volcano' :
-                                'blue'}
-                          style={{ fontSize: '1rem' }}
-                        >
-                          {classe?.shift}
-                        </Tag>
+                      <Col span={24} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography.Text type="secondary">
+                          {`Esta sala tem capacidade para: ${classroom?.capacity} alunos`}
+                        </Typography.Text>
                       </Col>
-
-                      {classe?.description && (
+                      {classroom?.description && (
                         <>
-                          <br />
+                          <br/>
                           <Col span={24}>
                             <Typography.Text type="secondary">
-                              {classe?.description}
+                              {classroom?.description}
                             </Typography.Text>
                           </Col>
                         </>
                       )}
                     </>
                   }
+                  style={{ display: 'flex', flexDirection: 'row' }}
                 />
+
               </List.Item>
             )}
           />
@@ -253,7 +244,7 @@ const Classes = () => {
   )
 }
 
-export default Classes;
+export default Classrooms;
 
 
 const Container = styled.div`
