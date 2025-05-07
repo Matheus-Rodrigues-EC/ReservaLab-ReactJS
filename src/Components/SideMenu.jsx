@@ -41,6 +41,10 @@ const SideMenu = () => {
     Navigate("/reservation");
   };
 
+  const goToEquipment = () => {
+    Navigate("/equipment");
+  };
+
   const goToClassrooms = () => {
     Navigate("/classrooms");
   };
@@ -110,7 +114,7 @@ const SideMenu = () => {
 
       <Button
         className="ButtonMenu"
-        onClick={goToReservation}
+        onClick={goToEquipment}
       >
         Reservar Equipamento
       </Button>

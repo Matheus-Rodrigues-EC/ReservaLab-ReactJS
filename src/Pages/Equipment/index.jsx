@@ -163,16 +163,16 @@ const Class = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Cadastrar Turma</Typography.Title>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+            <Typography.Title level={2} style={{ textAlign: 'center'}}>Cadastrar Equipamento</Typography.Title>
         <div className="ContainerClass">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Série/Ano</Typography.Text>
+              <Typography.Text className="TextClass">Nome</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Turma</Typography.Text>
+              <Typography.Text className="TextClass">Tipo</Typography.Text>
             </Row>
 
             <Row justify='space-between'>

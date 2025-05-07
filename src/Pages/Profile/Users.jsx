@@ -127,6 +127,7 @@ const Users = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Usuários</Typography.Title>
         <div className="ContainerProfile">
           <List
             loading={loading}

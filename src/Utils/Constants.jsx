@@ -104,3 +104,10 @@ export const EJA_Times = [
 	{id: 3,  label: '20:00 às 20:40'},
 	{id: 4,  label: '20:40 às 21:30'},
 ]
+
+export const Equipaments = [
+	{id: 1,  label: 'Projetor Elgin 1'},
+	{id: 2,  label: 'Caixa de Som JBL'},
+	{id: 3,  label: 'Projetor Elgin 2'},
+	{id: 4,  label: '20:40 às 21:30'},
+]

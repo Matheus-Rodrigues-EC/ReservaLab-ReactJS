@@ -144,7 +144,8 @@ const Classes = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Turmas</Typography.Title>
         <div className="ContainerClasses">
           <Row justify='space-between'>
             <Input.Search
