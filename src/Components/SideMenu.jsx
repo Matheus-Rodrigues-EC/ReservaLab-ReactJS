@@ -108,12 +108,12 @@ const SideMenu = () => {
         Reservar Sala
       </Button>
 
-      <Button
+      {/* <Button
         className="ButtonMenu"
         onClick={goToReservation}
       >
         Reservar Equipamento
-      </Button>
+      </Button> */}
 
       {(userData?.rulets === 'Professor(a)' || userData?.rulets === 'Apoio' || userData?.rulets == null ) &&
       <Button
