@@ -209,7 +209,7 @@ const Class = () => {
             >
               <Form.Item
                 name='grade'
-                initialValue={ClassData?.grade || ''}
+                initialValue={ClassData?.grade || null}
                 rules={[
                   { required: true, message: "Por favor, insira a série/ano da turma." },
                   { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
@@ -231,7 +231,7 @@ const Class = () => {
 
               <Form.Item
                 name='className'
-                initialValue={ClassData?.className || ''}
+                initialValue={ClassData?.className || null}
                 rules={[
                   { required: true, message: "Por favor insira a turma referente a série." }
                 ]}
@@ -253,7 +253,7 @@ const Class = () => {
 
               <Form.Item
                 name='shift'
-                initialValue={ClassData?.shift || ''}
+                initialValue={ClassData?.shift || null}
                 rules={[
                   { required: true, message: "Por favor selecione o turno da turma." },
                 ]}
