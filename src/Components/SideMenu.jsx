@@ -41,6 +41,14 @@ const SideMenu = () => {
     Navigate("/reservation");
   };
 
+  const goToEquipmentReservation = () => {
+    Navigate("/equipment-reservation");
+  };
+
+  const goToEquipments = () => {
+    Navigate("/equipments");
+  };
+
   const goToClassrooms = () => {
     Navigate("/classrooms");
   };
@@ -110,7 +118,7 @@ const SideMenu = () => {
 
       <Button
         className="ButtonMenu"
-        onClick={goToReservation}
+        onClick={goToEquipmentReservation}
       >
         Reservar Equipamento
       </Button>
@@ -121,6 +129,15 @@ const SideMenu = () => {
         onClick={goToProfile}
       >
         Perfil
+      </Button>
+      }
+      
+      {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
+      <Button
+        className="ButtonMenu"
+        onClick={goToEquipments}
+      >
+        Equipamentos
       </Button>
       }
       

@@ -126,8 +126,7 @@ const Cadastro = () => {
                   className="InputRegister"
                   allowClear
                   type="text"
-                  disabled={loading ? true : false}
-                  loading={loading ? true : false}
+                  disabled={loading}
                 >
 
                 </Input>
@@ -149,8 +148,7 @@ const Cadastro = () => {
                   className="InputRegister"
                   allowClear
                   type="text"
-                  disabled={loading ? true : false}
-                  loading={loading ? true : false}
+                  disabled={loading}
                 >
 
                 </Input>
@@ -171,8 +169,7 @@ const Cadastro = () => {
 
                   className="InputRegister"
                   allowClear
-                  disabled={loading ? true : false}
-                  loading={loading ? true : false}
+                  disabled={loading}
                 >
 
                 </Input.Password>
@@ -201,8 +198,7 @@ const Cadastro = () => {
 
                   className="InputRegister"
                   allowClear
-                  disabled={loading ? true : false}
-                  loading={loading ? true : false}
+                  disabled={loading}
                 >
 
                 </Input.Password>
@@ -213,8 +209,8 @@ const Cadastro = () => {
                   type="primary"
                   htmlType="submit"
                   className="SubmitButtonRegister"
-                  disabled={loading ? true : false}
-                  loading={loading ? true : false}
+                  disabled={loading}
+                  loading={loading}
                 >
                   Cadastrar
                 </Button>

@@ -1,6 +1,6 @@
 @Background: url(../../assets/Background.png);
 
-.ContainerClassroom {
+.ContainerEquipment {
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
@@ -12,16 +12,21 @@
   position: relative;
 }
 
-.inputTextAreaClassroom{
+.inputTextAreaEquipment {
   margin-bottom: 50px;
 }
 
-.ListClassroom {
+.FormItemProfile {
   width: 100%;
-  overflow-y: scroll;
 }
 
-.ClassroomButton {
+.RowItemProfile {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.SaveButtonEquipment {
   color: #02732A;
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
@@ -34,12 +39,12 @@
   right: 0;
 }
 
-.CancelClassroomButton {
+.CanceldButtonEquipment {
   color: #02732A;
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 5vw;
+  width: 7vw;
   height: 2vw;
   font-size: 1vw;
   position: absolute;
@@ -48,37 +53,37 @@
 }
 
 @media (max-width: 1024px){
-  .ContainerClassroom {
+  .ContainerEquipment {
     width: 95vw;
     height: auto;
     margin-top: 5vh;
   }
-  .TextClassroom {
-    font-size: 2vh;
+  .TextEquipment {
+    font-size: 2.25vh;
   }
-  .InputClassroom {
+  .InputDateEquipment {
+    width: 100% !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+  .InputEquipment {
     width: 100% !important;
     height: 5vh !important;
     font-size: 2vh !important;
     text-align: start;
   }
-  .inputTextAreaClassroom {
+  .inputTextAreaEquipment {
     width: 100% !important;
     height: 15vh !important;
     font-size: 2vh !important;
   }
-  .ListClassroom {
-    width: 100%;
-    height: 70vh;
-    overflow-y: scroll;
-  }
-  .ClassroomButton {
+  .SaveButtonEquipment {
     width: 17vw;
     height: 4vh;
     font-size: 1.75vh;
     margin-left: 5vw;
   }
-  .CancelClassroomButton {
+  .CanceldButtonEquipment {
     width: 12vw;
     height: 4vh;
     font-size: 1.75vh;
@@ -86,34 +91,35 @@
 }
 
 @media (max-width: 425px){
-  .ContainerClassroom {
+  .ContainerEquipment {
     width: 95vw;
     height: auto;
   }
-  .TextClassroom {
+  .TextEquipment {
     font-size: 2vh;
   }
-  .InputClassroom {
+  .InputDateEquipment {
+    width: 40vw !important;
+    height: 5vh !important;
+    font-size: 2vh !important;
+  }
+  .InputEquipment {
     width: 100% !important;
     height: 5vh !important;
     font-size: 2vh !important;
   }
-  .inputTextAreaClassroom {
+  .inputTextAreaEquipment {
     width: 100% !important;
     height: 15vh !important;
     font-size: 2vh !important;
   }
-  .ListClassroom {
-    width: 100%;
-    overflow-y: scroll;
-  }
-  .ClassroomButton {
-    width: auto;
+  .SaveButtonEquipment {
+    width: 35vw;
     height: 4vh;
     font-size: 1.75vh;
     margin-left: 5vw;
   }
-  .CancelClassroomButton {
+  .CanceldButtonEquipment {
     width: 25vw;
     height: 4vh;
     font-size: 1.75vh;

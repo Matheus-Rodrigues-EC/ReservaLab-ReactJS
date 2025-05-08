@@ -123,7 +123,6 @@ const Login = () => {
                   className="InputLogin"
                   allowClear
                   type="text"
-                  loading={loading}
                   disabled={loading}
                 >
 
@@ -147,7 +146,6 @@ const Login = () => {
                   className="InputLogin"
                   allowClear
                   type="password"
-                  loading={loading}
                   disabled={loading}
                 >
 

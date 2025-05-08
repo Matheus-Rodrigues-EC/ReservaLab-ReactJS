@@ -12,19 +12,19 @@ import "./Style.less";
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
-const Classrooms = () => {
+const Equipments = () => {
   const [loading, setLoading] = useState(false);
   const [UserData, setUserData] = useState();
-  const [FilteredClasses, setFilteredClasses] = useState();
-  const [classrooms, setClassrooms] = useState();
+  const [FilteredEquipments, setFilteredEquipments] = useState();
+  const [equipments, setEquipments] = useState();
   const [Visible, setVisible] = useState(false);
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
 
-  const goToClassroom = () => {
-    Navigate('/classroom')
+  const goToEquipment = () => {
+    Navigate('/equipment')
   }
 
   const getProfile = async (id) => {
@@ -32,11 +32,11 @@ const Classrooms = () => {
     setUserData(response.data)
   }
 
-  const getClasses = async () => {
+  const getEquipments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list/`);
-      setClassrooms(response?.data);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list/`);
+      setEquipments(response?.data);
 
       setLoading(false);
 
@@ -44,7 +44,7 @@ const Classrooms = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao carregar usuários',
+        message: 'Erro ao carregar equipamentos',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -56,45 +56,45 @@ const Classrooms = () => {
     }
   }
 
-  const filterClassrooms = (data) => {
-    if (!classrooms || classrooms.length === 0) return classrooms;
+  const filterEquipments = (data) => {
+    if (!equipments || equipments.length === 0) return equipments;
 
-    const filtered = classrooms.filter((classroom) => {
+    const filtered = equipments.filter((equipment) => {
       const searchData = String(data).toLowerCase();
-      const nameMatch = classroom?.name?.toLowerCase().includes(searchData);
+      const nameMatch = equipment?.name?.toLowerCase().includes(searchData);
       return nameMatch;
     });
 
-    setFilteredClasses(filtered);
+    setFilteredEquipments(filtered);
     return filtered;
   };
 
   const cancel = () => {
     messageApi.open({
-      type: 'error',
+      type: 'warning',
       content: 'Exclusão cancelada',
     });
   };
 
-  const editClassroom = async (id) => {
-    localStorage.setItem("EditClassroom", id);
-    Navigate(`/classroom`);
+  const editEquipment = async (id) => {
+    localStorage.setItem("editEquipment", id);
+    Navigate(`/equipment`);
   }
 
-  const deleteClassroom = async (id) => {
+  const deleteEquipment = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/classroom/list/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/equipments/list/${id}`);
 
       api.success({
-        message: 'Sala excluida com sucesso!',
-        description: 'As informações da sala foram deletadas.',
+        message: 'Equipamento excluido com sucesso!',
+        description: 'As informações do equipamento foram deletadas.',
         showProgress: true,
         duration: 2,
         placement: "top",
       });
       setTimeout(() => {
-        getClasses();
+        getEquipments();
         setLoading(false);
       }, 1750);
 
@@ -102,7 +102,7 @@ const Classrooms = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao excluir sala',
+        message: 'Erro ao excluir equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -116,14 +116,14 @@ const Classrooms = () => {
 
   useEffect(() => {
     getProfile(userData.id)
-    getClasses();
-    localStorage.removeItem("EditClassroom");
+    getEquipments();
+    localStorage.removeItem("editEquipment");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {
-    localStorage.removeItem("EditClassroom");
-  }, [loading, classrooms]);
+    localStorage.removeItem("editEquipment");
+  }, [loading, equipments]);
 
   return (
 
@@ -141,52 +141,52 @@ const Classrooms = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Salas</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Equipamentos</Typography.Title>
         <div className="ContainerClasses">
           <Row justify='space-between'>
             <Input.Search
               className="InputSearchClasses"
-              placeholder="Filtre as turmas"
-              onSearch={filterClassrooms}
+              placeholder="Filtre os Equipamentos"
+              onSearch={filterEquipments}
               loading={loading}
               allowClear
             />
             <Button
               className="CreateClassButton"
-              onClick={() => goToClassroom()}
-            >Cadastrar Sala</Button>
+              onClick={() => goToEquipment()}
+            >Cadastrar Equipamento</Button>
           </Row>
           <List
             loading={loading}
-            dataSource={FilteredClasses || classrooms}
+            dataSource={FilteredEquipments || equipments}
             className="ListClassroom"
-            renderItem={(classroom) => (
+            renderItem={(equipment) => (
               <List.Item
                 extra={
                   <>
                     <Button
                       type="icon"
                       style={{ fontSize: '1.25rem' }}
-                      onClick={() => editClassroom(classroom?.id)}
+                      onClick={() => editEquipment(equipment?.id)}
                     >
                       <EditTwoTone twoToneColor="#FFA500" />
                     </Button>
                     <Popconfirm
-                      title="Excluir Turma"
+                      title="Excluir Equipamento"
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir a sala, todas as reservas
+                            Tem certeza que deseja excluir o equipamento, todas as reservas
                           </Typography.Text>
                           <br />
                           <Typography.Text>
-                            ligadas a esta sala serão deletadas?
+                            ligadas a este equipamento serão deletadas?
                           </Typography.Text>
                         </>
                       }
                       autoAdjustOverflow
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteClassroom(classroom?.id)}
+                      onConfirm={() => deleteEquipment(equipment?.id)}
                       onCancel={cancel}
                       okText="Deletar"
                       cancelText="Cancelar"
@@ -202,20 +202,20 @@ const Classrooms = () => {
                 }
               >
                 <List.Item.Meta
-                  title={`${classroom.name}`}
+                  title={`${equipment.name}`}
                   description={
                     <>
                       <Col span={24} style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Typography.Text type="secondary">
-                          {`Esta sala tem capacidade para: ${classroom?.capacity} alunos`}
+                          {equipment?.type} {equipment?.tombNumber}
                         </Typography.Text>
                       </Col>
-                      {classroom?.description && (
+                      {equipment?.description && (
                         <>
                           <br/>
                           <Col span={24}>
                             <Typography.Text type="secondary">
-                              {classroom?.description}
+                              {equipment?.description}
                             </Typography.Text>
                           </Col>
                         </>
@@ -245,7 +245,7 @@ const Classrooms = () => {
   )
 }
 
-export default Classrooms;
+export default Equipments;
 
 
 const Container = styled.div`

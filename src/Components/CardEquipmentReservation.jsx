@@ -4,7 +4,7 @@ import React, {
   useEffect,
 } from "react";
 import { Col, Row, Card, Image, Typography, Tag } from "antd";
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+// import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 import "./Style.less";
 const userData = JSON.parse(localStorage.getItem('userData'));
@@ -13,34 +13,24 @@ import { FuncionalidadesList as Purposes } from "../Utils/Constants";
 import {
   ClockCircleOutlined,
   ReadOutlined,
-  ContactsOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 
-import Classroom from '../assets/Classroom.jpg';
-import Computer from '../assets/Informática.png';
-import Library from '../assets/Biblioteca.png';
-import Recap from '../assets/Reforco.png';
-import Special from '../assets/Especial.jpeg';
-import Sport from '../assets/Quadra.png'
-import Test from '../assets/Prova.png';
+import Infra from '../assets/Infrastructure.png';
+import Music from '../assets/Music.png';
+import Audio from '../assets/Som.png';
+import Sport from '../assets/Sports.png';
+import Video from '../assets/Video.png';
 
-const CardReservation = (Data) => {
+const CardEquipmentReservation = (Data) => {
   const { data } = Data;
 
   const renderImage = (id) => {
-    if (id === '1' || id === '7') return Test;
-    else if (id === '2') return Special;
-    else if (id === '3') return Sport;
-    else if (id === '4') return Library;
-    else if (id === '5') return Computer;
-    else if (id === '6') return Library;
-    else if (id === '8' || id === '9') return Recap;
-    else return Classroom;
-  }
-
-  const renderPurpose = (id) => {
-    const found = Purposes.find((purpose) => purpose.id == id);
-    return found ? `${found?.label}` : "Aula Padrão";
+    if (id === 'Audio') return Audio;
+    else if (id === 'Vídeo') return Video;
+    else if (id === 'Infraestrutura') return Infra;
+    else if (id === 'Esportes') return Sport;
+    else if (id === 'Música') return Music;
   }
 
   // const actions = [
@@ -52,6 +42,8 @@ const CardReservation = (Data) => {
   useEffect(() => {
     // console.log(data)
   }, [data])
+
+  console.log(data)
 
   const formattedDate = dayjs(data.date).format("dddd, DD/MM/YYYY");
   const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
@@ -80,7 +72,7 @@ const CardReservation = (Data) => {
           }
         >
           <Image
-            src={renderImage(data?.purpose) || Classroom}
+            src={renderImage(data?.Equipment?.type)}
             className="ImageResv"
           />
         </Col>
@@ -94,7 +86,7 @@ const CardReservation = (Data) => {
         >
           <Row>
             <Typography.Text className="TitleResv">
-              {data?.Classroom?.name} | {renderPurpose(data?.purpose)} | {capitalizedDate}
+              Equipamento: {data?.Equipment?.name}
             </Typography.Text>
           </Row>
           <Row justify="space-between">
@@ -172,9 +164,9 @@ const CardReservation = (Data) => {
               span={window.innerWidth > 1025 ? 7 : 12}
               style={{ display: 'flex' }}
             >
-              <ContactsOutlined />
+              <AppstoreOutlined />
               <Typography.Text className="TextCommon" style={{ textAlign: 'end', marginRight: '2.5vw' }}>
-                {data?.Class?.grade}º {data?.Class.className} - {data?.Class?.shift}
+                {data?.Equipment?.type}
               </Typography.Text>
             </Col>
           </Row>
@@ -198,4 +190,4 @@ const CardReservation = (Data) => {
   )
 }
 
-export default CardReservation;
+export default CardEquipmentReservation;
