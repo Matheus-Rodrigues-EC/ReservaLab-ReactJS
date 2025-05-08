@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.5...v0.3.0) (2025-05-08)
+
+
+### Features
+
+* Created all functions to make an equipment reservation ([edda8d7](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/edda8d75d0752a30eaec835bd07588e07b301a1e))
+
 ### [0.2.5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.4...v0.2.5) (2025-05-08)
 
 
