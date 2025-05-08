@@ -133,7 +133,8 @@ const Class = () => {
   };
 
   useEffect(() => {
-    getEquipment(editEquipment);
+    if(editEquipment)
+      getEquipment(editEquipment);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 

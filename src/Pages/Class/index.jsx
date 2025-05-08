@@ -134,7 +134,8 @@ const Class = () => {
   };
 
   useEffect(() => {
-    getClass(editClass);
+    if(editClass)
+      getClass(editClass);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
@@ -164,7 +165,12 @@ const Class = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Cadastrar Turma</Typography.Title>
+        <Typography.Title
+          level={2} 
+          style={{ textAlign: 'center'}}
+        >
+          {editClass ? 'Atualizar Turma' : 'Cadastrar Turma'}
+        </Typography.Title>
         <div className="ContainerClass">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>

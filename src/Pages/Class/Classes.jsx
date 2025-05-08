@@ -8,6 +8,7 @@ import { EditTwoTone, DeleteTwoTone, QuestionCircleOutlined } from '@ant-design/
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
+import { removerAcentos } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
@@ -57,21 +58,23 @@ const Classes = () => {
   }
 
   const filterClasses = (data) => {
-    if (!classes || classes.length === 0) return classes;
-
+    if (!classes || classes.length === 0) return [];
+  
+    const searchData = String(data).toLowerCase();
+    const normalizedSearch = removerAcentos(searchData);
+  
     const filtered = classes.filter((classe) => {
-      const searchData = String(data).toLowerCase();
-
       const gradeMatch = classe?.grade === Number(data);
       const classNameMatch = classe?.className?.toLowerCase().includes(searchData);
-      const shiftMatch = classe?.shift?.toLowerCase().includes(searchData);
-
+      const shiftMatch = removerAcentos(classe?.shift?.toLowerCase() || '').includes(normalizedSearch);
+  
       return gradeMatch || classNameMatch || shiftMatch;
     });
-
+  
     setFilteredClasses(filtered);
     return filtered;
   };
+  
 
   const cancel = () => {
     messageApi.open({
@@ -152,7 +155,7 @@ const Classes = () => {
               className="InputSearchClasses"
               placeholder="Filtre as turmas"
               onSearch={filterClasses}
-              loading={loading}
+              disabled={loading}
               allowClear
             />
             <Button
