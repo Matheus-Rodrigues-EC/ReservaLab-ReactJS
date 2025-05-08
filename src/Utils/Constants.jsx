@@ -1,6 +1,8 @@
 export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const numberRegex = /^[0-9]{1,3}$/;
 export const serieRegex = /^[0-9]{1}$/;
+export const tombRegex = /^\d{3}-[A-Z]-\d{4}$/;
+
 export const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
 export const hasSpecialChar = (text) => /[!@#$%^&*(),.?":{}|<>]/.test(text);
@@ -105,9 +107,11 @@ export const EJA_Times = [
 	{id: 4,  label: '20:40 às 21:30'},
 ]
 
-export const Equipaments = [
-	{id: 1,  label: 'Projetor Elgin 1'},
-	{id: 2,  label: 'Caixa de Som JBL'},
-	{id: 3,  label: 'Projetor Elgin 2'},
-	{id: 4,  label: '20:40 às 21:30'},
+
+export const EquipamentsTypes = [
+	{id: 1,  label: 'Audio'},
+	{id: 2,  label: 'Vídeo'},
+	{id: 3,  label: 'Infraestrutura'},
+	{id: 4,  label: 'Esportes'},
+	{id: 5,  label: 'Música'},
 ]

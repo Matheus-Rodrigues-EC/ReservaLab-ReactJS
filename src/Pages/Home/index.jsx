@@ -73,9 +73,46 @@ const Home = () => {
     }
   };
 
+  const getEquipmentsReservations = async (date = null) => {
+
+    setLoading(true);
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments-reservations/list`);
+      // console.table(response?.data)
+
+      const allReservations = response?.data;
+      let filtered = [...reservations];
+
+      if (date) {
+        // Se há uma data selecionada, filtra por ela
+        filtered = allReservations.filter((item) =>
+          dayjs(item.date).isSame(dayjs(date), 'day')
+        );
+      } else {
+        // Caso contrário, filtra pelas reservas de hoje
+        filtered = filteredToday(allReservations);
+      }
+
+      setReservations((prevState) => [...prevState], filtered);
+
+    } catch (error) {
+      console.error(error);
+      api.error({
+        message: 'Erro ao Carregar reservas',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     getReservations(selectedDate);
+    getEquipmentsReservations(selectedDate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
 

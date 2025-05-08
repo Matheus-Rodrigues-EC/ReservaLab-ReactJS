@@ -10,8 +10,7 @@ import styled from "styled-components";
 import "./Style.less";
 
 import {
-  TurmaList as Turmas,
-  TurnoList as Turnos,
+  EquipamentsTypes,
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
@@ -22,26 +21,27 @@ const Class = () => {
   const data = Constants?.data;
   const Navigate = useNavigate()
   const [Visible, setVisible] = useState(false);
-  const [ClassData, setClassData] = useState();
-  const editClass = JSON.parse(localStorage.getItem('EditClass'));
+  const [EquipmentData, setEquipmentData] = useState();
+  const editEquipment = JSON.parse(localStorage.getItem('editEquipment'));
   const [api, contextHolder] = notification.useNotification();
   const [loading, setLoading] = useState(false);
 
-  const goToClasses = () => {
-    Navigate('/classes')
+  const goToEquipments = () => {
+    Navigate('/equipments')
   }
 
-  const createClass = async (data) => {
+  const createEquipment = async (data) => {
+    
+    setLoading(true);
     const body = {
       ...data,
-      grade: Number(data.grade)
     }
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/classes/create`, body);
+      await axios.post(`${import.meta.env.VITE_API_URL}/equipments/create`, body);
 
       api.success({
-        message: 'Turma Cadastrada!',
-        description: 'A turma cadastrada foi salva com sucesso.',
+        message: 'Equipamento Cadastrado!',
+        description: 'O equipamento cadastrado foi salvo com sucesso.',
         showProgress: true,
         duration: 2,
         placement: "top"
@@ -49,14 +49,14 @@ const Class = () => {
 
       setTimeout(() => {
         setLoading(false);
-        goToClasses();
+        goToEquipments();
       }, 2250);
 
     } catch (error) {
       console.error(error);
 
       api.error({
-        message: 'Erro ao cadastrar turma',
+        message: 'Erro ao cadastrar equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -69,22 +69,22 @@ const Class = () => {
     }
   }
 
-  const updateClass = async () => {
+  const updateEquipment = async () => {
     const body = {
-      grade: form.getFieldValue('grade'),
-      className: form.getFieldValue('className'),
-      shift: form.getFieldValue('shift'),
+      name: form.getFieldValue('name'),
+      type: form.getFieldValue('type'),
+      tombNumber: form.getFieldValue('tombNumber'),
       description: form.getFieldValue('description'),
     };
   
     try {
       setLoading(true);
   
-      await axios.patch(`${import.meta.env.VITE_API_URL}/classes/${editClass}/update`, body);
+      await axios.patch(`${import.meta.env.VITE_API_URL}/equipments/${editEquipment}/update`, body);
   
       api.success({
-        message: 'Turma Atualizada!',
-        description: 'As informações da turma foram atualizadas com sucesso.',
+        message: 'Equipamento Atualizado!',
+        description: 'As informações do equipamento foram atualizadas com sucesso.',
         showProgress: true,
         duration: 2,
         placement: 'top',
@@ -92,14 +92,14 @@ const Class = () => {
   
       setTimeout(() => {
         setLoading(false);
-        goToClasses();
+        goToEquipments();
       }, 2250);
   
     } catch (error) {
       console.error(error);
   
       api.error({
-        message: 'Erro ao atualizar turma',
+        message: 'Erro ao atualizar equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -113,19 +113,18 @@ const Class = () => {
   };
   
 
-  const getClass = async (id) => {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
-    setClassData(response?.data)
+  const getEquipment = async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list/${id}`);
+    setEquipmentData(response?.data)
   }
 
   const onFinish = (values) => {
-    // console.log('Success:');
-    if (editClass) {
-      updateClass(values);
-      console.log(Number(ClassData.grade));
+    if (editEquipment) {
+      updateEquipment(values);
+      console.log(Number(EquipmentData.grade));
       console.log('update')
     } else {
-      createClass(values);
+      createEquipment(values);
       console.log('create')
     }
   };
@@ -134,20 +133,20 @@ const Class = () => {
   };
 
   useEffect(() => {
-    getClass(editClass);
+    getEquipment(editEquipment);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   useEffect(() => {
-    if (ClassData) {
+    if (EquipmentData) {
       form.setFieldsValue({
-        grade: ClassData.grade,
-        className: ClassData.className,
-        shift: ClassData.shift,
-        description: ClassData.description,
+        name: EquipmentData.name,
+        type: EquipmentData.type,
+        tombNumber: EquipmentData.tombNumber,
+        description: EquipmentData.description,
       });
     }
-  }, [ClassData, form, data]);
+  }, [EquipmentData, form, data]);
 
   return (
 
@@ -164,7 +163,12 @@ const Class = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
-            <Typography.Title level={2} style={{ textAlign: 'center'}}>Cadastrar Equipamento</Typography.Title>
+            <Typography.Title 
+              level={2} 
+              style={{ textAlign: 'center'}}
+            >
+              {editEquipment ? 'Atualizar Equipamento' : 'Cadastrar Equipamento'}
+            </Typography.Title>
         <div className="ContainerClass">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
@@ -176,7 +180,7 @@ const Class = () => {
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Turno</Typography.Text>
+              <Typography.Text className="TextClass">Nº de Tombamento</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
@@ -186,7 +190,7 @@ const Class = () => {
             <Button
               type="danger"
               className="CancelClassButton"
-              onClick={goToClasses}
+              onClick={goToEquipments}
               loading={loading}
               disabled={loading}
             >
@@ -196,80 +200,76 @@ const Class = () => {
           <Col span={12} offset={1}>
             <Form
               form={form}
-              name="Serie"
+              name="Equipment"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
-                name='grade'
-                initialValue={ClassData?.grade || ''}
+                name='name'
+                initialValue={EquipmentData?.name || null}
                 rules={[
-                  { required: true, message: "Por favor, insira a série/ano da turma." },
-                  { pattern: Constants.serieRegex, message: "Por favor, insira uma série/ano válida!" },
+                  { required: true, message: "Por favor, insira o nome do equipamento." },
                 ]}
                 className="FormItemProfile"
               >
 
                 <Input
                   size="large"
-                  placeholder="Série/Ano"
-                  suffix='º'
+                  placeholder="Nome"
                   className="InputClass"
                   allowClear
-                  type="number"
-                  min='1'
-                  max='9'
+                  loading={loading}
+                  disabled={loading}
                 />
               </Form.Item>
 
               <Form.Item
-                name='className'
-                initialValue={ClassData?.className || ''}
+                name='type'
+                initialValue={EquipmentData?.type || null}
                 rules={[
-                  { required: true, message: "Por favor insira a turma referente a série." }
+                  { required: true, message: "Por favor selecione o tipo de equipamento." }
                 ]}
                 className="FormItemProfile"
               >
                 <Select
                   size="large"
-                  placeholder="Turma"
+                  placeholder="Tipo"
                   className="InputClass"
                   allowClear
+                  loading={loading}
+                  disabled={loading}
                 >
-                  {Turmas.map((turma) => (
-                    <Select.Option key={turma?.label} values={turma?.label} >
-                      {turma?.label}
+                  {EquipamentsTypes.map((equipment) => (
+                    <Select.Option key={equipment?.label} values={equipment?.label} >
+                      {equipment?.label}
                     </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
 
               <Form.Item
-                name='shift'
-                initialValue={ClassData?.shift || ''}
+                name='tombNumber'
+                initialValue={EquipmentData?.tombNumber || null}
                 rules={[
-                  { required: true, message: "Por favor selecione o turno da turma." },
+                  { required: false, message: "Por favor insira um número de tombamento." },
+                  { pattern: Constants.tombRegex, message: "Por favor, insira um número de tomabento válido! Exemplo: (595-T-1959)" },
                 ]}
                 className="FormItemProfile"
               >
-                <Select
+                <Input
                   size="large"
-                  placeholder="Turno"
+                  placeholder="Número de Tombamento"
                   className="InputClass"
                   allowClear
-                >
-                  {Turnos.map((turno) => (
-                    <Select.Option key={turno?.label} values={turno?.label} >
-                      {turno?.label}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  loading={loading}
+                  disabled={loading}
+                />
               </Form.Item>
 
               <Form.Item
                 name='description'
-                initialValue={ClassData?.description || ''}
+                initialValue={EquipmentData?.description || ''}
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}
@@ -282,11 +282,13 @@ const Class = () => {
                   allowClear
                   showCount
                   maxLength={250}
+                  loading={loading}
+                  disabled={loading}
                 >
                 </Input.TextArea>
               </Form.Item>
 
-              {editClass ? (
+              {editEquipment ? (
                 <Button
                   type="primary"
                   htmlType="submit"
@@ -294,7 +296,7 @@ const Class = () => {
                   loading={loading}
                   disabled={loading}
                 >
-                  Atualizar Turma
+                  Atualizar Equipamento
                 </Button>
               ) : (
                 <Button
@@ -304,7 +306,7 @@ const Class = () => {
                   loading={loading}
                   disabled={loading}
                 >
-                  Cadastrar Turma
+                  Cadastrar Equipamento
                 </Button>
               )}
 
