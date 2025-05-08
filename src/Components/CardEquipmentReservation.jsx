@@ -64,7 +64,7 @@ const CardEquipmentReservation = (Data) => {
       // actions={userData?.id === data?.userId ? actions : null}
       >
         <Col
-          span={window.innerWidth > 1025 ? 4 : window.innerWidth > 415 ? 10 : 20}
+          span={window.innerWidth > 1025 ? 4 : window.innerWidth > 415 ? 6 : 20}
           style={
             window.innerWidth > 1025 ? { margin: 'auto' } : 
             window.innerWidth > 415 ? { margin: 'auto' } : 
@@ -86,7 +86,7 @@ const CardEquipmentReservation = (Data) => {
         >
           <Row>
             <Typography.Text className="TitleResv">
-              Equipamento: {data?.Equipment?.name}
+              Equipamento: {data?.Equipment?.name} | {capitalizedDate}
             </Typography.Text>
           </Row>
           <Row justify="space-between">
@@ -115,14 +115,14 @@ const CardEquipmentReservation = (Data) => {
                         key={time}
                         style={
                           window.innerWidth > 1280 ? {
-                            fontSize: 24,
+                            fontSize: '1rem',
                             padding: 5
                           } :
                             window.innerWidth > 415 ? {
-                              fontSize: 14,
+                              fontSize: '.75rem',
                               padding: 3
                             } : {
-                              fontSize: 10,
+                              fontSize: '.65rem',
                               padding: 3
                             }}
                       >
