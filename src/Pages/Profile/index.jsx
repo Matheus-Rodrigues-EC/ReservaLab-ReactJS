@@ -151,7 +151,7 @@ const Profile = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Usuário</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Atualizar Perfil</Typography.Title>
         <div className="ContainerProfile">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '35px' }}>
             <Row>

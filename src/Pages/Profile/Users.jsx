@@ -126,9 +126,9 @@ const Users = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title level={2} style={{ textAlign: 'center'}}>Usuários</Typography.Title>
-        <div className="ContainerProfile">
+        <div className="ContainerUsers">
           <List
             loading={loading}
             dataSource={users}
@@ -175,12 +175,12 @@ const Users = () => {
               >
                 <List.Item.Meta
                   title={
-                    <Typography.Text style={{ fontSize: '1.25rem'}} >{user?.name} {user?.surname? ` -  ${user.surname}` : null}</Typography.Text>
+                    <Typography.Text className="UsersName">{user?.name} {user?.surname? ` -  ${user.surname}` : null}</Typography.Text>
                   }
                   description={
-                    <Col span={8} style={{display: 'flex', justifyContent: 'space-between'}}>
-                      <Tag color="volcano">{user.subject}</Tag>
-                      <Tag color="geekblue">{user.shift}</Tag>
+                    <Col span={window.innerWidth > 1025 ? 10 : window.innerWidth < 425 ? 24 : 12} style={{display: 'flex', justifyContent: 'space-between'}}>
+                      <Tag color="volcano" className="TagSubject">{user.subject}</Tag>
+                      <Tag color="geekblue" className="TagShift">{user.shift}</Tag>
                     </Col>
                   }
                 />
