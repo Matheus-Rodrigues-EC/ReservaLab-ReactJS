@@ -104,7 +104,7 @@ const Home = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5rem' } : { marginTop: '1vh' }}>
         <div className="ContainerHome">
           <div style={{ display: 'flex', margin: '0 auto', alignItems: 'center', justifyContent: 'center' }}>
             <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
@@ -115,7 +115,7 @@ const Home = () => {
                 size="large"
                 placeholder={dataCapitalizada}
                 disabled={loading}
-                style={{ width: '290px' }}
+                style={{ width: '15rem' }}
                 allowClear
                 onChange={(value) => {
                   setSelectedDate(value);
@@ -125,7 +125,7 @@ const Home = () => {
             </Tooltip>
             <Tooltip placement="bottom" title={'Clique aqui para recarregar as reservas'}>
               <Button
-                style={{ height: '40px', margin: '0 10px' }}
+                style={{ height: '2.5rem', margin: '0 10px' }}
                 onClick={() => { fetchAllReservations(); handleSetToday(); }}
               >
                 <ReloadOutlined width='40' />
