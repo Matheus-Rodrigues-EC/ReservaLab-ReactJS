@@ -176,11 +176,7 @@ const Equipments = () => {
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir o equipamento, todas as reservas
-                          </Typography.Text>
-                          <br />
-                          <Typography.Text>
-                            ligadas a este equipamento serão deletadas?
+                            Tem certeza que deseja excluir o equipamento, todas as reservas ligadas a este equipamento serão deletadas?
                           </Typography.Text>
                         </>
                       }

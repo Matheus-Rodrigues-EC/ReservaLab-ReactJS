@@ -57,7 +57,7 @@ const Users = () => {
 
   const cancel = () => {
     messageApi.open({
-      type: 'error',
+      type: 'warning',
       content: 'Exclusão cancelada',
     });
   };
@@ -149,11 +149,7 @@ const Users = () => {
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir o usuário, todas as reservas
-                          </Typography.Text>
-                          <br/>
-                          <Typography.Text>
-                            ligadas a este usuário serão deletadas?
+                            Tem certeza que deseja excluir o usuário, todas as reservas ligadas a este usuário serão deletadas?
                           </Typography.Text>
                         </>
                       }
