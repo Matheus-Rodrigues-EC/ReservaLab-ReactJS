@@ -142,24 +142,24 @@ const Equipments = () => {
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title level={2} style={{ textAlign: 'center'}}>Equipamentos</Typography.Title>
-        <div className="ContainerClasses">
+        <div className="ContainerEquipments">
           <Row justify='space-between'>
             <Input.Search
-              className="InputSearchClasses"
+              className="InputSearchEquipments"
               placeholder="Filtre os Equipamentos"
               onSearch={filterEquipments}
               loading={loading}
               allowClear
             />
             <Button
-              className="CreateClassButton"
+              className="CreateEquipmentButton"
               onClick={() => goToEquipment()}
             >Cadastrar Equipamento</Button>
           </Row>
           <List
             loading={loading}
             dataSource={FilteredEquipments || equipments}
-            className="ListClassroom"
+            className="ListEquipments"
             renderItem={(equipment) => (
               <List.Item
                 extra={
@@ -176,11 +176,7 @@ const Equipments = () => {
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir o equipamento, todas as reservas
-                          </Typography.Text>
-                          <br />
-                          <Typography.Text>
-                            ligadas a este equipamento serão deletadas?
+                            Tem certeza que deseja excluir o equipamento, todas as reservas ligadas a este equipamento serão deletadas?
                           </Typography.Text>
                         </>
                       }

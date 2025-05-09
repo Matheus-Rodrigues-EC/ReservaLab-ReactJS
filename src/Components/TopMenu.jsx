@@ -43,7 +43,7 @@ const TopMenu = (props) => {
           display: 'flex', 
           fontFamily: "Poppins, sans-serif", 
           marginTop: '10px', 
-          fontSize: '3vw', 
+          fontSize: '1rem', 
           alignItems: 'center' 
         }}
       >
@@ -51,7 +51,7 @@ const TopMenu = (props) => {
       </Typography.Title>
       <Button
         type="text"
-        icon={<MenuOutlined style={{ fontSize: 24 }} />}
+        icon={<MenuOutlined style={{ fontSize: '1.5rem' }} />}
         className="ButtonTopMenu"
         onClick={() => setVisible(!visible)}
       >

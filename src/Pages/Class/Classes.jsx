@@ -78,7 +78,7 @@ const Classes = () => {
 
   const cancel = () => {
     messageApi.open({
-      type: 'error',
+      type: 'warning',
       content: 'Exclusão cancelada',
     });
   };
@@ -218,7 +218,7 @@ const Classes = () => {
                             classe?.shift === 'Tarde' ? 'orange' :
                               classe?.shift === 'Integral' ? 'volcano' :
                                 'blue'}
-                          style={{ fontSize: '1rem' }}
+                          className="TagShift"
                         >
                           {classe?.shift}
                         </Tag>

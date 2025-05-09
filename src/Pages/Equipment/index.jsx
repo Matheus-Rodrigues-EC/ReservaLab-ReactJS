@@ -16,7 +16,7 @@ import {
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
-const Class = () => {
+const Equipment = () => {
   const [form] = Form.useForm();
   const data = Constants?.data;
   const Navigate = useNavigate()
@@ -170,27 +170,27 @@ const Class = () => {
             >
               {editEquipment ? 'Atualizar Equipamento' : 'Cadastrar Equipamento'}
             </Typography.Title>
-        <div className="ContainerClass">
+        <div className="ContainerEquipment">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Nome</Typography.Text>
+              <Typography.Text className="TextEquipment">Nome</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Tipo</Typography.Text>
+              <Typography.Text className="TextEquipment">Tipo</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Nº de Tombamento</Typography.Text>
+              <Typography.Text className="TextEquipment">Nº de Tombamento</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextClass">Obervação</Typography.Text>
+              <Typography.Text className="TextEquipment">Obervação</Typography.Text>
             </Row>
 
             <Button
               type="danger"
-              className="CancelClassButton"
+              className="CanceldButtonEquipment"
               onClick={goToEquipments}
               loading={loading}
               disabled={loading}
@@ -212,13 +212,13 @@ const Class = () => {
                 rules={[
                   { required: true, message: "Por favor, insira o nome do equipamento." },
                 ]}
-                className="FormItemProfile"
+                className="FormItemEquipment"
               >
 
                 <Input
                   size="large"
                   placeholder="Nome"
-                  className="InputClass"
+                  className="InputEquipment"
                   allowClear
                   loading={loading}
                   disabled={loading}
@@ -231,12 +231,12 @@ const Class = () => {
                 rules={[
                   { required: true, message: "Por favor selecione o tipo de equipamento." }
                 ]}
-                className="FormItemProfile"
+                className="FormItemEquipment"
               >
                 <Select
                   size="large"
                   placeholder="Tipo"
-                  className="InputClass"
+                  className="InputEquipment"
                   allowClear
                   loading={loading}
                   disabled={loading}
@@ -256,12 +256,12 @@ const Class = () => {
                   { required: false, message: "Por favor insira um número de tombamento." },
                   { pattern: Constants.tombRegex, message: "Por favor, insira um número de tomabento válido! Exemplo: (595-T-1959)" },
                 ]}
-                className="FormItemProfile"
+                className="FormItemEquipment"
               >
                 <Input
                   size="large"
                   placeholder="Número de Tombamento"
-                  className="InputClass"
+                  className="InputEquipment"
                   allowClear
                   loading={loading}
                   disabled={loading}
@@ -274,12 +274,12 @@ const Class = () => {
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma Obervação?" }
                 ]}
-                className="FormItemProfile"
+                className="FormItemEquipment"
               >
                 <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma Obervação?"
-                  className="inputTextAreaClass"
+                  className="inputTextAreaEquipment"
                   allowClear
                   showCount
                   maxLength={250}
@@ -293,7 +293,7 @@ const Class = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="ClassButton"
+                  className="SaveButtonEquipment"
                   loading={loading}
                   disabled={loading}
                 >
@@ -303,7 +303,7 @@ const Class = () => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  className="ClassButton"
+                  className="SaveButtonEquipment"
                   loading={loading}
                   disabled={loading}
                 >
@@ -330,7 +330,7 @@ const Class = () => {
   )
 }
 
-export default Class;
+export default Equipment;
 
 
 const Container = styled.div`

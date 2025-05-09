@@ -84,7 +84,7 @@ const Login = () => {
   return (
     <Container>
       {contextHolder}
-      <Row justify='center' align='middle' style={{ height: '100vh' }}>
+      <Row justify='center' align='middle' style={{ height: '90vh' }}>
         <Col span={14}>
           <Row justify="center">
             <Avatar

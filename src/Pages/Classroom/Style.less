@@ -12,8 +12,37 @@
   position: relative;
 }
 
+.ContainerClassrooms {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(234, 234, 234, 0.85);
+  gap: 3vh;
+  margin: auto;
+  width: 75vw;
+  height: 80vh;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 25px;
+  position: relative;
+}
+
+.InputSearchClassrooms {
+  width: 75%;
+}
+
+.CreateClassroomButton{
+  color: #02732A;
+  background-color: rgba(2, 115, 42, 0.15);
+  border: 2px solid #02732A;
+  border-radius: 5px;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
+}
+
 .inputTextAreaClassroom{
   margin-bottom: 50px;
+  font-size: 1rem;
 }
 
 .ListClassroom {
@@ -26,9 +55,9 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 10vw;
-  height: 2vw;
-  font-size: 1vw;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -39,9 +68,9 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 5vw;
-  height: 2vw;
-  font-size: 1vw;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -53,35 +82,52 @@
     height: auto;
     margin-top: 5vh;
   }
+  .ContainerClassrooms {
+    width: 95vw;
+    height: 75vh;
+  }
+
+  .InputSearchClassrooms {
+    width: 75%;
+  }
+  
+  .CreateClassroomButton{
+    color: #02732A;
+    background-color: rgba(2, 115, 42, 0.15);
+    border: 2px solid #02732A;
+    border-radius: 5px;
+    width: auto;
+    height: 2rem;
+    font-size: 1rem;
+  }
   .TextClassroom {
-    font-size: 2vh;
+    font-size: 1rem;
   }
   .InputClassroom {
     width: 100% !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    height: 2.5rem !important;
+    font-size: 1rem !important;
     text-align: start;
   }
   .inputTextAreaClassroom {
     width: 100% !important;
-    height: 15vh !important;
-    font-size: 2vh !important;
+    height: 5rem !important;
+    font-size: 1rem !important;
   }
   .ListClassroom {
     width: 100%;
-    height: 70vh;
+    height: auto;
     overflow-y: scroll;
   }
   .ClassroomButton {
-    width: 17vw;
-    height: 4vh;
-    font-size: 1.75vh;
-    margin-left: 5vw;
+    width: auto;
+    height: 2rem;
+    font-size: 1rem;
   }
   .CancelClassroomButton {
-    width: 12vw;
-    height: 4vh;
-    font-size: 1.75vh;
+    width: auto;
+    height: 2rem;
+    font-size: 1rem;
   }
 }
 
@@ -90,18 +136,32 @@
     width: 95vw;
     height: auto;
   }
+  .ContainerClassrooms {
+    width: 95vw;
+    height: 80vh;
+  }
+
+  .InputSearchClassrooms {
+    width: 100%;
+  }
+  
+  .CreateClassroomButton{
+    width: auto;
+    font-size: 1rem;
+    margin: 10px auto;
+  }
   .TextClassroom {
-    font-size: 2vh;
+    font-size: .85rem;
   }
   .InputClassroom {
     width: 100% !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
   }
   .inputTextAreaClassroom {
     width: 100% !important;
-    height: 15vh !important;
-    font-size: 2vh !important;
+    height: 5rem !important;
+    font-size: .85rem !important;
   }
   .ListClassroom {
     width: 100%;
@@ -109,13 +169,12 @@
   }
   .ClassroomButton {
     width: auto;
-    height: 4vh;
-    font-size: 1.75vh;
-    margin-left: 5vw;
+    height: 2rem;
+    font-size: .85rem;
   }
   .CancelClassroomButton {
-    width: 25vw;
-    height: 4vh;
-    font-size: 1.75vh;
+    width: auto;
+    height: 2rem;
+    font-size: .85rem;
   }
 }

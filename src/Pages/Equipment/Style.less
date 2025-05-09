@@ -3,27 +3,63 @@
 .ContainerEquipment {
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
+  gap: 3vh;
   margin: auto;
   width: 50vw;
-  height: 60%;
+  height: auto;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
   position: relative;
 }
 
+.ContainerEquipments {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(234, 234, 234, 0.85);
+  gap: 3vh;
+  margin: auto;
+  width: 75vw;
+  height: 80vh;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 25px;
+  position: relative;
+}
+
+.InputSearchEquipments {
+  width: 75%;
+}
+
+.CreateEquipmentButton{
+  color: #02732A;
+  background-color: rgba(2, 115, 42, 0.15);
+  border: 2px solid #02732A;
+  border-radius: 5px;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
+}
+
 .inputTextAreaEquipment {
   margin-bottom: 50px;
+  font-size: 1rem;
+}
+
+.ListEquipments {
+  width: 100%;
+  overflow-y: scroll;
 }
 
 .FormItemProfile {
   width: 100%;
 }
 
-.RowItemProfile {
+.RowItemEquipment {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  font-size: 1rem;
 }
 
 .SaveButtonEquipment {
@@ -31,9 +67,9 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 10vw;
-  height: 2vw;
-  font-size: 1vw;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -44,9 +80,9 @@
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
   border-radius: 5px;
-  width: 7vw;
-  height: 2vw;
-  font-size: 1vw;
+  width: auto;
+  height: 2rem;
+  font-size: 1rem;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -56,37 +92,47 @@
   .ContainerEquipment {
     width: 95vw;
     height: auto;
-    margin-top: 5vh;
+    margin-top: 2rem;
+  }
+  .ContainerEquipments {
+    width: 95vw;
+    height: 75vh;
+  }
+  .InputSearchEquipments {
+    width: 60%;
+  }
+  .CreateEquipmentButton{
+    width: auto;
+    font-size: .85rem;
   }
   .TextEquipment {
-    font-size: 2.25vh;
+    font-size: 1rem;
   }
   .InputDateEquipment {
     width: 100% !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
   }
   .InputEquipment {
     width: 100% !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    height: 2.5rem !important;
+    font-size: 1rem !important;
     text-align: start;
   }
   .inputTextAreaEquipment {
     width: 100% !important;
-    height: 15vh !important;
-    font-size: 2vh !important;
+    height: 5rem !important;
+    font-size: 1rem !important;
   }
   .SaveButtonEquipment {
-    width: 17vw;
-    height: 4vh;
-    font-size: 1.75vh;
-    margin-left: 5vw;
+    width: auto;
+    height: 2rem;
+    font-size: 1rem;
   }
   .CanceldButtonEquipment {
-    width: 12vw;
-    height: 4vh;
-    font-size: 1.75vh;
+    width: auto;
+    height: 2rem;
+    font-size: 1rem;
   }
 }
 
@@ -95,33 +141,44 @@
     width: 95vw;
     height: auto;
   }
+  .ContainerEquipments {
+    width: 95vw;
+    height: 80vh;
+  }
+  .InputSearchEquipments {
+    width: 100%;
+  }
+  .CreateEquipmentButton{
+    width: auto;
+    font-size: 1rem;
+    margin: 10px auto;
+  }
   .TextEquipment {
-    font-size: 2vh;
+    font-size: .85rem;
   }
   .InputDateEquipment {
-    width: 40vw !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    width: 100% !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
   }
   .InputEquipment {
     width: 100% !important;
-    height: 5vh !important;
-    font-size: 2vh !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
   }
   .inputTextAreaEquipment {
     width: 100% !important;
-    height: 15vh !important;
-    font-size: 2vh !important;
+    height: 5rem !important;
+    font-size: .85rem !important;
   }
   .SaveButtonEquipment {
-    width: 35vw;
-    height: 4vh;
-    font-size: 1.75vh;
-    margin-left: 5vw;
+    width: auto;
+    height: 2rem;
+    font-size: .85rem;
   }
   .CanceldButtonEquipment {
-    width: 25vw;
-    height: 4vh;
-    font-size: 1.75vh;
+    width: auto;
+    height: 2rem;
+    font-size: .85rem;
   }
 }

@@ -226,7 +226,7 @@ const Reservation = () => {
                 rules={[
                   { required: true, message: "Por favor, selecione a data desejada" },
                 ]}
-                className="FormItemProfile"
+                className="FormItemReservation"
               >
                 <DatePicker
                   format={dateFormat}
@@ -246,7 +246,7 @@ const Reservation = () => {
                 rules={[
                   { required: true, message: "Por favor selecione uma sala." }
                 ]}
-                className="FormItemProfile"
+                className="FormItemReservation"
               >
                 <Select
                   showSearch
@@ -272,7 +272,7 @@ const Reservation = () => {
                 rules={[
                   { required: true, message: "Por favor selecione uma Turma." }
                 ]}
-                className="FormItemProfile"
+                className="FormItemReservation"
               >
                 <Select
                   showSearch
@@ -299,7 +299,7 @@ const Reservation = () => {
                   rules={[
                     { required: true, message: "Por favor selecione um horário." }
                   ]}
-                  className="FormItemProfile"
+                  className="FormItemReservation"
                 >
                   <Select
                     size="large"
@@ -307,7 +307,6 @@ const Reservation = () => {
                     disabled={loading}
                     className="InputReservation"
                     allowClear
-                    onClick={() => null}
                     mode="multiple"
                     maxCount={2}
                   >
@@ -325,7 +324,7 @@ const Reservation = () => {
                 rules={[
                   { required: true, message: "Por favor insira a finalidade que a sala terá." }
                 ]}
-                className="FormItemProfile"
+                className="FormItemReservation"
               >
                 <Select
                   showSearch
@@ -350,7 +349,7 @@ const Reservation = () => {
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
-                className="FormItemProfile"
+                className="FormItemReservation"
               >
                 <Input.TextArea
                   size="large"

@@ -136,30 +136,30 @@ const EquipmentsReservation = () => {
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
       <Typography.Title level={2} style={{ textAlign: 'center'}}>Reservar Equipamentos</Typography.Title>
-        <div className="ContainerReservation">
+        <div className="ContainerEquipmentReservation">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a data</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione a data</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione o equipamento</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione o equipamento</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione o  horário</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione o  horário</Typography.Text>
             </Row>
 
             {/* <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Finalidade</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Finalidade</Typography.Text>
             </Row> */}
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Descrição</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Descrição</Typography.Text>
             </Row>
 
             <Button
-              className="CanceldButtonReservation"
+              className="CanceldButtonEquipmentReservation"
               onClick={goToHome}
               loading={loading}
               disabled={loading}
@@ -189,7 +189,7 @@ const EquipmentsReservation = () => {
                   size="large"
                   placeholder={dataCapitalizada}
                   disabled={loading}
-                  className="InputDateReservation"
+                  className="InputDateEquipmentReservation"
                   style={{ width: '100%'}}
                   allowClear
                   disabledDate={disabledDate}
@@ -209,7 +209,7 @@ const EquipmentsReservation = () => {
                   placeholder="Equipamento"
                   disabled={loading}
                   filterOption={false}
-                  className="InputReservation"
+                  className="InputEquipmentReservation"
                   allowClear
                   // onClick={() => fetchSalas()}
                   onSearch={handleSearchEquipments}
@@ -234,7 +234,7 @@ const EquipmentsReservation = () => {
                     size="large"
                     placeholder="Selecione um ou dois horários "
                     disabled={loading}
-                    className="InputReservation"
+                    className="InputEquipmentReservation"
                     allowClear
                     onClick={() => null}
                     mode="multiple"
@@ -261,7 +261,7 @@ const EquipmentsReservation = () => {
                   size="large"
                   placeholder="Finalidade"
                   disabled={loading}
-                  className="InputReservation"
+                  className="InputEquipmentReservation"
                   allowClear
                   onSearch={handleSearchFinalidades}
                   filterOption={false}
@@ -285,7 +285,7 @@ const EquipmentsReservation = () => {
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   disabled={loading}
-                  className="inputTextAreaReservation"
+                  className="inputTextAreaEquipmentReservation"
                   allowClear
                   showCount
                   maxLength={250}
@@ -295,7 +295,7 @@ const EquipmentsReservation = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="SaveButtonReservation"
+                className="SaveButtonEquipmentReservation"
                 loading={loading}
                 disabled={loading}
               >
