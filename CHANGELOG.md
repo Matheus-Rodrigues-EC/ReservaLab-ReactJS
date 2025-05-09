@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.3.0...v0.3.1) (2025-05-09)
+
+
+### Features
+
+* Added options to delete a reservation and an equipmentReservation ([925c764](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/925c76420710deb3267aa17fb2ad34bfde0d5932))
+
 ## [0.3.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.2.5...v0.3.0) (2025-05-08)
 
 
