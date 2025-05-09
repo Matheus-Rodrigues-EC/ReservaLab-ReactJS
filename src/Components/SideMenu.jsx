@@ -98,7 +98,7 @@ const SideMenu = () => {
       </Row>
       <Row justify="center" >
         <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '1rem' }}>
-          Bem vindo(a) {user}.
+          Bem vindo(a), {user}.
         </Typography.Title>
       </Row>
 

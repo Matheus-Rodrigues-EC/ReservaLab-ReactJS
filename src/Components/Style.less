@@ -34,7 +34,6 @@
   max-height: 75%;
   background-color: #79C7D9;
   border: 1px solid #2BB9D9;
-  cursor: pointer;
 }
 .ImageResv {
   margin: auto;
@@ -44,6 +43,7 @@
   margin: 5px 0;
   font-size: 2vw;
   font-weight: 500;
+  width: 90%;
 }
 .TextResv {
   font-weight: bold;
@@ -57,6 +57,19 @@
   font-family: "Poppins", sans-serif;
   font-size: .60vw;
   margin: 0 auto 10px auto;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+  background-color: #79C7D9;
+}
+
+.no-padding-head .ant-card-head {
+  padding: 0 !important;
 }
 
 @media (max-width: 1024px){
@@ -96,6 +109,9 @@
     background-color: #79C7D9;
     border: 1px solid #2BB9D9;
     cursor: pointer;
+  }
+  .no-padding-head .ant-card-head {
+    padding: 0 !important;
   }
   .ImageResv {
     margin: auto;
@@ -157,6 +173,9 @@
     max-height: 100%;
     background-color: #79C7D9;
     border: 1.5px solid #2BB9D9;
+  }
+  .no-padding-head .ant-card-head {
+    padding: 0 !important;
   }
   .ImageResv {
     margin: auto;

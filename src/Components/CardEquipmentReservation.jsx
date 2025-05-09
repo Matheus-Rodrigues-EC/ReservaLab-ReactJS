@@ -1,19 +1,19 @@
-/* eslint-disable no-unused-vars */
 import React, {
   useState,
   useEffect,
 } from "react";
-import { Col, Row, Card, Image, Typography, Tag } from "antd";
-// import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import axios from "axios";
+import { Col, Row, Card, Image, Typography, Tag, Button, Popconfirm, message, notification } from "antd";
 import dayjs from "dayjs";
 import "./Style.less";
-const userData = JSON.parse(localStorage.getItem('userData'));
-import { FuncionalidadesList as Purposes } from "../Utils/Constants";
+// const userData = JSON.parse(localStorage.getItem('userData'));
 
 import {
   ClockCircleOutlined,
   ReadOutlined,
   AppstoreOutlined,
+  QuestionCircleOutlined,
+  DeleteTwoTone,
 } from '@ant-design/icons';
 
 import Infra from '../assets/Infrastructure.png';
@@ -23,7 +23,11 @@ import Sport from '../assets/Sports.png';
 import Video from '../assets/Video.png';
 
 const CardEquipmentReservation = (Data) => {
-  const { data } = Data;
+  const { data, setReservations } = Data;
+  const [userData] = useState(JSON.parse(localStorage.getItem('userData')));
+  const [loading, setLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const [messageApi, contextHolder2] = message.useMessage();
 
   const renderImage = (id) => {
     if (id === 'Audio') return Audio;
@@ -33,25 +37,100 @@ const CardEquipmentReservation = (Data) => {
     else if (id === 'Música') return Music;
   }
 
-  // const actions = [
-  //   <EditOutlined key="edit" />,
-  //   <SettingOutlined key="setting" />,
-  //   <EllipsisOutlined key="ellipsis" />,
-  // ];
+  const cancel = () => {
+    messageApi.open({
+      type: 'warning',
+      content: 'Exclusão cancelada',
+    });
+  };
+
+  const deleteItemFromArray = (idToRemove) => {
+    setReservations(prevItems => prevItems.filter(item => item.id !== idToRemove));
+  };
+
+  const deleteEquipmentReservation = async (id) => {
+    setLoading(true);
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/equipments-reservations/list/${id}`);
+
+      api.success({
+        message: 'Reserva de equipamento excluida com sucesso!',
+        description: 'As informações da reserva de quipamento foram deletadas.',
+        showProgress: true,
+        duration: 2,
+        placement: "top",
+      });
+      setTimeout(() => {
+        deleteItemFromArray(data?.id);
+        setLoading(false);
+      }, 1750);
+
+    } catch (error) {
+      console.error(error);
+
+      api.error({
+        message: 'Erro ao excluir reserva de equipamento',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 2,
+        placement: "top",
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 1750);
+    }
+  }
 
   useEffect(() => {
-    // console.log(data)
-  }, [data])
-
-  console.log(data)
+  }, [data, loading, userData])
 
   const formattedDate = dayjs(data.date).format("dddd, DD/MM/YYYY");
   const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   return (
     <>
+      {contextHolder}
+      {contextHolder2}
       <Card
-        className="Reservation"
+        className="Reservation no-padding-head"
+        extra={
+          (data?.userId === userData.id ||
+          userData?.rulets === 'Diretor(a)' ||
+          userData?.rulets === 'Coordenador(a)') && (
+            <>
+              {/* <Button
+                type="icon"
+                style={{ fontSize: '1.25rem', position: 'absolute', top: 5, right: 45 }}
+                // onClick={() => editEquipment(equipment?.id)}
+              >
+                <EditTwoTone twoToneColor="#FFA500" />
+              </Button> */}
+              <Popconfirm
+                title="Excluir Reserva de Equipamento?"
+                description={
+                  <>
+                    <Typography.Text>
+                      Tem certeza que deseja excluir a reserva de equipamento, todas as informações ligadas a esta reserva serão deletadas!
+                    </Typography.Text>
+                  </>
+                }
+                autoAdjustOverflow
+                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                onConfirm={() => deleteEquipmentReservation(data?.id)}
+                onCancel={cancel}
+                okText="Deletar"
+                cancelText="Cancelar"
+              >
+                <Button
+                  type="icon"
+                  style={{ fontSize: '1.25rem', position: 'absolute', top: 5, right: 0 }}
+                >
+                  <DeleteTwoTone twoToneColor="#F00" />
+                </Button>
+              </Popconfirm>
+            </>
+          )
+        }
 
         styles={window.innerWidth > 1025 ? {
           body: { display: 'flex' }
@@ -61,14 +140,13 @@ const CardEquipmentReservation = (Data) => {
           body: { display: 'flex', flexDirection: 'column', padding: '15px 10px', height: 'auto' }
         }}
 
-      // actions={userData?.id === data?.userId ? actions : null}
       >
         <Col
           span={window.innerWidth > 1025 ? 4 : window.innerWidth > 415 ? 6 : 20}
           style={
-            window.innerWidth > 1025 ? { margin: 'auto' } : 
-            window.innerWidth > 415 ? { margin: 'auto' } : 
-            { margin: 'auto' }
+            window.innerWidth > 1025 ? { margin: 'auto' } :
+              window.innerWidth > 415 ? { margin: 'auto' } :
+                { margin: 'auto' }
           }
         >
           <Image
@@ -79,9 +157,9 @@ const CardEquipmentReservation = (Data) => {
         <Col
           span={window.innerWidth > 1025 ? 19 : window.innerWidth > 415 ? 12 : 24} offset={1}
           style={
-            window.innerWidth > 1025 ? { margin: 'auto' } : 
-            window.innerWidth > 415 ? { margin: 'auto', justifyContent: 'space-between' } : 
-            { margin: 'auto' }
+            window.innerWidth > 1025 ? { margin: 'auto' } :
+              window.innerWidth > 415 ? { margin: 'auto', justifyContent: 'space-between' } :
+                { margin: 'auto' }
           }
         >
           <Row>
@@ -103,7 +181,7 @@ const CardEquipmentReservation = (Data) => {
               span={window.innerWidth > 1025 ? 7 : 12}
               style={{ display: 'flex', justifyContent: 'space-between' }}
             >
-              <div style={{ display: 'flex'}}>
+              <div style={{ display: 'flex' }}>
                 <ClockCircleOutlined />
               </div>
               <div style={{ textAlign: 'end', gap: '10px' }}>

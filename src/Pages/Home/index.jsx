@@ -80,15 +80,16 @@ const Home = () => {
       setLoading(false);
     }
   };
-  
-
 
   useEffect(() => {
-    // getReservations(selectedDate);
-    // getEquipmentsReservations(selectedDate)
+    localStorage.removeItem("EditReservation");
+    localStorage.removeItem("EditEquipmentReservation");
     fetchAllReservations(selectedDate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
+
+  useEffect(() => {
+  }, [reservations]);
 
   return (
 
@@ -154,9 +155,15 @@ const Home = () => {
               renderItem={(item) => (
                 <List.Item key={item.id}>
                   {item?.classId ? (
-                    <CardReservation data={item} onClick={() => console.log(item)} />
+                    <CardReservation
+                      data={item} 
+                      setReservations={setReservations} 
+                    />
                   ) : (
-                    <CardEquipmentReservation data={item} />
+                    <CardEquipmentReservation
+                      data={item}
+                      setReservations={setReservations} 
+                    />
                   )}
                 </List.Item>
               )}
