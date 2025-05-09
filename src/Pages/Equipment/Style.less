@@ -1,18 +1,19 @@
 @Background: url(../../assets/Background.png);
 
-.ContainerClassroom {
+.ContainerEquipment {
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
+  gap: 3vh;
   margin: auto;
   width: 50vw;
-  height: 60%;
+  height: auto;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 25px;
   position: relative;
 }
 
-.ContainerClassrooms {
+.ContainerEquipments {
   display: flex;
   flex-direction: column;
   background-color: rgba(234, 234, 234, 0.85);
@@ -26,11 +27,11 @@
   position: relative;
 }
 
-.InputSearchClassrooms {
+.InputSearchEquipments {
   width: 75%;
 }
 
-.CreateClassroomButton{
+.CreateEquipmentButton{
   color: #02732A;
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
@@ -40,17 +41,28 @@
   font-size: 1rem;
 }
 
-.inputTextAreaClassroom{
+.inputTextAreaEquipment {
   margin-bottom: 50px;
   font-size: 1rem;
 }
 
-.ListClassroom {
+.ListEquipments {
   width: 100%;
   overflow-y: scroll;
 }
 
-.ClassroomButton {
+.FormItemProfile {
+  width: 100%;
+}
+
+.RowItemEquipment {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+
+.SaveButtonEquipment {
   color: #02732A;
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
@@ -63,7 +75,7 @@
   right: 0;
 }
 
-.CancelClassroomButton {
+.CanceldButtonEquipment {
   color: #02732A;
   background-color: rgba(2, 115, 42, 0.15);
   border: 2px solid #02732A;
@@ -77,54 +89,47 @@
 }
 
 @media (max-width: 1024px){
-  .ContainerClassroom {
+  .ContainerEquipment {
     width: 95vw;
     height: auto;
-    margin-top: 5vh;
+    margin-top: 2rem;
   }
-  .ContainerClassrooms {
+  .ContainerEquipments {
     width: 95vw;
     height: 75vh;
   }
-
-  .InputSearchClassrooms {
-    width: 75%;
+  .InputSearchEquipments {
+    width: 60%;
   }
-  
-  .CreateClassroomButton{
-    color: #02732A;
-    background-color: rgba(2, 115, 42, 0.15);
-    border: 2px solid #02732A;
-    border-radius: 5px;
+  .CreateEquipmentButton{
     width: auto;
-    height: 2rem;
+    font-size: .85rem;
+  }
+  .TextEquipment {
     font-size: 1rem;
   }
-  .TextClassroom {
-    font-size: 1rem;
+  .InputDateEquipment {
+    width: 100% !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
   }
-  .InputClassroom {
+  .InputEquipment {
     width: 100% !important;
     height: 2.5rem !important;
     font-size: 1rem !important;
     text-align: start;
   }
-  .inputTextAreaClassroom {
+  .inputTextAreaEquipment {
     width: 100% !important;
     height: 5rem !important;
     font-size: 1rem !important;
   }
-  .ListClassroom {
-    width: 100%;
-    height: auto;
-    overflow-y: scroll;
-  }
-  .ClassroomButton {
+  .SaveButtonEquipment {
     width: auto;
     height: 2rem;
     font-size: 1rem;
   }
-  .CancelClassroomButton {
+  .CanceldButtonEquipment {
     width: auto;
     height: 2rem;
     font-size: 1rem;
@@ -132,47 +137,46 @@
 }
 
 @media (max-width: 425px){
-  .ContainerClassroom {
+  .ContainerEquipment {
     width: 95vw;
     height: auto;
   }
-  .ContainerClassrooms {
+  .ContainerEquipments {
     width: 95vw;
     height: 80vh;
   }
-
-  .InputSearchClassrooms {
+  .InputSearchEquipments {
     width: 100%;
   }
-  
-  .CreateClassroomButton{
+  .CreateEquipmentButton{
     width: auto;
     font-size: 1rem;
     margin: 10px auto;
   }
-  .TextClassroom {
+  .TextEquipment {
     font-size: .85rem;
   }
-  .InputClassroom {
+  .InputDateEquipment {
     width: 100% !important;
     height: 2rem !important;
     font-size: 1rem !important;
   }
-  .inputTextAreaClassroom {
+  .InputEquipment {
+    width: 100% !important;
+    height: 2rem !important;
+    font-size: 1rem !important;
+  }
+  .inputTextAreaEquipment {
     width: 100% !important;
     height: 5rem !important;
     font-size: .85rem !important;
   }
-  .ListClassroom {
-    width: 100%;
-    overflow-y: scroll;
-  }
-  .ClassroomButton {
+  .SaveButtonEquipment {
     width: auto;
     height: 2rem;
     font-size: .85rem;
   }
-  .CancelClassroomButton {
+  .CanceldButtonEquipment {
     width: auto;
     height: 2rem;
     font-size: .85rem;

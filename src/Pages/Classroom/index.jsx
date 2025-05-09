@@ -124,7 +124,8 @@ const Classroom = () => {
   };
 
   useEffect(() => {
-    getClassroom(editClassroom)
+    if(editClassroom)
+      getClassroom(editClassroom)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
@@ -152,7 +153,13 @@ const Classroom = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
+        <Typography.Title 
+          level={2} 
+          style={{ textAlign: 'center'}}
+        >
+          {editClassroom ? 'Atualizar Sala' : 'Cadastrar Sala'}
+        </Typography.Title>
         <div className="ContainerClassroom">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
@@ -200,6 +207,7 @@ const Classroom = () => {
                   className="InputClassroom"
                   allowClear
                   type="text"
+                  disabled={loading}
                 />
               </Form.Item>
 
@@ -220,6 +228,7 @@ const Classroom = () => {
                   type="number"
                   min='10'
                   max='100'
+                  disabled={loading}
                 />
               </Form.Item>
 
@@ -238,6 +247,7 @@ const Classroom = () => {
                   allowClear
                   showCount
                   maxLength={250}
+                  disabled={loading}
                 />
               </Form.Item>
 

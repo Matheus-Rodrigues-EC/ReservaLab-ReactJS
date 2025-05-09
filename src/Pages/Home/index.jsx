@@ -12,6 +12,7 @@ import "./Style.less";
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 import CardReservation from "../../Components/CardReservation";
+import CardEquipmentReservation from "../../Components/CardEquipmentReservation";
 
 const Home = () => {
   const [reservations, setReservations] = useState([]);
@@ -38,27 +39,34 @@ const Home = () => {
     setSelectedDate(dayjs());
   };
 
-  const getReservations = async (date = null) => {
-
+  const fetchAllReservations = async (date = null) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`);
+      const [regularRes, equipmentRes] = await Promise.all([
+        axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`),
+        axios.get(`${import.meta.env.VITE_API_URL}/equipments-reservations/list`)
+      ]);
+  
+      const regular = regularRes?.data || [];
+      const equipments = equipmentRes?.data || [];
+  
+      const filterByDate = (items) =>
+        date
+          ? items.filter((item) => dayjs(item.date).isSame(dayjs(date), 'day'))
+          : filteredToday(items);
+  
+      const combined = [
+        ...filterByDate(regular),
+        ...filterByDate(equipments),
+      ];
 
-      const allReservations = response?.data;
-      let filtered = [];
-
-      if (date) {
-        // Se há uma data selecionada, filtra por ela
-        filtered = allReservations.filter((item) =>
-          dayjs(item.date).isSame(dayjs(date), 'day')
-        );
-      } else {
-        // Caso contrário, filtra pelas reservas de hoje
-        filtered = filteredToday(allReservations);
-      }
-
-      setReservations(filtered);
-
+      combined.sort((a, b) => {
+        const aEarliest = a.time?.length ? dayjs(a.time.sort()[0], 'HH:mm') : dayjs(0);
+        const bEarliest = b.time?.length ? dayjs(b.time.sort()[0], 'HH:mm') : dayjs(0);
+        return aEarliest.diff(bEarliest);
+      });
+  
+      setReservations(combined);
     } catch (error) {
       console.error(error);
       api.error({
@@ -73,11 +81,15 @@ const Home = () => {
     }
   };
 
-
   useEffect(() => {
-    getReservations(selectedDate);
+    localStorage.removeItem("EditReservation");
+    localStorage.removeItem("EditEquipmentReservation");
+    fetchAllReservations(selectedDate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
+
+  useEffect(() => {
+  }, [reservations]);
 
   return (
 
@@ -93,7 +105,7 @@ const Home = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5rem' } : { marginTop: '1vh' }}>
         <div className="ContainerHome">
           <div style={{ display: 'flex', margin: '0 auto', alignItems: 'center', justifyContent: 'center' }}>
             <Tooltip placement="bottom" title={'Selecione uma data para ver as demais reservas'}>
@@ -104,7 +116,7 @@ const Home = () => {
                 size="large"
                 placeholder={dataCapitalizada}
                 disabled={loading}
-                style={{ width: '290px' }}
+                style={{ width: '15rem' }}
                 allowClear
                 onChange={(value) => {
                   setSelectedDate(value);
@@ -114,8 +126,8 @@ const Home = () => {
             </Tooltip>
             <Tooltip placement="bottom" title={'Clique aqui para recarregar as reservas'}>
               <Button
-                style={{ height: '40px', margin: '0 10px' }}
-                onClick={() => { getReservations(); handleSetToday(); }}
+                style={{ height: '2.5rem', margin: '0 10px' }}
+                onClick={() => { fetchAllReservations(); handleSetToday(); }}
               >
                 <ReloadOutlined width='40' />
               </Button>
@@ -142,7 +154,17 @@ const Home = () => {
               className="ListReservations"
               renderItem={(item) => (
                 <List.Item key={item.id}>
-                  <CardReservation data={item} />
+                  {item?.classId ? (
+                    <CardReservation
+                      data={item} 
+                      setReservations={setReservations} 
+                    />
+                  ) : (
+                    <CardEquipmentReservation
+                      data={item}
+                      setReservations={setReservations} 
+                    />
+                  )}
                 </List.Item>
               )}
             />

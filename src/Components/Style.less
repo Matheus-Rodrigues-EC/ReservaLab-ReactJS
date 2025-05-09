@@ -10,12 +10,12 @@
   color: #080640;
 }
 .ButtonMenu {
-  margin: 10px auto;
+  margin: 5px auto;
   border: 3px solid #2BB9D9;
   border-radius: 5px;
   width: 95%;
-  height: 4vh;
-  font-size: 1.5rem;
+  height: 2rem;
+  font-size: 1rem;
   font-family: "Poppins", sans-serif;
 }
 .ButtonMenuExit {
@@ -23,8 +23,8 @@
   border: 3px solid #2BB9D9;
   border-radius: 5px;
   width: 95%;
-  height: 40px;
-  font-size: 1.5rem;
+  height: 2rem;
+  font-size: 1rem;
   font-family: "Poppins", sans-serif;
 }
 .Reservation {
@@ -34,7 +34,6 @@
   max-height: 75%;
   background-color: #79C7D9;
   border: 1px solid #2BB9D9;
-  cursor: pointer;
 }
 .ImageResv {
   margin: auto;
@@ -44,6 +43,7 @@
   margin: 5px 0;
   font-size: 2vw;
   font-weight: 500;
+  width: 90%;
 }
 .TextResv {
   font-weight: bold;
@@ -57,6 +57,19 @@
   font-family: "Poppins", sans-serif;
   font-size: .60vw;
   margin: 0 auto 10px auto;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+  background-color: #79C7D9;
+}
+
+.no-padding-head .ant-card-head {
+  padding: 0 !important;
 }
 
 @media (max-width: 1024px){
@@ -83,10 +96,10 @@
   }
   .ButtonMenu {
     margin: 10px auto;
-    font-size: 3vh;
+    font-size: 1.5rem;
   }
   .ButtonMenuExit {
-    font-size: 3vh;
+    font-size: 1.5rem;
   }
   .Reservation {
     display: flex;
@@ -97,25 +110,28 @@
     border: 1px solid #2BB9D9;
     cursor: pointer;
   }
+  .no-padding-head .ant-card-head {
+    padding: 0 !important;
+  }
   .ImageResv {
     margin: auto;
     border-radius: 15px;
   }
   .TitleResv {
     margin: 5px 0;
-    font-size: 2vh;
+    font-size: 1.25rem;
     font-weight: 500;
   }
   .TextResv {
     font-weight: bold;
-    font-size: 1.5vh;
+    font-size: 1rem;
   }
   .TextCommon {
-    font-size: 1.5vh;
+    font-size: 1rem;
     width: 350px;
   }
   .Version {
-    font-size: 1.5vh;
+    font-size: 1rem;
   }
 }
 
@@ -144,10 +160,10 @@
   .ButtonMenu {
     margin: 5px auto;
     height: 40px;
-    font-size: 3vh;
+    font-size: 1.5rem;
   }
   .ButtonMenuExit {
-    font-size: 3vh;
+    font-size: 1.5rem;
   }
   .Reservation {
     display: flex;
@@ -158,24 +174,27 @@
     background-color: #79C7D9;
     border: 1.5px solid #2BB9D9;
   }
+  .no-padding-head .ant-card-head {
+    padding: 0 !important;
+  }
   .ImageResv {
     margin: auto;
     border-radius: 15px;
   }
   .TitleResv {
     margin: 5px 0;
-    font-size: 2.5vh;
+    font-size: 1.25rem;
     font-weight: 500;
   }
   .TextResv {
     font-weight: bold;
-    font-size: 1.75vh;
+    font-size: 1rem;
   }
   .TextCommon {
-    font-size: 1.75vh;
+    font-size: .75rem;
     width: 350px;
   }
   .Version {
-    font-size: 1.5vh;
+    font-size: 1rem;
   }
 }

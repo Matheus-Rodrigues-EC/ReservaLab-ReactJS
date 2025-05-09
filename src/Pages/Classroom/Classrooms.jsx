@@ -71,7 +71,7 @@ const Classrooms = () => {
 
   const cancel = () => {
     messageApi.open({
-      type: 'error',
+      type: 'warning',
       content: 'Exclusão cancelada',
     });
   };
@@ -140,18 +140,19 @@ const Classrooms = () => {
           <SideMenu />
         </Col>
       )}
-      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
-        <div className="ContainerClasses">
+      <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Salas</Typography.Title>
+        <div className="ContainerClassrooms">
           <Row justify='space-between'>
             <Input.Search
-              className="InputSearchClasses"
-              placeholder="Filtre as turmas"
+              className="InputSearchClassrooms"
+              placeholder="Filtre as salas"
               onSearch={filterClassrooms}
               loading={loading}
               allowClear
             />
             <Button
-              className="CreateClassButton"
+              className="CreateClassroomButton"
               onClick={() => goToClassroom()}
             >Cadastrar Sala</Button>
           </Row>
@@ -171,15 +172,11 @@ const Classrooms = () => {
                       <EditTwoTone twoToneColor="#FFA500" />
                     </Button>
                     <Popconfirm
-                      title="Excluir Turma"
+                      title="Excluir Sala"
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir a sala, todas as reservas
-                          </Typography.Text>
-                          <br />
-                          <Typography.Text>
-                            ligadas a esta sala serão deletadas?
+                            Tem certeza que deseja excluir a sala, todas as reservas ligadas a esta sala serão deletadas?
                           </Typography.Text>
                         </>
                       }

@@ -15,6 +15,9 @@ import Classrooms from "./Pages/Classroom/Classrooms";
 import Classes from "./Pages/Class/Classes";
 import Class from "./Pages/Class";
 import Reservation from "./Pages/Reservation";
+import EquipmentsReservation from "./Pages/EquipmentsReservation";
+import Equipments from "./Pages/Equipment/Equipments";
+import Equipment from "./Pages/Equipment";
 import PrivateRoute from "./Components/PrivateRoute";
 import NotFound from "./Utils/NotFound";
 
@@ -82,6 +85,23 @@ function App() {
           <Route path="/reservation" element={
             <PrivateRoute>
               <Reservation />
+            </PrivateRoute>
+          } />
+          <Route path="/equipment-reservation" element={
+            <PrivateRoute>
+              <EquipmentsReservation />
+            </PrivateRoute>
+          } />
+          
+          <Route path="/equipments" element={
+            <PrivateRoute>
+              <Equipments /> 
+            </PrivateRoute>
+          } />
+          
+          <Route path="/equipment" element={
+            <PrivateRoute>
+              <Equipment />
             </PrivateRoute>
           } />
 

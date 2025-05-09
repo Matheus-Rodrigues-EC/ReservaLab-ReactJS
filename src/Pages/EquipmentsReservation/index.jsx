@@ -10,26 +10,18 @@ import "./Style.less";
 import dayjs from "dayjs";
 
 import {
-  FuncionalidadesList as Finalidades,
-  Fundamental_Morning_Times,
-  Fundamental_Afternoom_Times,
-  Fundamental_Integral_Times,
-  EJA_Times,
-  removerAcentos,
+  Fundamental_Integral_Times as Integral,
 } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
-const Reservation = () => {
+const EquipmentsReservation = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [Times, setTimes] = useState(Fundamental_Integral_Times);
-  const [salas, setSalas] = useState([]);
-  const [turmas, setTurmas] = useState([]);
-  const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
-  const [filteredClasses, setFilteredClasses] = useState(turmas);
-  const [filteredSalas, setFilteredSalas] = useState(salas);
+  const [equipments, setEquipments] = useState([]);
+  // const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
+  const [filteredEquipments, setFilteredEquipments] = useState(equipments);
   const [Visible, setVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
 
@@ -39,48 +31,31 @@ const Reservation = () => {
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
 
-  const handleSearchSalas = (value) => {
+  const handleSearchEquipments = (value) => {
     if (!value) {
-      setFilteredSalas(salas);
+      setFilteredEquipments(equipments);
     } else {
-      const filtered = salas?.filter((sala) =>
-        sala?.name?.toLowerCase()?.includes(value?.toLowerCase())
+      const filtered = equipments?.filter((equipment) =>
+        equipment?.name?.toLowerCase()?.includes(value?.toLowerCase())
       );
-      setFilteredSalas(filtered);
+      setFilteredEquipments(filtered);
     }
   };
 
-  const handleSearchFinalidades = (value) => {
-    if (!value) {
-      setFilteredFinalidades(Finalidades);
-    } else {
-      const filtered = Finalidades?.filter((finalidade) =>
-        finalidade.label.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredFinalidades(filtered);
-    }
-  };
+  // const handleSearchFinalidades = (value) => {
+  //   if (!value) {
+  //     setFilteredFinalidades(Finalidades);
+  //   } else {
+  //     const filtered = Finalidades?.filter((finalidade) =>
+  //       finalidade.label.toLowerCase().includes(value.toLowerCase())
+  //     );
+  //     setFilteredFinalidades(filtered);
+  //   }
+  // };
 
-  const handleSearchClasses = (value) => {
-    if (!value) {
-      setFilteredClasses(turmas);
-    } else {
-      const filtered = turmas?.filter((turma) => {
-        const classe = `${turma?.grade || ""}º ${turma?.className || ""} - ${turma?.shift || ""}`;
-        return removerAcentos(classe.toLowerCase()).includes(removerAcentos(value.toLowerCase()));
-      });
-      setFilteredClasses(filtered);
-    }
-  };
-
-  const fetchSalas = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`);
-    setSalas(response.data);
-  }
-
-  const fetchTurmas = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`);
-    setTurmas(response?.data);
+  const fetchEquipments = async () => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list`);
+    setEquipments(response.data);
   }
 
   const goToHome = () => {
@@ -91,32 +66,18 @@ const Reservation = () => {
     return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
   };
 
-  const shiftTimeMap = {
-    'Manhã': Fundamental_Morning_Times,
-    'Tarde': Fundamental_Afternoom_Times,
-    'Noite': EJA_Times,
-  };
-
-  const changeTimes = (id) => {
-    const classe = turmas.find((turma) => turma?.id == id);
-    const times = shiftTimeMap[classe?.shift] || Fundamental_Integral_Times;
-    setTimes(times);
-  };
-
-  const createReservation = async (data) => {
+  const createEquipmentReservation = async (data) => {
     const body = {
       ...data,
       userId: Number(userData.id),
-      classroomId: Number(data.classroomId),
-      classId: Number(data.classId),
     }
     setLoading(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/reservations/create`, body);
+      await axios.post(`${import.meta.env.VITE_API_URL}/equipments-reservations/create`, body);
 
       api.success({
-        message: 'Reserva Cadastrada!',
-        description: 'A reserva foi registrada com sucesso.',
+        message: 'Reserva de Equipamento Cadastrada!',
+        description: 'A reserva de equipamento foi registrada com sucesso.',
         showProgress: true,
         duration: 2,
         placement: "top"
@@ -128,7 +89,7 @@ const Reservation = () => {
     } catch (error) {
       console.error("Erro:", error?.response?.data?.message || error?.message || error);
       api.error({
-        message: 'Erro ao cadastrar reserva',
+        message: 'Erro ao cadastrar reserva de equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 3,
@@ -142,7 +103,7 @@ const Reservation = () => {
 
   const onFinish = (values) => {
     const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
-    createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
+    createEquipmentReservation({ ...values, date: dataCapitalizada });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -151,10 +112,8 @@ const Reservation = () => {
   };
 
   useEffect(() => {
-    fetchSalas();
-    fetchTurmas();
-    handleSearchClasses('');
-    handleSearchSalas('');
+    fetchEquipments();
+    handleSearchEquipments('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -176,35 +135,31 @@ const Reservation = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-      <Typography.Title level={2} style={{ textAlign: 'center'}}>Reservar Sala</Typography.Title>
-        <div className="ContainerReservation">
+      <Typography.Title level={2} style={{ textAlign: 'center'}}>Reservar Equipamentos</Typography.Title>
+        <div className="ContainerEquipmentReservation">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a data</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione a data</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a sala</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione o equipamento</Typography.Text>
             </Row>
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a turma</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Selecione o  horário</Typography.Text>
             </Row>
 
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione o  horário</Typography.Text>
-            </Row>
+            {/* <Row justify='space-between'>
+              <Typography.Text className="TextEquipmentReservation" >Finalidade</Typography.Text>
+            </Row> */}
 
             <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Finalidade</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Descrição</Typography.Text>
+              <Typography.Text className="TextEquipmentReservation" >Descrição</Typography.Text>
             </Row>
 
             <Button
-              className="CanceldButtonReservation"
+              className="CanceldButtonEquipmentReservation"
               onClick={goToHome}
               loading={loading}
               disabled={loading}
@@ -216,7 +171,7 @@ const Reservation = () => {
           <Col span={12} offset={2} style={{}}>
             <Form
               form={form}
-              name="Reservation"
+              name="EquipmentReservation"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
@@ -226,7 +181,7 @@ const Reservation = () => {
                 rules={[
                   { required: true, message: "Por favor, selecione a data desejada" },
                 ]}
-                className="FormItemReservation"
+                className="FormItemProfile"
               >
                 <DatePicker
                   format={dateFormat}
@@ -234,7 +189,7 @@ const Reservation = () => {
                   size="large"
                   placeholder={dataCapitalizada}
                   disabled={loading}
-                  className="InputDateReservation"
+                  className="InputDateEquipmentReservation"
                   style={{ width: '100%'}}
                   allowClear
                   disabledDate={disabledDate}
@@ -242,52 +197,26 @@ const Reservation = () => {
               </Form.Item>
 
               <Form.Item
-                name='classroomId'
+                name='equipmentId'
                 rules={[
-                  { required: true, message: "Por favor selecione uma sala." }
+                  { required: true, message: "Por favor selecione um equipamento." }
                 ]}
-                className="FormItemReservation"
+                className="FormItemProfile"
               >
                 <Select
                   showSearch
                   size="large"
-                  placeholder="Sala"
+                  placeholder="Equipamento"
                   disabled={loading}
                   filterOption={false}
-                  className="InputReservation"
+                  className="InputEquipmentReservation"
                   allowClear
                   // onClick={() => fetchSalas()}
-                  onSearch={handleSearchSalas}
+                  onSearch={handleSearchEquipments}
                 >
-                  {(filteredSalas.length > 0 ? filteredSalas : salas).map((sala) => (
-                    <Select.Option key={sala?.id} value={sala?.id} >
-                      {sala?.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                name='classId'
-                rules={[
-                  { required: true, message: "Por favor selecione uma Turma." }
-                ]}
-                className="FormItemReservation"
-              >
-                <Select
-                  showSearch
-                  size="large"
-                  placeholder="Turma"
-                  disabled={loading}
-                  filterOption={false}
-                  className="InputReservation"
-                  allowClear
-                  onChange={(value) => { changeTimes(value); form.setFieldValue('time', []) }}
-                  onSearch={handleSearchClasses}
-                >
-                  {(filteredClasses.length > 0 ? filteredClasses : turmas).map((turma) => (
-                    <Select.Option key={turma?.id} value={turma?.id} >
-                      {turma?.grade}º {turma?.className} - {turma?.shift}
+                  {(filteredEquipments.length > 0 ? filteredEquipments : equipments).map((equipment) => (
+                    <Select.Option key={equipment?.id} value={equipment?.id} >
+                      {equipment?.name}
                     </Select.Option>
                   ))}
                 </Select>
@@ -299,18 +228,19 @@ const Reservation = () => {
                   rules={[
                     { required: true, message: "Por favor selecione um horário." }
                   ]}
-                  className="FormItemReservation"
+                  className="FormItemProfile"
                 >
                   <Select
                     size="large"
                     placeholder="Selecione um ou dois horários "
                     disabled={loading}
-                    className="InputReservation"
+                    className="InputEquipmentReservation"
                     allowClear
+                    onClick={() => null}
                     mode="multiple"
                     maxCount={2}
                   >
-                    {Times?.map((time) => (
+                    {Integral?.map((time) => (
                       <Select.Option key={time.label} value={time.label}>
                         {time.label}
                       </Select.Option>
@@ -319,19 +249,19 @@ const Reservation = () => {
                 </Form.Item>
               </Row>
 
-              <Form.Item
+              {/* <Form.Item
                 name='purpose'
                 rules={[
                   { required: true, message: "Por favor insira a finalidade que a sala terá." }
                 ]}
-                className="FormItemReservation"
+                className="FormItemProfile"
               >
                 <Select
                   showSearch
                   size="large"
                   placeholder="Finalidade"
                   disabled={loading}
-                  className="InputReservation"
+                  className="InputEquipmentReservation"
                   allowClear
                   onSearch={handleSearchFinalidades}
                   filterOption={false}
@@ -342,20 +272,20 @@ const Reservation = () => {
                     </Select.Option>
                   ))}
                 </Select>
-              </Form.Item>
+              </Form.Item> */}
 
               <Form.Item
                 name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
                 ]}
-                className="FormItemReservation"
+                className="FormItemProfile"
               >
                 <Input.TextArea
                   size="large"
                   placeholder="Gostaria de adicionar alguma descrição?"
                   disabled={loading}
-                  className="inputTextAreaReservation"
+                  className="inputTextAreaEquipmentReservation"
                   allowClear
                   showCount
                   maxLength={250}
@@ -365,7 +295,7 @@ const Reservation = () => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="SaveButtonReservation"
+                className="SaveButtonEquipmentReservation"
                 loading={loading}
                 disabled={loading}
               >
@@ -391,7 +321,7 @@ const Reservation = () => {
   )
 }
 
-export default Reservation;
+export default EquipmentsReservation;
 
 
 const Container = styled.div`

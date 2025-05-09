@@ -8,24 +8,23 @@ import { EditTwoTone, DeleteTwoTone, QuestionCircleOutlined } from '@ant-design/
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
-import { removerAcentos } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 
-const Classes = () => {
+const Equipments = () => {
   const [loading, setLoading] = useState(false);
   const [UserData, setUserData] = useState();
-  const [FilteredClasses, setFilteredClasses] = useState();
-  const [classes, setClasses] = useState();
+  const [FilteredEquipments, setFilteredEquipments] = useState();
+  const [equipments, setEquipments] = useState();
   const [Visible, setVisible] = useState(false);
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
 
-  const goToClass = () => {
-    Navigate('/class')
+  const goToEquipment = () => {
+    Navigate('/equipment')
   }
 
   const getProfile = async (id) => {
@@ -33,11 +32,11 @@ const Classes = () => {
     setUserData(response.data)
   }
 
-  const getClasses = async () => {
+  const getEquipments = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/`);
-      setClasses(response?.data);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list/`);
+      setEquipments(response?.data);
 
       setLoading(false);
 
@@ -45,7 +44,7 @@ const Classes = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao carregar usuários',
+        message: 'Erro ao carregar equipamentos',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -57,24 +56,18 @@ const Classes = () => {
     }
   }
 
-  const filterClasses = (data) => {
-    if (!classes || classes.length === 0) return [];
-  
-    const searchData = String(data).toLowerCase();
-    const normalizedSearch = removerAcentos(searchData);
-  
-    const filtered = classes.filter((classe) => {
-      const gradeMatch = classe?.grade === Number(data);
-      const classNameMatch = classe?.className?.toLowerCase().includes(searchData);
-      const shiftMatch = removerAcentos(classe?.shift?.toLowerCase() || '').includes(normalizedSearch);
-  
-      return gradeMatch || classNameMatch || shiftMatch;
+  const filterEquipments = (data) => {
+    if (!equipments || equipments.length === 0) return equipments;
+
+    const filtered = equipments.filter((equipment) => {
+      const searchData = String(data).toLowerCase();
+      const nameMatch = equipment?.name?.toLowerCase().includes(searchData);
+      return nameMatch;
     });
-  
-    setFilteredClasses(filtered);
+
+    setFilteredEquipments(filtered);
     return filtered;
   };
-  
 
   const cancel = () => {
     messageApi.open({
@@ -83,25 +76,25 @@ const Classes = () => {
     });
   };
 
-  const editClass = async (id) => {
-    localStorage.setItem("EditClass", id);
-    Navigate(`/class`);
+  const editEquipment = async (id) => {
+    localStorage.setItem("editEquipment", id);
+    Navigate(`/equipment`);
   }
 
-  const deleteClass = async (id) => {
+  const deleteEquipment = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/equipments/list/${id}`);
 
       api.success({
-        message: 'Turma excluida com sucesso!',
-        description: 'As informações da turma foram deletadas.',
+        message: 'Equipamento excluido com sucesso!',
+        description: 'As informações do equipamento foram deletadas.',
         showProgress: true,
         duration: 2,
         placement: "top",
       });
       setTimeout(() => {
-        getClasses();
+        getEquipments();
         setLoading(false);
       }, 1750);
 
@@ -109,7 +102,7 @@ const Classes = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao excluir turma',
+        message: 'Erro ao excluir equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -123,14 +116,14 @@ const Classes = () => {
 
   useEffect(() => {
     getProfile(userData.id)
-    getClasses();
-    localStorage.removeItem("EditClass");
+    getEquipments();
+    localStorage.removeItem("editEquipment");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {
-    localStorage.removeItem("EditClass");
-  }, [loading, classes]);
+    localStorage.removeItem("editEquipment");
+  }, [loading, equipments]);
 
   return (
 
@@ -148,52 +141,48 @@ const Classes = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Turmas</Typography.Title>
-        <div className="ContainerClasses">
+        <Typography.Title level={2} style={{ textAlign: 'center'}}>Equipamentos</Typography.Title>
+        <div className="ContainerEquipments">
           <Row justify='space-between'>
             <Input.Search
-              className="InputSearchClasses"
-              placeholder="Filtre as turmas"
-              onSearch={filterClasses}
-              disabled={loading}
+              className="InputSearchEquipments"
+              placeholder="Filtre os Equipamentos"
+              onSearch={filterEquipments}
+              loading={loading}
               allowClear
             />
             <Button
-              className="CreateClassButton"
-              onClick={() => goToClass()}
-            >Cadastrar turma</Button>
+              className="CreateEquipmentButton"
+              onClick={() => goToEquipment()}
+            >Cadastrar Equipamento</Button>
           </Row>
           <List
             loading={loading}
-            dataSource={FilteredClasses || classes}
-            className="ListClasses"
-            renderItem={(classe) => (
+            dataSource={FilteredEquipments || equipments}
+            className="ListEquipments"
+            renderItem={(equipment) => (
               <List.Item
                 extra={
                   <>
                     <Button
                       type="icon"
                       style={{ fontSize: '1.25rem' }}
-                      onClick={() => editClass(classe?.id)}
+                      onClick={() => editEquipment(equipment?.id)}
                     >
                       <EditTwoTone twoToneColor="#FFA500" />
                     </Button>
                     <Popconfirm
-                      title="Excluir Turma"
+                      title="Excluir Equipamento"
                       description={
                         <>
                           <Typography.Text>
-                            Tem certeza que deseja excluir a turma, todas as reservas
-                          </Typography.Text>
-                          <br />
-                          <Typography.Text>
-                            ligadas a esta turma serão deletadas?
+                            Tem certeza que deseja excluir o equipamento, todas as reservas ligadas a este equipamento serão deletadas?
                           </Typography.Text>
                         </>
                       }
                       autoAdjustOverflow
                       icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteClass(classe?.id)}
+                      onConfirm={() => deleteEquipment(equipment?.id)}
                       onCancel={cancel}
                       okText="Deletar"
                       cancelText="Cancelar"
@@ -209,34 +198,29 @@ const Classes = () => {
                 }
               >
                 <List.Item.Meta
-                  title={`${classe.grade}º ${classe?.className}`}
+                  title={`${equipment.name}`}
                   description={
                     <>
-                      <Col span={8} style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Tag color={
-                          classe?.shift === 'Manhã' ? 'green' :
-                            classe?.shift === 'Tarde' ? 'orange' :
-                              classe?.shift === 'Integral' ? 'volcano' :
-                                'blue'}
-                          className="TagShift"
-                        >
-                          {classe?.shift}
-                        </Tag>
+                      <Col span={24} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography.Text type="secondary">
+                          {equipment?.type} {equipment?.tombNumber}
+                        </Typography.Text>
                       </Col>
-
-                      {classe?.description && (
+                      {equipment?.description && (
                         <>
-                          <br />
+                          <br/>
                           <Col span={24}>
                             <Typography.Text type="secondary">
-                              {classe?.description}
+                              {equipment?.description}
                             </Typography.Text>
                           </Col>
                         </>
                       )}
                     </>
                   }
+                  style={{ display: 'flex', flexDirection: 'row' }}
                 />
+
               </List.Item>
             )}
           />
@@ -257,7 +241,7 @@ const Classes = () => {
   )
 }
 
-export default Classes;
+export default Equipments;
 
 
 const Container = styled.div`
