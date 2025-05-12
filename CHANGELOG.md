@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.4.0](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.1.5...v0.4.0) (2025-05-12)
+
+
+### Features
+
+* Added options to delete a reservation and an equipmentReservation ([925c764](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/925c76420710deb3267aa17fb2ad34bfde0d5932))
+* Adjusted Layout Mobile Complete to Smartphones and Tablets ([16410fe](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/16410feea72e4bfc430e450c3564b26126d61343))
+* Adjusted layout to mobile, only miss 1024px ([3bac90a](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/3bac90ae6aef58da79546b5bd4d1488f9e0945db))
+* Ajusted mobile layout only miss 1024px ([14c5a8b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/14c5a8bd350117cda9e3049a8d539861193a2f44))
+* Ajusted mobile layout only miss 1024px ([df5d59b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/df5d59b5c62fa0b47420de1f18fa72c155ca8d36))
+* Ajusted mobile layout only miss 1024px ([690e708](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/690e708263ad2f67dd05f408b2382e78ff1248fa))
+* Completed docker configuration ([31f17db](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/31f17db9cdcf05996dd4c0d8f0ae49304eff4ded))
+* Configured layout to mobile on Login and Register ([4990c96](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/4990c96876ec90d397a58bcaf034d72c24477d8b))
+* Created all functions to make an equipment reservation ([edda8d7](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/edda8d75d0752a30eaec835bd07588e07b301a1e))
+* created pages and functions to create, edit and delete an equipment, doing functions to create and get equipment reservations ([90d92db](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/90d92db2ace236cc5f2447e68aa18a37a648f379))
+* Created pages to better organization, adjusts mobiles layout, and fiz bug on update classes ([95b3ebb](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/95b3ebbbf6124fb5cc7e0546ef27e4a5ab83ea65))
+* Upgrade classes to edit and delete classes ([e6424cf](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/e6424cfa06305397ee9898632154a18d047f91d2))
+* Upgrade settings on Users, now is possible edit and delete any user when admin ([85612e8](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/85612e88703c5c138d14cc7de216a5e086d6ac44))
+
+
+### Bug Fixes
+
+* adjust install dependencies on dockerfile ([5dfd34b](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/5dfd34b772f629e6ed639e7a5a39048ac5eeb259))
+* adjuste broke layouts ([84464dc](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/84464dc944a9419a84fcd4097d91507395cf4600))
+* Adjusting settings to correctly router on vercel service ([c0b6c13](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/c0b6c130e46d85750eb6bfe8f4d3543eea19f1f7))
+* Adjusts overflow Y on Users ([e66b2f4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/e66b2f4b598d42dfdb7155e630b77bd3f5f4cabd))
+* removed dev content from production ([177ceec](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/177ceece048d608b7835ea1ed70288ed19adc40f))
+
 ### [0.3.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.3.0...v0.3.1) (2025-05-09)
 
 
