@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin, Row } from 'antd';
 
 const PrivateRoute = ({ children }) => {
   const [isValid, setIsValid] = useState(null); // null = carregando, true = autorizado, false = não autorizado
@@ -36,7 +38,20 @@ const PrivateRoute = ({ children }) => {
   }, [token]);
 
   if (isValid === null) {
-    return <p>Carregando...</p>; // ou um spinner bonitinho com Ant Design
+    return  <Row justify="center" >
+              <Spin 
+                indicator={<LoadingOutlined 
+                  style={{ 
+                    fontSize: 48,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: '45vh auto'
+                  }} 
+                  spin 
+                />
+              } />
+            </Row>
   }
 
   if (!isValid) {

@@ -3,8 +3,8 @@ import React, {
   useState,
 } from "react";
 import { useNavigate } from "react-router";
-import { Col, Row, Tag, Button, Typography, notification, Drawer, Popconfirm, List, message  } from "antd";
-import { EditTwoTone, DeleteTwoTone, QuestionCircleOutlined  } from '@ant-design/icons'
+import { Col, Row, Tag, Button, Typography, notification, Drawer, Popconfirm, List, message } from "antd";
+import { EditTwoTone, DeleteTwoTone, QuestionCircleOutlined } from '@ant-design/icons'
 import axios from "axios";
 import styled from "styled-components";
 import "./Style.less";
@@ -34,9 +34,9 @@ const Users = () => {
       const sortedUsers = response?.data.sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-  
+
       setUsers(sortedUsers);
-      
+
       setLoading(false);
 
     } catch (error) {
@@ -71,7 +71,7 @@ const Users = () => {
     setLoading(true);
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/user/list/${id}`);
-      
+
       api.success({
         message: 'Usuário excluido com sucesso!',
         description: 'As informações do perfil do usuário foram deletadas.',
@@ -104,7 +104,7 @@ const Users = () => {
     getProfile(userData.id)
     getUsers();
     localStorage.removeItem("EditUser");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.id]);
 
   useEffect(() => {
@@ -127,7 +127,7 @@ const Users = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Usuários</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Usuários</Typography.Title>
         <div className="ContainerUsers">
           <List
             loading={loading}
@@ -136,45 +136,48 @@ const Users = () => {
             renderItem={(user) => (
               <List.Item
                 extra={
-                  <>
-                    <Button 
-                      type="icon" 
-                      style={{ fontSize: '1.25rem'}}
-                      onClick={() => editUser(user?.id)}
-                    >
-                      <EditTwoTone twoToneColor="#FFA500" />
-                    </Button>
-                    <Popconfirm
-                      title="Excluir usuário"
-                      description={
-                        <>
-                          <Typography.Text>
-                            Tem certeza que deseja excluir o usuário, todas as reservas ligadas a este usuário serão deletadas?
-                          </Typography.Text>
-                        </>
-                      }
-                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteUser(user?.id)}
-                      onCancel={cancel}
-                      okText="Deletar"
-                      cancelText="Cancelar"
-                    >
-                      <Button 
-                        type="icon" 
-                        style={{ fontSize: '1.25rem'}}
+                  (userData?.rulets === 'Diretor(a)' ||
+                    userData?.rulets === 'Coordenador(a)') && (
+                    <>
+                      <Button
+                        type="icon"
+                        style={{ fontSize: '1.25rem' }}
+                        onClick={() => editUser(user?.id)}
                       >
-                        <DeleteTwoTone twoToneColor="#F00" />
+                        <EditTwoTone twoToneColor="#FFA500" />
                       </Button>
-                    </Popconfirm>
-                  </>
+                      <Popconfirm
+                        title="Excluir usuário"
+                        description={
+                          <>
+                            <Typography.Text>
+                              Tem certeza que deseja excluir o usuário, todas as reservas ligadas a este usuário serão deletadas?
+                            </Typography.Text>
+                          </>
+                        }
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                        onConfirm={() => deleteUser(user?.id)}
+                        onCancel={cancel}
+                        okText="Deletar"
+                        cancelText="Cancelar"
+                      >
+                        <Button
+                          type="icon"
+                          style={{ fontSize: '1.25rem' }}
+                        >
+                          <DeleteTwoTone twoToneColor="#F00" />
+                        </Button>
+                      </Popconfirm>
+                    </>
+                  )
                 }
               >
                 <List.Item.Meta
                   title={
-                    <Typography.Text className="UsersName">{user?.name} {user?.surname? ` -  ${user.surname}` : null}</Typography.Text>
+                    <Typography.Text className="UsersName">{user?.name} {user?.surname ? ` -  ${user.surname}` : null}</Typography.Text>
                   }
                   description={
-                    <Col span={window.innerWidth > 1025 ? 10 : window.innerWidth < 425 ? 24 : 12} style={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Col span={window.innerWidth > 1025 ? 10 : window.innerWidth < 425 ? 24 : 12} style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Tag color="volcano" className="TagSubject">{user.subject}</Tag>
                       <Tag color="geekblue" className="TagShift">{user.shift}</Tag>
                     </Col>

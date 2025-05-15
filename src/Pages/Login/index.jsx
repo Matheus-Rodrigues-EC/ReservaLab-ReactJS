@@ -71,6 +71,9 @@ const Login = () => {
   };
   const onFinishFailed = (errorInfo) => {
     console.error('Failed:', errorInfo);
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {

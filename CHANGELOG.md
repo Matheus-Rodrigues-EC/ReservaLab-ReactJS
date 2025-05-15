@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.3.1...v0.4.2) (2025-05-15)
+
+
+### Features
+
+* Completed docker configuration ([31f17db](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/31f17db9cdcf05996dd4c0d8f0ae49304eff4ded))
+
+
+### Bug Fixes
+
+* Fixed bug on deploy production with docker ([44d65fc](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/44d65fc774ff3b40ae5daa166271d65f6969adff))
+
 ### [0.4.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.4.0...v0.4.1) (2025-05-13)
 
 

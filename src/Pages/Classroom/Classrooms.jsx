@@ -141,7 +141,7 @@ const Classrooms = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Salas</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Salas</Typography.Title>
         <div className="ContainerClassrooms">
           <Row justify='space-between'>
             <Input.Search
@@ -163,38 +163,41 @@ const Classrooms = () => {
             renderItem={(classroom) => (
               <List.Item
                 extra={
-                  <>
-                    <Button
-                      type="icon"
-                      style={{ fontSize: '1.25rem' }}
-                      onClick={() => editClassroom(classroom?.id)}
-                    >
-                      <EditTwoTone twoToneColor="#FFA500" />
-                    </Button>
-                    <Popconfirm
-                      title="Excluir Sala"
-                      description={
-                        <>
-                          <Typography.Text>
-                            Tem certeza que deseja excluir a sala, todas as reservas ligadas a esta sala serão deletadas?
-                          </Typography.Text>
-                        </>
-                      }
-                      autoAdjustOverflow
-                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteClassroom(classroom?.id)}
-                      onCancel={cancel}
-                      okText="Deletar"
-                      cancelText="Cancelar"
-                    >
+                  (userData?.rulets === 'Diretor(a)' ||
+                    userData?.rulets === 'Coordenador(a)') && (
+                    <>
                       <Button
                         type="icon"
                         style={{ fontSize: '1.25rem' }}
+                        onClick={() => editClassroom(classroom?.id)}
                       >
-                        <DeleteTwoTone twoToneColor="#F00" />
+                        <EditTwoTone twoToneColor="#FFA500" />
                       </Button>
-                    </Popconfirm>
-                  </>
+                      <Popconfirm
+                        title="Excluir Sala"
+                        description={
+                          <>
+                            <Typography.Text>
+                              Tem certeza que deseja excluir a sala, todas as reservas ligadas a esta sala serão deletadas?
+                            </Typography.Text>
+                          </>
+                        }
+                        autoAdjustOverflow
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                        onConfirm={() => deleteClassroom(classroom?.id)}
+                        onCancel={cancel}
+                        okText="Deletar"
+                        cancelText="Cancelar"
+                      >
+                        <Button
+                          type="icon"
+                          style={{ fontSize: '1.25rem' }}
+                        >
+                          <DeleteTwoTone twoToneColor="#F00" />
+                        </Button>
+                      </Popconfirm>
+                    </>
+                  )
                 }
               >
                 <List.Item.Meta
@@ -208,7 +211,7 @@ const Classrooms = () => {
                       </Col>
                       {classroom?.description && (
                         <>
-                          <br/>
+                          <br />
                           <Col span={24}>
                             <Typography.Text type="secondary">
                               {classroom?.description}

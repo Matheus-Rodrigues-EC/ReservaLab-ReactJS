@@ -120,7 +120,10 @@ const Classroom = () => {
     }
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    console.error('Failed:', errorInfo);
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {

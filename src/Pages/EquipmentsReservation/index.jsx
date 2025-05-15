@@ -107,8 +107,10 @@ const EquipmentsReservation = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:');
-    console.table(errorInfo?.values);
+    console.error('Failed:', errorInfo);
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {
