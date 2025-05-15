@@ -316,7 +316,6 @@ const Profile = () => {
                 className="SaveButtonProfile"
                 loading={loading}
                 disabled={loading}
-                onClick={() => localStorage.removeItem("EditUser")}
               >
                 Salvar Alterações
               </Button>
