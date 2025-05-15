@@ -57,7 +57,6 @@ const SideMenu = () => {
     Navigate("/classes");
   };
 
-
   const handleLogout = () => {
     // Limpar dados do localStorage
     localStorage.removeItem("token");
