@@ -21,6 +21,7 @@ import Music from '../assets/Music.png';
 import Audio from '../assets/Som.png';
 import Sport from '../assets/Sports.png';
 import Video from '../assets/Video.png';
+import Acessorio from '../assets/acessorio.png'
 
 const CardEquipmentReservation = (Data) => {
   const { data, setReservations } = Data;
@@ -35,6 +36,7 @@ const CardEquipmentReservation = (Data) => {
     else if (id === 'Infraestrutura') return Infra;
     else if (id === 'Esportes') return Sport;
     else if (id === 'Música') return Music;
+    else if (id === 'Acessório') return Acessorio;
   }
 
   const cancel = () => {

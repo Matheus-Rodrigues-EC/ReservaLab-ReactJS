@@ -114,4 +114,5 @@ export const EquipamentsTypes = [
 	{id: 3,  label: 'Infraestrutura'},
 	{id: 4,  label: 'Esportes'},
 	{id: 5,  label: 'Música'},
+	{id: 6,  label: 'Acessório'},
 ]

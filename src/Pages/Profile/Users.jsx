@@ -141,6 +141,7 @@ const Users = () => {
                     <>
                       <Button
                         type="icon"
+                        className="configButtons"
                         style={{ fontSize: '1.25rem' }}
                         onClick={() => editUser(user?.id)}
                       >
@@ -163,6 +164,7 @@ const Users = () => {
                       >
                         <Button
                           type="icon"
+                          className="configButtons"
                           style={{ fontSize: '1.25rem' }}
                         >
                           <DeleteTwoTone twoToneColor="#F00" />
@@ -177,9 +179,10 @@ const Users = () => {
                     <Typography.Text className="UsersName">{user?.name} {user?.surname ? ` -  ${user.surname}` : null}</Typography.Text>
                   }
                   description={
-                    <Col span={window.innerWidth > 1025 ? 10 : window.innerWidth < 425 ? 24 : 12} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Col span={window.innerWidth > 1025 ? 12 : window.innerWidth < 425 ? 24 : 12} style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Tag color="volcano" className="TagSubject">{user.subject}</Tag>
                       <Tag color="geekblue" className="TagShift">{user.shift}</Tag>
+                      <Tag color="green" className="TagShift">{user.rulets}</Tag>
                     </Col>
                   }
                 />
