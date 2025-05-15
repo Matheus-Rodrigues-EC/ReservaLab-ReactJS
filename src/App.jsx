@@ -34,6 +34,16 @@ function App() {
 
   }, [])
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      axios.get(`${import.meta.env.VITE_API_URL}/user/`) // ou a rota que você configurou no backend
+        .then((res) => res.status === 200 && console.log('Backend is Alive'))
+        .catch((err) => console.error('Erro no health check:', err));
+    }, 10 * 60 * 1000); // 10 minutos
+
+    return () => clearInterval(intervalId); // limpa o intervalo ao desmontar
+  }, []);
+
   return (
     <Container>
       <BrowserRouter>
@@ -92,13 +102,13 @@ function App() {
               <EquipmentsReservation />
             </PrivateRoute>
           } />
-          
+
           <Route path="/equipments" element={
             <PrivateRoute>
-              <Equipments /> 
+              <Equipments />
             </PrivateRoute>
           } />
-          
+
           <Route path="/equipment" element={
             <PrivateRoute>
               <Equipment />
