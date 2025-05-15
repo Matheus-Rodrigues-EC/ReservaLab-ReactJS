@@ -64,7 +64,9 @@ const UpdatePassword = () => {
     updatePasswordProfile(userData.id, values)
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {
@@ -119,7 +121,7 @@ const UpdatePassword = () => {
               <Form.Item
                 name='CurrentPassword'
                 rules={[
-                  { required: true, message: "Por favor, insira seu nome" },
+                  { required: true, message: "Por favor, insira sua senha atual" },
                 ]}
                 className="FormItemProfile"
               >
@@ -136,7 +138,7 @@ const UpdatePassword = () => {
               <Form.Item
                 name='password'
                 rules={[
-                  { required: true, message: 'Por favor, insira sua senha.' },
+                  { required: true, message: 'Por favor, insira sua nova senha.' },
                   { pattern: Constants.passwordRegex, message: "A senha deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um caractere especial." },
                 ]}
                 className="FormItemProfile"
@@ -156,7 +158,7 @@ const UpdatePassword = () => {
               <Form.Item
                 name='ConfirmNewPassword'
                 rules={[
-                  { required: true, message: 'Por favor, insira sua senha.' },
+                  { required: true, message: 'Por favor, confirme sua senha.' },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue('password') === value) {

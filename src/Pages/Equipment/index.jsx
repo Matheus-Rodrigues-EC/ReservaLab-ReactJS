@@ -129,7 +129,10 @@ const Equipment = () => {
     }
   };
   const onFinishFailed = (errorInfo) => {
-    console.table(errorInfo?.values);
+    console.error('Failed:');
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {

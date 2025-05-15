@@ -146,8 +146,11 @@ const Reservation = () => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:');
-    console.table(errorInfo?.values);
+    console.error('Failed:');
+    // console.table(errorInfo?.values);
+    errorInfo?.errorFields?.map((error) => {
+      console.error(error?.errors[0])
+    })
   };
 
   useEffect(() => {
@@ -297,7 +300,7 @@ const Reservation = () => {
                 <Form.Item
                   name='time'
                   rules={[
-                    { required: true, message: "Por favor selecione um horário." }
+                    { required: true, message: "Por favor selecione até dois horários." }
                   ]}
                   className="FormItemReservation"
                 >
@@ -322,7 +325,7 @@ const Reservation = () => {
               <Form.Item
                 name='purpose'
                 rules={[
-                  { required: true, message: "Por favor insira a finalidade que a sala terá." }
+                  { required: true, message: "Por favor insira a finalidade da reserva." }
                 ]}
                 className="FormItemReservation"
               >

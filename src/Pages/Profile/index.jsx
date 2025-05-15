@@ -63,7 +63,11 @@ const Profile = () => {
       setTimeout(() => {
         getProfile(editUser || userData.id)
         setLoading(false);
-        goToUsers();
+        if(editUser){
+          goToUsers();
+        }else{
+          goToHome();
+        }
       }, 1750);
 
     } catch (error) {
@@ -109,6 +113,9 @@ const Profile = () => {
   }
   const goToUsers = () => {
     Navigate('/users')
+  }
+  const goToHome = () => {
+    Navigate('/home')
   }
 
   const onFinish = (values) => {

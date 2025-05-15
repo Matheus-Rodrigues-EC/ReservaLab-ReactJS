@@ -59,22 +59,22 @@ const Classes = () => {
 
   const filterClasses = (data) => {
     if (!classes || classes.length === 0) return [];
-  
+
     const searchData = String(data).toLowerCase();
     const normalizedSearch = removerAcentos(searchData);
-  
+
     const filtered = classes.filter((classe) => {
       const gradeMatch = classe?.grade === Number(data);
       const classNameMatch = classe?.className?.toLowerCase().includes(searchData);
       const shiftMatch = removerAcentos(classe?.shift?.toLowerCase() || '').includes(normalizedSearch);
-  
+
       return gradeMatch || classNameMatch || shiftMatch;
     });
-  
+
     setFilteredClasses(filtered);
     return filtered;
   };
-  
+
 
   const cancel = () => {
     messageApi.open({
@@ -148,7 +148,7 @@ const Classes = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Turmas</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Turmas</Typography.Title>
         <div className="ContainerClasses">
           <Row justify='space-between'>
             <Input.Search
@@ -170,42 +170,45 @@ const Classes = () => {
             renderItem={(classe) => (
               <List.Item
                 extra={
-                  <>
-                    <Button
-                      type="icon"
-                      style={{ fontSize: '1.25rem' }}
-                      onClick={() => editClass(classe?.id)}
-                    >
-                      <EditTwoTone twoToneColor="#FFA500" />
-                    </Button>
-                    <Popconfirm
-                      title="Excluir Turma"
-                      description={
-                        <>
-                          <Typography.Text>
-                            Tem certeza que deseja excluir a turma, todas as reservas
-                          </Typography.Text>
-                          <br />
-                          <Typography.Text>
-                            ligadas a esta turma serão deletadas?
-                          </Typography.Text>
-                        </>
-                      }
-                      autoAdjustOverflow
-                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteClass(classe?.id)}
-                      onCancel={cancel}
-                      okText="Deletar"
-                      cancelText="Cancelar"
-                    >
+                  (userData?.rulets === 'Diretor(a)' ||
+                    userData?.rulets === 'Coordenador(a)') && (
+                    <>
                       <Button
                         type="icon"
                         style={{ fontSize: '1.25rem' }}
+                        onClick={() => editClass(classe?.id)}
                       >
-                        <DeleteTwoTone twoToneColor="#F00" />
+                        <EditTwoTone twoToneColor="#FFA500" />
                       </Button>
-                    </Popconfirm>
-                  </>
+                      <Popconfirm
+                        title="Excluir Turma"
+                        description={
+                          <>
+                            <Typography.Text>
+                              Tem certeza que deseja excluir a turma, todas as reservas
+                            </Typography.Text>
+                            <br />
+                            <Typography.Text>
+                              ligadas a esta turma serão deletadas?
+                            </Typography.Text>
+                          </>
+                        }
+                        autoAdjustOverflow
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                        onConfirm={() => deleteClass(classe?.id)}
+                        onCancel={cancel}
+                        okText="Deletar"
+                        cancelText="Cancelar"
+                      >
+                        <Button
+                          type="icon"
+                          style={{ fontSize: '1.25rem' }}
+                        >
+                          <DeleteTwoTone twoToneColor="#F00" />
+                        </Button>
+                      </Popconfirm>
+                    </>
+                  )
                 }
               >
                 <List.Item.Meta

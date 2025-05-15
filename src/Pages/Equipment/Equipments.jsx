@@ -141,7 +141,7 @@ const Equipments = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Equipamentos</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Equipamentos</Typography.Title>
         <div className="ContainerEquipments">
           <Row justify='space-between'>
             <Input.Search
@@ -163,38 +163,41 @@ const Equipments = () => {
             renderItem={(equipment) => (
               <List.Item
                 extra={
-                  <>
-                    <Button
-                      type="icon"
-                      style={{ fontSize: '1.25rem' }}
-                      onClick={() => editEquipment(equipment?.id)}
-                    >
-                      <EditTwoTone twoToneColor="#FFA500" />
-                    </Button>
-                    <Popconfirm
-                      title="Excluir Equipamento"
-                      description={
-                        <>
-                          <Typography.Text>
-                            Tem certeza que deseja excluir o equipamento, todas as reservas ligadas a este equipamento serão deletadas?
-                          </Typography.Text>
-                        </>
-                      }
-                      autoAdjustOverflow
-                      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                      onConfirm={() => deleteEquipment(equipment?.id)}
-                      onCancel={cancel}
-                      okText="Deletar"
-                      cancelText="Cancelar"
-                    >
+                  (userData?.rulets === 'Diretor(a)' ||
+                    userData?.rulets === 'Coordenador(a)') && (
+                    <>
                       <Button
                         type="icon"
                         style={{ fontSize: '1.25rem' }}
+                        onClick={() => editEquipment(equipment?.id)}
                       >
-                        <DeleteTwoTone twoToneColor="#F00" />
+                        <EditTwoTone twoToneColor="#FFA500" />
                       </Button>
-                    </Popconfirm>
-                  </>
+                      <Popconfirm
+                        title="Excluir Equipamento"
+                        description={
+                          <>
+                            <Typography.Text>
+                              Tem certeza que deseja excluir o equipamento, todas as reservas ligadas a este equipamento serão deletadas?
+                            </Typography.Text>
+                          </>
+                        }
+                        autoAdjustOverflow
+                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                        onConfirm={() => deleteEquipment(equipment?.id)}
+                        onCancel={cancel}
+                        okText="Deletar"
+                        cancelText="Cancelar"
+                      >
+                        <Button
+                          type="icon"
+                          style={{ fontSize: '1.25rem' }}
+                        >
+                          <DeleteTwoTone twoToneColor="#F00" />
+                        </Button>
+                      </Popconfirm>
+                    </>
+                  )
                 }
               >
                 <List.Item.Meta
@@ -208,7 +211,7 @@ const Equipments = () => {
                       </Col>
                       {equipment?.description && (
                         <>
-                          <br/>
+                          <br />
                           <Col span={24}>
                             <Typography.Text type="secondary">
                               {equipment?.description}
