@@ -27,19 +27,21 @@ export const CargosList = [
 export const  DisciplinasList = [
 	{id: 1,  label: 'AO de Matemática'},
 	{id: 2,  label: 'AO de Português'},
-	{id: 3,  label: 'Artes'},
-	{id: 4,  label: 'Ciências'},
-	{id: 5,  label: 'Educação Física'},
-	{id: 6,  label: 'Geografia'},
-	{id: 7,  label: 'História'},
-	{id: 8,  label: 'LA'},
-	{id: 9,  label: 'Laboratório de Redação'},
-	{id: 10, label: 'LCP'},
-	{id: 11, label: 'Matemática'},
-	{id: 12, label: 'Português'},
-	{id: 13, label: 'Projeto de Vida'},
-	{id: 14, label: 'Religião'},
-	{id: 15, label: 'TDIC'},
+	{id: 3,  label: 'Apoio'},
+	{id: 4,  label: 'Artes'},
+	{id: 5,  label: 'Ciências'},
+	{id: 6,  label: 'Educação Física'},
+	{id: 7,  label: 'Geografia'},
+	{id: 8,  label: 'História'},
+	{id: 9,  label: 'LA'},
+	{id: 10, label: 'Laboratório de Redação'},
+	{id: 11, label: 'LCP'},
+	{id: 12, label: 'Matemática'},
+	{id: 13, label: 'Português'},
+	{id: 14, label: 'Polivalente'},
+	{id: 15, label: 'Projeto de Vida'},
+	{id: 16, label: 'Religião'},
+	{id: 17, label: 'TDIC'},
 ]
 
 export const TurnoList = [
@@ -109,10 +111,10 @@ export const EJA_Times = [
 
 
 export const EquipamentsTypes = [
-	{id: 1,  label: 'Audio'},
-	{id: 2,  label: 'Vídeo'},
-	{id: 3,  label: 'Infraestrutura'},
-	{id: 4,  label: 'Esportes'},
+	{id: 1,  label: 'Acessório'},
+	{id: 2,  label: 'Audio'},
+	{id: 3,  label: 'Esportes'},
+	{id: 4,  label: 'Infraestrutura'},
 	{id: 5,  label: 'Música'},
-	{id: 6,  label: 'Acessório'},
+	{id: 6,  label: 'Vídeo'},
 ]
