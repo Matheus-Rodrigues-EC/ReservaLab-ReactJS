@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.4.3...v0.4.4) (2025-05-16)
+
+
+### Features
+
+* add endpoint ro still alive server ([5eede6c](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/5eede6cd1a1acb8e1c9da1e1e48a62a95db55828))
+
 ### [0.4.3](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.4.2...v0.4.3) (2025-05-15)
 
 ### [0.4.2](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.3.1...v0.4.2) (2025-05-15)
