@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.5](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.4.4...v0.4.5) (2025-05-16)
+
+
+### Features
+
+* added visual feedback em form fail ([5615f78](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/5615f780453f8f63c329615f3a63177aaca2ee9b))
+
 ### [0.4.4](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.4.3...v0.4.4) (2025-05-16)
 
 
