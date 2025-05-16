@@ -168,9 +168,14 @@ const EquipmentsReservation = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.error('Failed:', errorInfo);
-    errorInfo?.errorFields?.map((error) => {
-      console.error(error?.errors[0])
-    })
+    // errorInfo?.errorFields?.map((error) => {
+    //   console.error(error?.errors[0])
+    // })
+    api.warning({
+      message: 'Campos obrigatórios faltando',
+      description: 'Por favor, revise os campos do formulário e tente novamente.',
+      placement: 'top',
+    });
   };
 
   useEffect(() => {
