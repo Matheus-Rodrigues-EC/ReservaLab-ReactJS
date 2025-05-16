@@ -20,7 +20,9 @@ const EquipmentsReservation = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [equipments, setEquipments] = useState([]);
+  const [Times, setTimes] = useState(Integral);
   // const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
+  const [selectedTimes, setSelectedTimes] = useState([]);
   const [filteredEquipments, setFilteredEquipments] = useState(equipments);
   const [Visible, setVisible] = useState(false);
   const [api, contextHolder] = notification.useNotification();
@@ -66,6 +68,64 @@ const EquipmentsReservation = () => {
     return current && (current < dayjs().startOf('day') || current.day() === 0 || current.day() === 6);
   };
 
+  const getAllowedTimes = (base) => {
+    const index = Times.indexOf(base);
+    const range = userData?.subject === 'Polivalente' ? 3 : 1;
+
+    const allowed = [];
+    for (let i = -range; i <= range; i++) {
+      const time = Times[index + i];
+      if (time) allowed.push(time);
+    }
+    return allowed;
+  };
+
+  const handleChange = (values) => {
+    if (values.length === 0) {
+      setSelectedTimes([]);
+      return;
+    }
+
+    const base = values[0];
+    const allowed = getAllowedTimes(base);
+    const filtered = values.filter((v) => allowed.includes(v));
+    setSelectedTimes(filtered);
+  };
+
+  const allowedSet = new Set(
+    selectedTimes.length > 0 ? getAllowedTimes(selectedTimes[0]) : Times
+  );
+
+  const validateTimes = (userData, Times) => (_, value) => {
+    const max = userData?.subject === "Polivalente" ? 4 : 2;
+
+    if (!value || value.length === 0) {
+      return Promise.reject(new Error("Selecione ao menos um horário"));
+    }
+
+    if (value.length > max) {
+      return Promise.reject(
+        new Error(`Você pode selecionar no máximo ${max} horário(s).`)
+      );
+    }
+
+    const selectedIndexes = value
+      .map((val) => Times.findIndex((t) => t.label === val))
+      .sort((a, b) => a - b);
+
+    const isSequential = selectedIndexes.every((val, i, arr) => {
+      return i === 0 || val === arr[i - 1] + 1;
+    });
+
+    if (!isSequential) {
+      return Promise.reject(
+        new Error("Selecione horários em sequência.")
+      );
+    }
+
+    return Promise.resolve();
+  };
+
   const createEquipmentReservation = async (data) => {
     const body = {
       ...data,
@@ -108,9 +168,14 @@ const EquipmentsReservation = () => {
 
   const onFinishFailed = (errorInfo) => {
     console.error('Failed:', errorInfo);
-    errorInfo?.errorFields?.map((error) => {
-      console.error(error?.errors[0])
-    })
+    // errorInfo?.errorFields?.map((error) => {
+    //   console.error(error?.errors[0])
+    // })
+    api.warning({
+      message: 'Campos obrigatórios faltando',
+      description: 'Por favor, revise os campos do formulário e tente novamente.',
+      placement: 'top',
+    });
   };
 
   useEffect(() => {
@@ -137,7 +202,7 @@ const EquipmentsReservation = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-      <Typography.Title level={2} style={{ textAlign: 'center'}}>Reservar Equipamentos</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Reservar Equipamentos</Typography.Title>
         <div className="ContainerEquipmentReservation">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
@@ -192,7 +257,7 @@ const EquipmentsReservation = () => {
                   placeholder={dataCapitalizada}
                   disabled={loading}
                   className="InputDateEquipmentReservation"
-                  style={{ width: '100%'}}
+                  style={{ width: '100%' }}
                   allowClear
                   disabledDate={disabledDate}
                 />
@@ -226,24 +291,46 @@ const EquipmentsReservation = () => {
 
               <Row justify='space-between' >
                 <Form.Item
-                  name='time'
+                  name="time"
                   rules={[
-                    { required: true, message: "Por favor selecione um horário." }
+                    {
+                      required: true,
+                      message:
+                        userData?.subject === "Polivalente"
+                          ? "Por favor selecione até quatro horários."
+                          : "Por favor selecione até dois horários.",
+                    },
+                    {
+                      validator: validateTimes(userData, Times),
+                    },
                   ]}
-                  className="FormItemProfile"
+                  className="FormItemReservation"
                 >
                   <Select
                     size="large"
-                    placeholder="Selecione um ou dois horários "
+                    placeholder={
+                      userData?.subject === "Polivalente"
+                        ? "Selecione até quatro horários"
+                        : "Selecione até dois horários"
+                    }
                     disabled={loading}
-                    className="InputEquipmentReservation"
+                    className="InputReservation"
                     allowClear
-                    onClick={() => null}
+                    value={selectedTimes}
+                    onClear={() => {
+                      form.setFieldValue("time", []);
+                      setTimes(Integral); // reset para default
+                    }}
+                    onChange={handleChange}
                     mode="multiple"
-                    maxCount={2}
+                    maxCount={userData?.subject === "Polivalente" ? 4 : 2}
                   >
-                    {Integral?.map((time) => (
-                      <Select.Option key={time.label} value={time.label}>
+                    {Times.map((time) => (
+                      <Select.Option
+                        key={time.label}
+                        value={time.label}
+                        disabled={!allowedSet.has(time)}
+                      >
                         {time.label}
                       </Select.Option>
                     ))}

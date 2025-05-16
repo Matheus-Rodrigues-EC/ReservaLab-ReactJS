@@ -123,7 +123,12 @@ const Profile = () => {
     updateProfile((editUser || userData.id), values)
   };
   const onFinishFailed = (errorInfo) => {
-    console.error(errorInfo?.values);
+    console.error("Failed: ", errorInfo);
+    api.warning({
+      message: 'Campos obrigatórios faltando',
+      description: 'Por favor, revise os campos do formulário e tente novamente.',
+      placement: 'top',
+    });
   };
 
   useEffect(() => {

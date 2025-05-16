@@ -25,6 +25,7 @@ const Reservation = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [Times, setTimes] = useState(Fundamental_Integral_Times);
+  const [selectedTimes, setSelectedTimes] = useState([]);
   const [salas, setSalas] = useState([]);
   const [turmas, setTurmas] = useState([]);
   const [filteredFinalidades, setFilteredFinalidades] = useState(Finalidades);
@@ -37,7 +38,7 @@ const Reservation = () => {
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
   const dateFormat = 'dddd, DD/MM/YYYY';
   const Navigate = useNavigate()
-  const userData = JSON.parse(localStorage.getItem('userData'));
+  const userData = JSON.parse(localStorage.getItem('userData')) || {};
 
   const handleSearchSalas = (value) => {
     if (!value) {
@@ -76,11 +77,13 @@ const Reservation = () => {
   const fetchSalas = async () => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classroom/list`);
     setSalas(response.data);
+    setFilteredSalas(response.data);
   }
 
   const fetchTurmas = async () => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list`);
-    setTurmas(response?.data);
+    setTurmas(response.data);
+    setFilteredClasses(response.data);
   }
 
   const goToHome = () => {
@@ -102,6 +105,65 @@ const Reservation = () => {
     const times = shiftTimeMap[classe?.shift] || Fundamental_Integral_Times;
     setTimes(times);
   };
+
+  const getAllowedTimes = (base) => {
+    const index = Times.indexOf(base);
+    const range = userData?.subject === 'Polivalente' ? 3 : 1;
+
+    const allowed = [];
+    for (let i = -range; i <= range; i++) {
+      const time = Times[index + i];
+      if (time) allowed.push(time);
+    }
+    return allowed;
+  };
+
+  const handleChange = (values) => {
+    if (values.length === 0) {
+      setSelectedTimes([]);
+      return;
+    }
+
+    const base = values[0];
+    const allowed = getAllowedTimes(base);
+    const filtered = values.filter((v) => allowed.includes(v));
+    setSelectedTimes(filtered);
+  };
+
+  const allowedSet = new Set(
+    selectedTimes.length > 0 ? getAllowedTimes(selectedTimes[0]) : Times
+  );
+
+  const validateTimes = (userData, Times) => (_, value) => {
+    const max = userData?.subject === "Polivalente" ? 4 : 2;
+
+    if (!value || value.length === 0) {
+      return Promise.reject(new Error("Selecione ao menos um horário"));
+    }
+
+    if (value.length > max) {
+      return Promise.reject(
+        new Error(`Você pode selecionar no máximo ${max} horário(s).`)
+      );
+    }
+
+    const selectedIndexes = value
+      .map((val) => Times.findIndex((t) => t.label === val))
+      .sort((a, b) => a - b);
+
+    const isSequential = selectedIndexes.every((val, i, arr) => {
+      return i === 0 || val === arr[i - 1] + 1;
+    });
+
+    if (!isSequential) {
+      return Promise.reject(
+        new Error("Selecione horários em sequência.")
+      );
+    }
+
+    return Promise.resolve();
+  };
+
 
   const createReservation = async (data) => {
     const body = {
@@ -145,12 +207,14 @@ const Reservation = () => {
     createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = () => {
     console.error('Failed:');
     // console.table(errorInfo?.values);
-    errorInfo?.errorFields?.map((error) => {
-      console.error(error?.errors[0])
-    })
+    api.warning({
+      message: 'Campos obrigatórios faltando',
+      description: 'Por favor, revise os campos do formulário e tente novamente.',
+      placement: 'top',
+    });
   };
 
   useEffect(() => {
@@ -158,11 +222,17 @@ const Reservation = () => {
     fetchTurmas();
     handleSearchClasses('');
     handleSearchSalas('');
+    if (!userData) {
+      Navigate('/login');
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-  }, []);
+    return () => {
+      form.resetFields();
+    };
+  }, [form]);
 
   return (
 
@@ -179,7 +249,7 @@ const Reservation = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-      <Typography.Title level={2} style={{ textAlign: 'center'}}>Reservar Sala</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Reservar Sala</Typography.Title>
         <div className="ContainerReservation">
           <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
@@ -223,6 +293,7 @@ const Reservation = () => {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
+              disabled={loading}
             >
               <Form.Item
                 name='date'
@@ -238,7 +309,7 @@ const Reservation = () => {
                   placeholder={dataCapitalizada}
                   disabled={loading}
                   className="InputDateReservation"
-                  style={{ width: '100%'}}
+                  style={{ width: '100%' }}
                   allowClear
                   disabledDate={disabledDate}
                 />
@@ -298,23 +369,46 @@ const Reservation = () => {
 
               <Row justify='space-between' >
                 <Form.Item
-                  name='time'
+                  name="time"
                   rules={[
-                    { required: true, message: "Por favor selecione até dois horários." }
+                    {
+                      required: true,
+                      message:
+                        userData?.subject === "Polivalente"
+                          ? "Por favor selecione até quatro horários."
+                          : "Por favor selecione até dois horários.",
+                    },
+                    {
+                      validator: validateTimes(userData, Times),
+                    },
                   ]}
                   className="FormItemReservation"
                 >
                   <Select
                     size="large"
-                    placeholder="Selecione um ou dois horários "
+                    placeholder={
+                      userData?.subject === "Polivalente"
+                        ? "Selecione até quatro horários"
+                        : "Selecione até dois horários"
+                    }
                     disabled={loading}
                     className="InputReservation"
                     allowClear
+                    value={selectedTimes}
+                    onClear={() => {
+                      form.setFieldValue("time", []);
+                      setTimes(Fundamental_Integral_Times); // reset para default
+                    }}
+                    onChange={handleChange}
                     mode="multiple"
-                    maxCount={2}
+                    maxCount={userData?.subject === "Polivalente" ? 4 : 2}
                   >
-                    {Times?.map((time) => (
-                      <Select.Option key={time.label} value={time.label}>
+                    {Times.map((time) => (
+                      <Select.Option
+                        key={time.label}
+                        value={time.label}
+                        disabled={!allowedSet.has(time)}
+                      >
                         {time.label}
                       </Select.Option>
                     ))}
@@ -372,7 +466,7 @@ const Reservation = () => {
                 loading={loading}
                 disabled={loading}
               >
-                Salvar Alterações
+                Criar Reserva
               </Button>
 
             </Form>
