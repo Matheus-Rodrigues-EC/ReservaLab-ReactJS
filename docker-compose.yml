@@ -2,75 +2,22 @@ services:
   # Frontend - React com Vite
   reservalab-frontend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile.dev
+    image: reservalab-frontend:dev
     container_name: reservalab-frontend-dev
     ports:
       - "5173:5173"
+    expose:
+      - 5173
+    environment:
+      - VITE_API_URL=http://localhost:4000
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:4000
     networks:
       - reservalab-network
-    depends_on:
-      - reservalab-backend
-    restart: unless-stopped
 
-  # Backend - Conecte com seu container backend existente
-  reservalab-backend:
-    # Se você já tem uma imagem do backend, use:
-    # image: nome-da-sua-imagem-backend:tag
-    #
-    # Ou se você tem o código do backend localmente:
-    # build:
-    #   context: ../caminho-para-backend
-    #   dockerfile: Dockerfile
-    #
-    # Para este exemplo, vou assumir que você tem uma imagem:
-    image: reservalab-backend:dev
-    container_name: reservalab-backend-dev
-    ports:
-      - "8080:8080"
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@reservalab-postgres:5432/reservalab
-    networks:
-      - reservalab-network
-    depends_on:
-      reservalab-postgres:
-        condition: service_healthy
-    restart: unless-stopped
-
-  # Banco de dados PostgreSQL
-  reservalab-postgres:
-    image: postgres:17.3
-    container_name: reservalab-postgres-dev
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=reservalab
-    ports:
-      - "5440:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - reservalab-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
-# Volumes
-volumes:
-  pgdata:
-    driver: local
-
-# Networks
 networks:
   reservalab-network:
     driver: bridge

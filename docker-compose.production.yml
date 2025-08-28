@@ -1,0 +1,22 @@
+services:
+  reservalab-web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: reservalab-frontend:prod
+    container_name: reservalab-frontend-prod
+    hostname: frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    expose:
+      - 80
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    networks:
+      - reservalab-network
+
+    networks:
+      reservalab-network:
+        name: reservalab-network
+        driver: bridge
