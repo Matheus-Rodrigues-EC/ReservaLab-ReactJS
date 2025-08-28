@@ -16,7 +16,7 @@ services:
     networks:
       - reservalab-network
 
-    networks:
-      reservalab-network:
-        name: reservalab-network
-        driver: bridge
+networks:
+  reservalab-network:
+    name: reservalab-network
+    driver: bridge
