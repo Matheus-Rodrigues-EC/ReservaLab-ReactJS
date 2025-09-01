@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import packageJson from '../../../package.json';
 import { Link, useNavigate } from "react-router";
+import { useSearchParams } from 'react-router-dom';
 import axios from "axios";
 import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
@@ -11,6 +12,8 @@ import { UserDataContext } from '../../Providers/UserData';
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col, Avatar, Form, Input, Button, Typography, notification } from 'antd';
 
+import GoogleLoginComponent from "../../Components/GoogleLogin";
+
 
 const Login = () => {
   const inputRef = useRef(null);
@@ -19,9 +22,10 @@ const Login = () => {
   const { setUserData } = React.useContext(UserDataContext);
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
-
+  const [searchParams] = useSearchParams();
 
   const Navigate = useNavigate()
+  localStorage.clear();
 
   const goToHome = () => {
     Navigate('/home')
@@ -32,13 +36,13 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, body);
-      const user = { 
-        id: response?.data?.user?.id, 
-        name: response?.data?.user?.name, 
-        email: response?.data?.user?.email, 
-        surname: response?.data?.user?.surname, 
-        rulets: response?.data?.user?.rulets, 
-        shift: response?.data?.user?.shift, 
+      const user = {
+        id: response?.data?.user?.id,
+        name: response?.data?.user?.name,
+        email: response?.data?.user?.email,
+        surname: response?.data?.user?.surname,
+        rulets: response?.data?.user?.rulets,
+        shift: response?.data?.user?.shift,
         subject: response?.data?.user?.subject,
       };
       const serializableUser = JSON.stringify(user);
@@ -86,7 +90,15 @@ const Login = () => {
   }, [inputRef]);
 
   useEffect(() => {
+    const token = searchParams.get('token');
+    if (token) {
+      localStorage.setItem('token', token);
+      // redirecionar para home
+      goToHome();
+    }
+  }, []);
 
+  useEffect(() => {
   }, [Email, Password]);
 
   return (
@@ -150,11 +162,11 @@ const Login = () => {
                   prefix={<LockOutlined />}
                   size="large"
                   placeholder="Senha"
-
+                  disabled={loading}
                   className="InputLogin"
                   allowClear
                   type="password"
-                  disabled={loading}
+                  autoComplete="on"
                 >
 
                 </Input.Password>
@@ -174,13 +186,16 @@ const Login = () => {
 
             </Form>
 
-
           </Row>
           <Row justify='center'>
 
             <Link to="/register" className="LinkButtonLogin" >
               Ainda não possui cadastro? Clique aqui.
             </Link>
+          </Row>
+
+          <Row justify='center' style={{ marginTop: "20px" }}>
+            <GoogleLoginComponent />
           </Row>
 
         </Col>

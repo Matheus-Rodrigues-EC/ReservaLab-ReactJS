@@ -303,7 +303,7 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
-                  disabled={loading || (userData?.rulets === 'Professor(a)') || (userData?.rulets === 'Apoio')}
+                  disabled={loading || (userData?.rulets === 'Apoio')}
                   className="InputProfile"
                   style={{ marginBottom: '50px'}}
                   allowClear
