@@ -34,6 +34,7 @@ import Special from "../assets/Especial.jpeg";
 import Sport from "../assets/Quadra.png";
 import Test from "../assets/Prova.png";
 import { FuncionalidadesList as Purposes } from "../Utils/Constants";
+import Loading from "../Components/Loading";
 
 const { Text, Title } = Typography;
 
@@ -119,6 +120,7 @@ const CardReservation = ({ data, setReservations, editReservation }) => {
     <Col span={24} className="actions">
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       <Card
         loading={loading}
         style={{

@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../Providers/UserData";
 import axios from "axios";
 import { notification } from "antd";
+import Loading from "../Components/Loading";
 
 type GoogleJwtPayload = {
   email: string;
@@ -15,12 +16,14 @@ const GoogleLoginComponent = () => {
   // const { setUserData } = React.useContext(UserDataContext);
   const navigate = useNavigate();
   const [api, contextHolder] = notification.useNotification();
+  const [loading, setLoading] = useState(false);
 
   const goToHome = () => {
     navigate("/home");
   };
 
   const handleSuccess = async (credentialResponse) => {
+    setLoading(true);
     const googleUser = jwtDecode<GoogleJwtPayload>(
       credentialResponse?.credential
     );
@@ -66,7 +69,8 @@ const GoogleLoginComponent = () => {
         if (error.status === 404) {
           navigate("/register");
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   const handleError = () => {
@@ -76,6 +80,7 @@ const GoogleLoginComponent = () => {
   return (
     <>
       {contextHolder}
+      {loading && <Loading />}
       <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
     </>
   );

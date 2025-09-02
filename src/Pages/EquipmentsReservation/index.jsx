@@ -15,6 +15,7 @@ import {
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const EquipmentsReservation = () => {
   const [form] = Form.useForm();
@@ -191,6 +192,7 @@ const EquipmentsReservation = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />

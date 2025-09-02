@@ -11,6 +11,7 @@ import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Users = () => {
   const [loading, setLoading] = useState(false);
@@ -116,6 +117,7 @@ const Users = () => {
     <Container>
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -130,7 +132,7 @@ const Users = () => {
         <Typography.Title level={2} style={{ textAlign: 'center' }}>Usuários</Typography.Title>
         <div className="ContainerUsers">
           <List
-            loading={loading}
+            disabled={loading}
             dataSource={users}
             className="ListUsers"
             renderItem={(user) => (

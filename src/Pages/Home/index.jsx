@@ -13,6 +13,7 @@ import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 import CardReservation from "../../Components/CardReservation";
 import CardEquipmentReservation from "../../Components/CardEquipmentReservation";
+import Loading from "../../Components/Loading";
 
 const Home = () => {
   const [reservations, setReservations] = useState([]);
@@ -97,6 +98,7 @@ const Home = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />

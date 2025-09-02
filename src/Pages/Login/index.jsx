@@ -8,6 +8,7 @@ import styled from "styled-components";
 import "./Style.less";
 import Logo from '../../assets/Logo.jpg';
 import { UserDataContext } from '../../Providers/UserData';
+import Loading from "../../Components/Loading";
 
 import { CalendarOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
 import { Row, Col, Avatar, Form, Input, Button, Typography, notification } from 'antd';
@@ -96,6 +97,7 @@ const Login = () => {
       // redirecionar para home
       goToHome();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -104,6 +106,7 @@ const Login = () => {
   return (
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       <Row justify='center' align='middle' style={{ height: '90vh' }}>
         <Col span={24}>
           <Row justify="center">

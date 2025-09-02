@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Form, Row, Col, Typography, Input, Button, notification, Avatar } from 'antd';
 import Logo from '../../assets/Logo.jpg';
 import "./Style.less";
+import Loading from "../../Components/Loading";
 
 const ForgotPassword = () => {
   const [api, contextHolder] = notification.useNotification();
@@ -55,6 +56,7 @@ const ForgotPassword = () => {
   return (
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       <Col span={20}>
         <Row justify="center">
           <Avatar
@@ -82,7 +84,7 @@ const ForgotPassword = () => {
             <Input placeholder="E-mail" size="large" disabled={loading} />
           </Form.Item>
           <Form.Item>
-            <Button className="SubmitButtonRecover" htmlType="submit" loading={loading}>
+            <Button className="SubmitButtonRecover" htmlType="submit" disabled={loading} loading={loading}>
               Recuperar
             </Button>
           </Form.Item>

@@ -11,6 +11,7 @@ import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Classrooms = () => {
   const [loading, setLoading] = useState(false);
@@ -130,6 +131,7 @@ const Classrooms = () => {
     <Container>
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -157,7 +159,7 @@ const Classrooms = () => {
             >Cadastrar Sala</Button>
           </Row>
           <List
-            loading={loading}
+            disabled={loading}
             dataSource={FilteredClasses || classrooms}
             className="ListClassroom"
             renderItem={(classroom) => (

@@ -14,6 +14,7 @@ import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const UpdatePassword = () => {
   const data = Constants?.data;
@@ -82,6 +83,7 @@ const UpdatePassword = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />

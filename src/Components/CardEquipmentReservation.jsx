@@ -6,6 +6,7 @@ import axios from "axios";
 import { Col, Row, Card, Image, Typography, Tag, Button, Popconfirm, message, notification } from "antd";
 import dayjs from "dayjs";
 import "./Style.less";
+import Loading from "../Components/Loading";
 // const userData = JSON.parse(localStorage.getItem('userData'));
 
 import {
@@ -93,6 +94,7 @@ const CardEquipmentReservation = (Data) => {
     <>
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       <Card
         className="Reservation no-padding-head"
         extra={

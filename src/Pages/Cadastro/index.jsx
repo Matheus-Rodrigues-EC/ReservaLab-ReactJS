@@ -7,6 +7,7 @@ import styled from "styled-components";
 import "./Style.less";
 import Logo from '../../assets/Logo.jpg';
 import { UserDataContext } from '../../Providers/UserData';
+import Loading from "../../Components/Loading";
 
 import {
   CalendarOutlined,
@@ -178,6 +179,7 @@ const Cadastro = () => {
   return (
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       <Row justify='center' align='middle' style={{ height: '90vh' }}>
         <Col span={14}>
           <Row justify="center">
