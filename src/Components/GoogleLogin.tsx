@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { UserDataContext } from "../Providers/UserData";
 import axios from "axios";
+import { notification } from "antd";
 
 type GoogleJwtPayload = {
   email: string;
@@ -13,6 +14,7 @@ type GoogleJwtPayload = {
 const GoogleLoginComponent = () => {
   // const { setUserData } = React.useContext(UserDataContext);
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   const goToHome = () => {
     navigate("/home");
@@ -34,7 +36,8 @@ const GoogleLoginComponent = () => {
         password: "G" + credentialResponse.clientId,
       })
     );
-    await axios.get(
+    await axios
+      .get(
         `${import.meta.env.VITE_API_URL}/user/list/email/${googleUser?.email}`
       )
       .then(async () => {
@@ -42,13 +45,27 @@ const GoogleLoginComponent = () => {
           `${import.meta.env.VITE_API_URL}/user/google/login`,
           body
         );
-        const serializableUser = JSON.stringify(loggedUser);
+        const serializableUser = JSON.stringify(loggedUser?.data?.user);
         localStorage.setItem("userData", serializableUser);
         localStorage.setItem("token", loggedUser?.data?.token?.token);
         goToHome();
       })
-      .catch(() => {
-        navigate("/register");
+      .catch((error) => {
+        // console.log(error);
+        if (error.status === 401) {
+          api.error({
+            message: "Erro ao fazer Login",
+            description:
+              error.response?.data?.message ||
+              "Ocorreu um erro inesperado. Tente novamente.",
+            showProgress: true,
+            duration: 2.5,
+            placement: "top",
+          });
+        }
+        if (error.status === 404) {
+          navigate("/register");
+        }
       });
   };
 
@@ -56,7 +73,12 @@ const GoogleLoginComponent = () => {
     console.log("Login Failed");
   };
 
-  return <GoogleLogin onSuccess={handleSuccess} onError={handleError} />;
+  return (
+    <>
+      {contextHolder}
+      <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
+    </>
+  );
 };
 
 export default GoogleLoginComponent;

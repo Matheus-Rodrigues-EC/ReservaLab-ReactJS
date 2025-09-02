@@ -25,7 +25,7 @@ const Login = () => {
   const [searchParams] = useSearchParams();
 
   const Navigate = useNavigate()
-  localStorage.clear();
+  // localStorage.clear();
 
   const goToHome = () => {
     Navigate('/home')
@@ -105,7 +105,7 @@ const Login = () => {
     <Container>
       {contextHolder}
       <Row justify='center' align='middle' style={{ height: '90vh' }}>
-        <Col span={14}>
+        <Col span={24}>
           <Row justify="center">
             <Avatar
               className="AvatarLogin"
@@ -119,7 +119,7 @@ const Login = () => {
               name="login"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
-              autoComplete="off"
+              autoComplete="on"
             >
 
               <Form.Item
@@ -174,7 +174,6 @@ const Login = () => {
 
               <Form.Item>
                 <Button
-                  type="primary"
                   htmlType="submit"
                   className="SubmitButtonLogin"
                   loading={loading}
@@ -187,11 +186,17 @@ const Login = () => {
             </Form>
 
           </Row>
-          <Row justify='center'>
-
-            <Link to="/register" className="LinkButtonLogin" >
-              Ainda não possui cadastro? Clique aqui.
-            </Link>
+          <Row justify='space-around'>
+            <Col span={12}>
+              <Link to="/register" className="LinkButtonLogin" >
+                Ainda não possui cadastro?
+              </Link>
+            </Col>
+            <Col span={12} style={{ textAlign: "right" }}>
+              <Link to="/forgot-password" className="LinkButtonLogin" >
+                Esqueceu sua senha?
+              </Link>
+            </Col>
           </Row>
 
           <Row justify='center' style={{ marginTop: "20px" }}>
@@ -199,13 +204,13 @@ const Login = () => {
           </Row>
 
         </Col>
-      </Row>
+      </Row >
       <Row>
         <Typography.Text className="VersionLogin">
           Versão: {packageJson.version}
         </Typography.Text>
       </Row>
-    </Container>
+    </Container >
   )
 }
 
