@@ -4,11 +4,12 @@
   height: fit-content;
 }
 
-.InputRegister{
+.InputRegister {
   display: flex;
   width: 35vw;
   height: 2.5rem;
   font-size: 1.15rem;
+  text-align: start;
 }
 
 .SubmitButtonRegister {
@@ -18,8 +19,8 @@
   align-items: center;
   width: 25vw;
   height: 2.5rem;
-  background-color: #79C7D9;
-  border: 3px solid #2BB9D9;
+  background-color: #79c7d9;
+  border: 3px solid #2bb9d9;
   color: black;
   font-size: 1.25rem;
   font-family: "Poppins", sans-serif;
@@ -27,12 +28,14 @@
   transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: #2BB9D9;
+    background: #2bb9d9 !important;
+    border: 3px solid #1aa8e8 !important;
+    color: #000 !important;
   }
 }
 
 .LinkButtonRegister {
-  color: #70B3CD;
+  color: #70b3cd;
   font-size: 1rem;
   font-family: "Poppins", sans-serif;
   text-align: center;
@@ -40,19 +43,16 @@
 
 .VersionRegister {
   font-family: "Poppins", sans-serif;
-  font-size: .75rem;
+  font-size: 0.75rem;
   margin: 0 auto 10px auto;
-  position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 1024px) {
   .AvatarRegister {
     width: 20vh;
   }
-  .InputRegister{
+  .InputRegister {
     display: flex;
     width: 45vw;
     height: 2.25rem;
@@ -63,11 +63,11 @@
     font-size: 1.25rem;
   }
   .LinkButtonRegister {
-    color: #70B3CD;
-    font-size: .8rem;
+    color: #70b3cd;
+    font-size: 0.8rem;
   }
   .VersionRegister {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -75,7 +75,7 @@
   .AvatarRegister {
     width: 20vh;
   }
-  .InputRegister{
+  .InputRegister {
     display: flex;
     width: 75vw;
     height: 2.25rem;
@@ -87,10 +87,10 @@
     font-size: 1.15rem;
   }
   .LinkButtonRegister {
-    color: #70B3CD;
-    font-size: .75rem;
+    color: #70b3cd;
+    font-size: 0.75rem;
   }
   .VersionRegister {
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }

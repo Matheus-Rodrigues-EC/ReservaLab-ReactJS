@@ -6,51 +6,86 @@ import * as Constants from '../../Utils/Constants';
 import styled from "styled-components";
 import "./Style.less";
 import Logo from '../../assets/Logo.jpg';
+import { UserDataContext } from '../../Providers/UserData';
 
 import {
   CalendarOutlined,
   MailOutlined,
   UserAddOutlined,
   LockOutlined,
+  TeamOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
-import { Row, Col, Avatar, Form, Input, Button, Typography, notification } from 'antd';
+import { Row, Col, Avatar, Form, Input, Select, Button, Typography, notification } from 'antd';
 
+import {
+  CargosList as Cargos,
+  DisciplinasList as Disciplinas,
+} from "../../Utils/Constants";
+import GoogleLoginComponent from "../../Components/GoogleLogin";
 
 const Cadastro = () => {
   const [form] = Form.useForm();
   const inputRef = useRef(null);
   const [FullName, setFullName] = useState("");
+  const [filteredCargos, setFilteredCargos] = useState([]);
+  const [filteredDisciplinas, setFilteredDisciplinas] = useState(Disciplinas);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const googleData = JSON.parse(localStorage.getItem("googleUser") || "{}");
+  const { setUserData } = React.useContext(UserDataContext);
 
   const Navigate = useNavigate()
 
-  const goToLogin = () => {
-    Navigate('/login')
+  // const goToLogin = () => {
+  //   Navigate('/login')
+  // }
+
+  const goToHome = () => {
+    Navigate('/home')
   }
 
   const Register = async (data) => {
-    const { name, email, password } = data;
-    const body = { name, email, password }
+    const { name, email, password, rulets, subject } = data;
+    const body = { name, email, password, rulets, subject }
     setLoading(true);
 
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/user/register`, body);
 
+      const loginBody = {
+        email: body.email,
+        password: body.password
+      };
+
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, loginBody);
+      const user = {
+        id: response?.data?.user?.id,
+        name: response?.data?.user?.name,
+        email: response?.data?.user?.email,
+        surname: response?.data?.user?.surname,
+        rulets: response?.data?.user?.rulets,
+        shift: response?.data?.user?.shift,
+        subject: response?.data?.user?.subject,
+      };
+      const serializableUser = JSON.stringify(user);
+      localStorage.setItem("userData", serializableUser);
+      localStorage.setItem("token", response?.data?.token?.token);
+
       api.success({
         message: 'Usuário cadastrado com sucesso!',
-        description: 'As informações do novo usuário foram salvas com sucesso, você será redirecionado para fazer login.',
+        description: 'As informações do novo usuário foram salvas com sucesso, você será redirecionado para a página inicial.',
         showProgress: true,
         duration: 2.5,
         placement: "top"
       });
       setTimeout(() => {
-        goToLogin();
         setLoading(false);
+        setUserData(user);
+        goToHome();
       }, 2500);
-
     } catch (error) {
       console.error(error);
 
@@ -85,13 +120,60 @@ const Cadastro = () => {
     });
   };
 
+
+  const handleSearchCargos = (value) => {
+    if (!value) {
+      setFilteredCargos(Cargos);
+    } else {
+      const filtered = Cargos?.filter((cargo) =>
+        cargo?.label?.toLowerCase().includes(value?.toLowerCase())
+      );
+      setFilteredCargos(filtered);
+    }
+  };
+
+  const handleSearchDisciplinas = (value) => {
+    if (!value) {
+      setFilteredDisciplinas(Disciplinas);
+    } else {
+      const filtered = Disciplinas?.filter((disciplina) =>
+        disciplina?.label?.toLowerCase().includes(value?.toLowerCase())
+      );
+      setFilteredDisciplinas(filtered);
+    }
+  };
+
+  console.log(googleData?.name);
+
   useEffect(() => {
     inputRef.current?.focus();
   }, [inputRef]);
 
   useEffect(() => {
+    setFilteredCargos(Cargos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Cargos]);
 
-  }, [FullName, Email, Password]);
+  useEffect(() => {
+    setFilteredDisciplinas(Disciplinas);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Disciplinas]);
+
+  useEffect(() => {
+    if (googleData) {
+      form.setFieldsValue({
+        name: googleData?.name || '',
+        email: googleData?.email || '',
+        password: googleData?.password || '',
+        ConfirmPassword: googleData?.password || '',
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+
+  }, [FullName, Email, Password,]);
 
   return (
     <Container>
@@ -118,6 +200,7 @@ const Cadastro = () => {
               {/* Fullname */}
               <Form.Item
                 name='name'
+                initialValue={googleData?.name || ''}
                 rules={[
                   {
                     required: true,
@@ -129,20 +212,76 @@ const Cadastro = () => {
                   prefix={<UserAddOutlined />}
                   ref={inputRef}
                   size="large"
-                  placeholder="Nome copleto"
-
+                  placeholder="Nome completo"
+                  disabled={loading}
+                  // defaultValue={googleData.nome || ""}
                   className="InputRegister"
                   allowClear
                   type="text"
-                  disabled={loading}
                 >
 
                 </Input>
               </Form.Item>
 
+              <Form.Item
+                name='rulets'
+                // initialValue={UserData?.rulets || ''}
+                rules={[
+                  { required: true, message: "Por favor selecione um cargo." }
+                ]}
+                className="FormItemProfile"
+              >
+                <Select
+                  prefix={<TeamOutlined />}
+                  showSearch
+                  size="large"
+                  placeholder="Cargo"
+                  disabled={loading}
+                  // defaultValue={googleData.email || ""}
+                  className="InputRegister"
+                  allowClear
+                  onSearch={handleSearchCargos}
+                  filterOption={false}
+                >
+                  {filteredCargos.map((cargo) => (
+                    <Select.Option key={cargo?.label} values={cargo?.label} >
+                      {cargo?.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                name='subject'
+                // initialValue={UserData?.subject || ''}
+                rules={[
+                  { required: true, message: "Por favor selecione um disciplina." }
+                ]}
+                className="FormItemProfile"
+              >
+                <Select
+                  prefix={<BookOutlined />}
+                  showSearch
+                  size="large"
+                  placeholder="Disciplina"
+                  disabled={loading}
+                  className="InputRegister"
+                  allowClear
+                  onSearch={handleSearchDisciplinas}
+                  filterOption={false}
+                >
+                  {filteredDisciplinas.map((disciplina) => (
+                    <Select.Option key={disciplina?.label} value={disciplina?.label}>
+                      {disciplina?.label}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Item>
+
               {/* Email */}
               <Form.Item
                 name='email'
+                initialValue={googleData?.email || ''}
                 rules={[
                   { required: true, message: 'Por favor, insira seu e-mail.' },
                   { pattern: Constants.emailRegex, message: "Por favor, insira um e-mail válido!" },
@@ -226,20 +365,25 @@ const Cadastro = () => {
 
             </Form>
 
-
           </Row>
-          <Row justify='center'>
 
+
+          <Row justify='center' style={{ marginTop: "10px", marginBottom: "25px" }}>
             <Link to="/login" className="LinkButtonRegister">
               Já possui cadastro? Acesse aqui.
             </Link>
           </Row>
+
+          <Row justify='center' style={{ marginTop: "10px" }}>
+            <GoogleLoginComponent />
+          </Row>
+
+          <Row>
+            <Typography.Text className="VersionRegister" style={{ marginTop: "25px", marginBottom: "50px" }}>
+              Versão: {packageJson.version}
+            </Typography.Text>
+          </Row>
         </Col>
-      </Row>
-      <Row>
-        <Typography.Text className="VersionRegister" style={{ marginTop: "10%" }}>
-          Versão: {packageJson.version}
-        </Typography.Text>
       </Row>
     </Container>
   )
@@ -250,6 +394,9 @@ export default Cadastro;
 const Container = styled.div`
   margin: auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 100%;
+  overflow-y: scroll;
 `

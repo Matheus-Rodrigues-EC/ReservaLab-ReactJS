@@ -6,6 +6,8 @@ import Background from './assets/Background.png';
 
 import Login from './Pages/Login'
 import Cadastro from './Pages/Cadastro';
+import ForgotPassword from "./Pages/Forgot-Password";
+import VerifyYourEmail from "./Components/VerifyYourEmail";
 import Home from "./Pages/Home"
 import Profile from "./Pages/Profile";
 import Users from "./Pages/Profile/Users";
@@ -52,6 +54,8 @@ function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Cadastro />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-email" element={<VerifyYourEmail />} />
           <Route path="/home" element={
             <PrivateRoute>
               <Home />
