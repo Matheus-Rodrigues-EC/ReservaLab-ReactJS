@@ -33,7 +33,7 @@ const GoogleLoginComponent = () => {
       password: generateStrongPassword(14),
       google_client_id: credentialResponse.clientId,
     };
-    console.log(credentialResponse);
+    // console.log(credentialResponse);
     localStorage.setItem(
       "googleUser",
       JSON.stringify({
