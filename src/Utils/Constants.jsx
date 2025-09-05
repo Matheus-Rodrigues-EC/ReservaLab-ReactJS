@@ -118,3 +118,33 @@ export const EquipamentsTypes = [
 	{ id: 5, label: 'Música' },
 	{ id: 6, label: 'Vídeo' },
 ]
+
+export const generateStrongPassword = (length = 14) => {
+  if (length < 8 || length > 25) {
+    console.log('O tamanho da senha deve ser entre 8 e 25 caracteres.');
+    return;
+  }
+
+  const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const lower = 'abcdefghijklmnopqrstuvwxyz';
+  const numbers = '0123456789';
+  const specials = '!@#$%^&*()-_=+[]{};:,.<>?';
+
+  // Garante pelo menos um de cada tipo
+  const password = [
+    upper[Math.floor(Math.random() * upper.length)],
+    lower[Math.floor(Math.random() * lower.length)],
+    numbers[Math.floor(Math.random() * numbers.length)],
+    specials[Math.floor(Math.random() * specials.length)],
+  ];
+
+  const all = upper + lower + numbers + specials;
+  for (let i = password.length; i < length; i++) {
+    password.push(all[Math.floor(Math.random() * all.length)]);
+  }
+
+  // Embaralha a senha para garantir aleatoriedade
+  return password
+    .sort(() => Math.random() - 0.5)
+    .join('');
+}

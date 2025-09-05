@@ -50,7 +50,7 @@ const Cadastro = () => {
 
   const Register = async (data) => {
     const { name, email, password, rulets, subject } = data;
-    const body = { name, email, password, rulets, subject }
+    const body = { name, email, password, rulets, subject, google_client_id: googleData.google_client_id };
     setLoading(true);
 
     try {
@@ -58,7 +58,8 @@ const Cadastro = () => {
 
       const loginBody = {
         email: body.email,
-        password: body.password
+        password: body.password,
+        google_client_id: googleData.google_client_id
       };
 
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/user/login`, loginBody);

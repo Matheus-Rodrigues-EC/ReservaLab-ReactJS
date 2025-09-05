@@ -6,6 +6,7 @@ import { UserDataContext } from "../Providers/UserData";
 import axios from "axios";
 import { notification } from "antd";
 import Loading from "../Components/Loading";
+import { generateStrongPassword } from "../Utils/Constants";
 
 type GoogleJwtPayload = {
   email: string;
@@ -29,14 +30,16 @@ const GoogleLoginComponent = () => {
     );
     const body = {
       email: googleUser?.email,
-      password: "G" + credentialResponse.clientId,
+      password: generateStrongPassword(14),
+      google_client_id: credentialResponse.clientId,
     };
-    // console.log(credentialResponse);
+    console.log(credentialResponse);
     localStorage.setItem(
       "googleUser",
       JSON.stringify({
         ...googleUser,
-        password: "G" + credentialResponse.clientId,
+        password: generateStrongPassword(14),
+        google_client_id: credentialResponse.clientId,
       })
     );
     await axios
