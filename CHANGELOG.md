@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/compare/v0.5.0...v0.5.1) (2025-09-05)
+
+
+### Features
+
+* Added Loading overlay ([fc95648](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/fc956484b505437a5fa8ff1f19a1f363905a3f52))
+* Created Recover password ([eb7e718](https://github.com/Matheus-Rodrigues-EC/ReservaLab-ReactJS/commit/eb7e718995ddda20b2e14db96aa8b97576235454))
+
 ## 0.5.0 (2025-09-01)
 
 
