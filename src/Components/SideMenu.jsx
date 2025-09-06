@@ -78,7 +78,7 @@ const SideMenu = () => {
   }, [today, user])
 
   return (
-    <Container style={ window.innerWidth > 1025 ? { height: '100vh' } : { height: '100vh'}}>
+    <Container style={window.innerWidth > 1025 ? { height: '100vh' } : { height: '100vh' }}>
       <Row justify="center" >
         <Avatar
           className="AvatarSideMenu"
@@ -95,7 +95,7 @@ const SideMenu = () => {
           {today}
         </Typography.Title>
       </Row>
-      <Row justify="center" style={{ padding: '0 20px'}} >
+      <Row style={{ padding: '0 20px', textAlign: 'center' }} >
         <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '1rem' }}>
           Bem vindo(a), {user}.
         </Typography.Title>
@@ -122,31 +122,31 @@ const SideMenu = () => {
         Reservar Equipamento
       </Button>
 
-      {(userData?.rulets === 'Professor(a)' || userData?.rulets === 'Apoio' || userData?.rulets == null ) &&
-      <Button
-        className="ButtonMenu"
-        onClick={goToProfile}
-      >
-        Perfil
-      </Button>
+      {(userData?.rulets === 'Professor(a)' || userData?.rulets === 'Apoio' || userData?.rulets == null) &&
+        <Button
+          className="ButtonMenu"
+          onClick={goToProfile}
+        >
+          Perfil
+        </Button>
       }
-      
+
       {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
-      <Button
-        className="ButtonMenu"
-        onClick={goToEquipments}
-      >
-        Equipamentos
-      </Button>
+        <Button
+          className="ButtonMenu"
+          onClick={goToEquipments}
+        >
+          Equipamentos
+        </Button>
       }
-      
+
       {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
-      <Button
-        className="ButtonMenu"
-        onClick={goToUsers}
-      >
-        Usuários
-      </Button>
+        <Button
+          className="ButtonMenu"
+          onClick={goToUsers}
+        >
+          Usuários
+        </Button>
       }
 
       {(userData?.rulets === 'Diretor(a)' || userData?.rulets === 'Coordenador(a)') &&
