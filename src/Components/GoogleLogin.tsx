@@ -46,7 +46,14 @@ const GoogleLoginComponent = () => {
       .get(
         `${import.meta.env.VITE_API_URL}/user/list/email/${googleUser?.email}`
       )
-      .then(async () => {
+      .then(async (response) => {
+        const user = response?.data;
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/user/${user?.id}/update/google-id`,
+          {
+            google_client_id: credentialResponse?.clientId,
+          }
+        );
         const loggedUser = await axios.post(
           `${import.meta.env.VITE_API_URL}/user/google/login`,
           body

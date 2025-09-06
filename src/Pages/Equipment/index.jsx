@@ -32,7 +32,7 @@ const Equipment = () => {
   }
 
   const createEquipment = async (data) => {
-    
+
     setLoading(true);
     const body = {
       ...data,
@@ -77,12 +77,12 @@ const Equipment = () => {
       tombNumber: form.getFieldValue('tombNumber'),
       description: form.getFieldValue('description'),
     };
-  
+
     try {
       setLoading(true);
-  
+
       await axios.patch(`${import.meta.env.VITE_API_URL}/equipments/${editEquipment}/update`, body);
-  
+
       api.success({
         message: 'Equipamento Atualizado!',
         description: 'As informações do equipamento foram atualizadas com sucesso.',
@@ -90,15 +90,15 @@ const Equipment = () => {
         duration: 2,
         placement: 'top',
       });
-  
+
       setTimeout(() => {
         setLoading(false);
         goToEquipments();
       }, 2250);
-  
+
     } catch (error) {
       console.error(error);
-  
+
       api.error({
         message: 'Erro ao atualizar equipamento',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -106,13 +106,13 @@ const Equipment = () => {
         duration: 2,
         placement: 'top',
       });
-  
+
       setTimeout(() => {
         setLoading(false);
       }, 1750);
     }
   };
-  
+
 
   const getEquipment = async (id) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list/${id}`);
@@ -142,7 +142,7 @@ const Equipment = () => {
   };
 
   useEffect(() => {
-    if(editEquipment)
+    if (editEquipment)
       getEquipment(editEquipment);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -174,14 +174,14 @@ const Equipment = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '10vh' } : { marginTop: '1vh' }}>
-            <Typography.Title 
-              level={2} 
-              style={{ textAlign: 'center'}}
-            >
-              {editEquipment ? 'Atualizar Equipamento' : 'Cadastrar Equipamento'}
-            </Typography.Title>
+        <Typography.Title
+          level={2}
+          style={{ textAlign: 'center' }}
+        >
+          {editEquipment ? 'Atualizar Equipamento' : 'Cadastrar Equipamento'}
+        </Typography.Title>
         <div className="ContainerEquipment">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
+          {/* <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Text className="TextEquipment">Nome</Typography.Text>
             </Row>
@@ -207,16 +207,18 @@ const Equipment = () => {
             >
               Cancelar
             </Button>
-          </Col>
-          <Col span={12} offset={1}>
+          </Col> */}
+          <Col span={24}>
             <Form
               form={form}
+              layout="vertical"
               name="Equipment"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
+                label="Nome"
                 name='name'
                 initialValue={EquipmentData?.name || null}
                 rules={[
@@ -236,6 +238,7 @@ const Equipment = () => {
               </Form.Item>
 
               <Form.Item
+                label="Tipo"
                 name='type'
                 initialValue={EquipmentData?.type || null}
                 rules={[
@@ -260,6 +263,7 @@ const Equipment = () => {
               </Form.Item>
 
               <Form.Item
+                label="Número de Tombamento"
                 name='tombNumber'
                 initialValue={EquipmentData?.tombNumber || null}
                 rules={[
@@ -279,6 +283,7 @@ const Equipment = () => {
               </Form.Item>
 
               <Form.Item
+                label="Descrição (opcional)"
                 name='description'
                 initialValue={EquipmentData?.description || ''}
                 rules={[
@@ -299,27 +304,39 @@ const Equipment = () => {
                 </Input.TextArea>
               </Form.Item>
 
-              {editEquipment ? (
+              <Row>
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="SaveButtonEquipment"
+                  type="danger"
+                  className="CanceldButtonEquipment"
+                  onClick={goToEquipments}
                   loading={loading}
                   disabled={loading}
                 >
-                  Atualizar Equipamento
+                  Cancelar
                 </Button>
-              ) : (
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="SaveButtonEquipment"
-                  loading={loading}
-                  disabled={loading}
-                >
-                  Cadastrar Equipamento
-                </Button>
-              )}
+
+                {editEquipment ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="SaveButtonEquipment"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Atualizar Equipamento
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="SaveButtonEquipment"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Cadastrar Equipamento
+                  </Button>
+                )}
+              </Row>
 
             </Form>
           </Col>

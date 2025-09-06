@@ -77,12 +77,12 @@ const Class = () => {
       shift: form.getFieldValue('shift'),
       description: form.getFieldValue('description'),
     };
-  
+
     try {
       setLoading(true);
-  
+
       await axios.patch(`${import.meta.env.VITE_API_URL}/classes/${editClass}/update`, body);
-  
+
       api.success({
         message: 'Turma Atualizada!',
         description: 'As informações da turma foram atualizadas com sucesso.',
@@ -90,15 +90,15 @@ const Class = () => {
         duration: 2,
         placement: 'top',
       });
-  
+
       setTimeout(() => {
         setLoading(false);
         goToClasses();
       }, 2250);
-  
+
     } catch (error) {
       console.error(error);
-  
+
       api.error({
         message: 'Erro ao atualizar turma',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
@@ -106,13 +106,13 @@ const Class = () => {
         duration: 2,
         placement: 'top',
       });
-  
+
       setTimeout(() => {
         setLoading(false);
       }, 1750);
     }
   };
-  
+
 
   const getClass = async (id) => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes/list/${id}`);
@@ -143,7 +143,7 @@ const Class = () => {
   };
 
   useEffect(() => {
-    if(editClass)
+    if (editClass)
       getClass(editClass);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -176,48 +176,23 @@ const Class = () => {
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title
-          level={2} 
-          style={{ textAlign: 'center'}}
+          level={2}
+          style={{ textAlign: 'center' }}
         >
           {editClass ? 'Atualizar Turma' : 'Cadastrar Turma'}
         </Typography.Title>
         <div className="ContainerClass">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
-            <Row justify='space-between'>
-              <Typography.Text className="TextClass">Série/Ano</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextClass">Turma</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextClass">Turno</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextClass">Obervação</Typography.Text>
-            </Row>
-
-            <Button
-              type="danger"
-              className="CancelClassButton"
-              onClick={goToClasses}
-              loading={loading}
-              disabled={loading}
-            >
-              Cancelar
-            </Button>
-          </Col>
-          <Col span={12} offset={1}>
+          <Col span={24}>
             <Form
               form={form}
+              layout="vertical"
               name="Serie"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
+                label="Série/Ano"
                 name='grade'
                 initialValue={ClassData?.grade || null}
                 rules={[
@@ -240,6 +215,7 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
+                label="Turma"
                 name='className'
                 initialValue={ClassData?.className || null}
                 rules={[
@@ -262,6 +238,7 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
+                label="Turno"
                 name='shift'
                 initialValue={ClassData?.shift || null}
                 rules={[
@@ -284,10 +261,11 @@ const Class = () => {
               </Form.Item>
 
               <Form.Item
+                label="Descrição (opcional)"
                 name='description'
                 initialValue={ClassData?.description || ''}
                 rules={[
-                  { required: false, message: "Gostaria de adicionar alguma Obervação?" }
+                  { required: false, message: "Gostaria de adicionar alguma Descrição?" }
                 ]}
                 className="FormItemProfile"
               >
@@ -302,27 +280,39 @@ const Class = () => {
                 </Input.TextArea>
               </Form.Item>
 
-              {editClass ? (
+              <Row>
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="ClassButton"
+                  type="danger"
+                  className="CancelClassButton"
+                  onClick={goToClasses}
                   loading={loading}
                   disabled={loading}
                 >
-                  Atualizar Turma
+                  Cancelar
                 </Button>
-              ) : (
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="ClassButton"
-                  loading={loading}
-                  disabled={loading}
-                >
-                  Cadastrar Turma
-                </Button>
-              )}
+
+                {editClass ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="ClassButton"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Atualizar Turma
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="ClassButton"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Cadastrar Turma
+                  </Button>
+                )}
+              </Row>
 
             </Form>
           </Col>

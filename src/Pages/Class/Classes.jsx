@@ -46,7 +46,7 @@ const Classes = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao carregar usuários',
+        message: 'Erro ao carregar turmas',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,

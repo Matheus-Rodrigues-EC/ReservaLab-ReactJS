@@ -50,7 +50,7 @@ const Cadastro = () => {
 
   const Register = async (data) => {
     const { name, email, password, rulets, subject } = data;
-    const body = { name, email, password, rulets, subject, google_client_id: googleData.google_client_id };
+    const body = { name, email, password, rulets, subject, google_client_id: googleData?.google_client_id };
     setLoading(true);
 
     try {
@@ -145,7 +145,7 @@ const Cadastro = () => {
     }
   };
 
-  console.log(googleData?.name);
+  // console.log(googleData?.name);
 
   useEffect(() => {
     inputRef.current?.focus();

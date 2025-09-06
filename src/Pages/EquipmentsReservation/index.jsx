@@ -206,7 +206,7 @@ const EquipmentsReservation = () => {
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title level={2} style={{ textAlign: 'center' }}>Reservar Equipamentos</Typography.Title>
         <div className="ContainerEquipmentReservation">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
+          {/* <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
             <Row justify='space-between'>
               <Typography.Text className="TextEquipmentReservation" >Selecione a data</Typography.Text>
             </Row>
@@ -219,33 +219,23 @@ const EquipmentsReservation = () => {
               <Typography.Text className="TextEquipmentReservation" >Selecione o  horário</Typography.Text>
             </Row>
 
-            {/* <Row justify='space-between'>
-              <Typography.Text className="TextEquipmentReservation" >Finalidade</Typography.Text>
-            </Row> */}
-
             <Row justify='space-between'>
               <Typography.Text className="TextEquipmentReservation" >Descrição</Typography.Text>
             </Row>
 
-            <Button
-              className="CanceldButtonEquipmentReservation"
-              onClick={goToHome}
-              loading={loading}
-              disabled={loading}
-            >
-              Cancelar
-            </Button>
-          </Col>
+          </Col> */}
 
-          <Col span={12} offset={2} style={{}}>
+          <Col span={24} style={{}}>
             <Form
               form={form}
+              layout="vertical"
               name="EquipmentReservation"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
+                label="Data"
                 name='date'
                 rules={[
                   { required: true, message: "Por favor, selecione a data desejada" },
@@ -266,6 +256,7 @@ const EquipmentsReservation = () => {
               </Form.Item>
 
               <Form.Item
+                label="Equipamento"
                 name='equipmentId'
                 rules={[
                   { required: true, message: "Por favor selecione um equipamento." }
@@ -293,6 +284,7 @@ const EquipmentsReservation = () => {
 
               <Row justify='space-between' >
                 <Form.Item
+                  label="Horário"
                   name="time"
                   rules={[
                     {
@@ -340,32 +332,8 @@ const EquipmentsReservation = () => {
                 </Form.Item>
               </Row>
 
-              {/* <Form.Item
-                name='purpose'
-                rules={[
-                  { required: true, message: "Por favor insira a finalidade que a sala terá." }
-                ]}
-                className="FormItemProfile"
-              >
-                <Select
-                  showSearch
-                  size="large"
-                  placeholder="Finalidade"
-                  disabled={loading}
-                  className="InputEquipmentReservation"
-                  allowClear
-                  onSearch={handleSearchFinalidades}
-                  filterOption={false}
-                >
-                  {filteredFinalidades.map((finalidade) => (
-                    <Select.Option key={finalidade?.id} value={finalidade?.id} >
-                      {finalidade?.label}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Item> */}
-
               <Form.Item
+                label="Descrição (opcional)"
                 name='description'
                 rules={[
                   { required: false, message: "Gostaria de adicionar alguma descrição?" }
@@ -383,15 +351,27 @@ const EquipmentsReservation = () => {
                 />
               </Form.Item>
 
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="SaveButtonEquipmentReservation"
-                loading={loading}
-                disabled={loading}
-              >
-                Salvar Alterações
-              </Button>
+              <Row justify="space-between">
+
+                <Button
+                  className="CanceldButtonEquipmentReservation"
+                  onClick={goToHome}
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Cancelar
+                </Button>
+
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="SaveButtonEquipmentReservation"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Salvar Alterações
+                </Button>
+              </Row>
 
             </Form>
           </Col>
