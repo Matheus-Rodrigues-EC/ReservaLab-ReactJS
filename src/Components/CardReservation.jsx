@@ -38,7 +38,7 @@ import Loading from "../Components/Loading";
 
 const { Text, Title } = Typography;
 
-const CardReservation = ({ data, setReservations, editReservation }) => {
+const CardReservation = ({ data, setReservations }) => {
   const [userData] = useState(JSON.parse(localStorage.getItem("userData")));
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
@@ -168,7 +168,7 @@ const CardReservation = ({ data, setReservations, editReservation }) => {
       >
         <Row gutter={16} align="top">
           {/* Imagem lateral */}
-          <Col flex="200px">
+          <Col flex="auto" style={{ maxWidth: 300, display: "flex", justifyContent: "center" }}>
             <Image
               src={renderImage(data?.purpose) || Classroom}
               alt="Sala"
@@ -187,9 +187,14 @@ const CardReservation = ({ data, setReservations, editReservation }) => {
           <Col flex="auto">
             <Space direction="vertical" size="small" style={{ width: "100%" }}>
               {/* Cabeçalho */}
-              <Title level={5} style={{ margin: 0 }}>
-                {data?.Classroom?.name} | {renderPurpose(data?.purpose)} |{" "}
-                {capitalizedDate}
+              <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Sala: {data?.Classroom?.name}
+              </Title>
+              <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Propósito: {renderPurpose(data?.purpose)}
+              </Title>
+              <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Data: {capitalizedDate}
               </Title>
 
               <Divider style={{ margin: "8px 0" }} />
@@ -225,24 +230,20 @@ const CardReservation = ({ data, setReservations, editReservation }) => {
                 {/* Professor */}
                 <Col>
                   <Text strong style={{ fontSize: "16px" }}>
-                    <ReadOutlined /> Professor(a):
+                    <ReadOutlined /> Professor(a):{" "}
                   </Text>
-                  <br />
                   <Text style={{ fontSize: "16px" }}>
-                    {data?.User?.surname || data?.User?.name} -{" "}
-                    {data?.User?.subject}
+                    {data?.User?.surname || data?.User?.name?.split(" ")[0]} - {data?.User?.subject}
                   </Text>
                 </Col>
 
                 {/* Turma */}
                 <Col>
                   <Text strong style={{ fontSize: "16px" }}>
-                    <ContactsOutlined /> Turma:
+                    <ContactsOutlined /> Turma:{' '}
                   </Text>
-                  <br />
                   <Text style={{ fontSize: "16px" }}>
-                    {data?.Class?.grade}º {data?.Class?.className} -{" "}
-                    {data?.Class?.shift}
+                    {data?.Class?.grade}º {data?.Class?.className} - {data?.Class?.shift}
                   </Text>
                 </Col>
               </Row>

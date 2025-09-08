@@ -136,4 +136,7 @@ const Container = styled.div`
   background-position: center;
   background-size: cover;
   background-attachment: scroll;
+  overflow-y: scroll;
+  padding-bottom: 20px;
+  box-sizing: border-box;
 `
