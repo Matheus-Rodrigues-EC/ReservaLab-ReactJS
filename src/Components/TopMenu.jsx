@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 // import styled from "styled-components";
 import Logo from '../assets/Logo.jpg';
-import { Row, Avatar, Button, Typography } from 'antd';
+import { Row, Avatar, Button, Typography, Tag } from 'antd';
 import { MenuOutlined } from "@ant-design/icons";
 
 const TopMenu = (props) => {
@@ -38,17 +38,20 @@ const TopMenu = (props) => {
         className="AvatarTopMenu"
         src={Logo}
       />
-      <Typography.Title 
-        style={{ 
-          display: 'flex', 
-          fontFamily: "Poppins, sans-serif", 
-          marginTop: '10px', 
-          fontSize: '1rem', 
-          alignItems: 'center' 
+      <Tag color="blue"
+        style={{
+          display: 'flex',
+          fontFamily: "Poppins, sans-serif",
+          margin: '5px',
+          fontSize: '1rem',
+          alignItems: 'center'
         }}
       >
         {today}
-      </Typography.Title>
+        {/* <Typography.Title
+        >
+        </Typography.Title> */}
+      </Tag>
       <Button
         type="text"
         icon={<MenuOutlined style={{ fontSize: '1.5rem' }} />}
