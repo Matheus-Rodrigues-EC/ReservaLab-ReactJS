@@ -4,12 +4,15 @@ import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, Row } from 'antd';
+import Loading from "../Components/Loading";
 
 const PrivateRoute = ({ children }) => {
   const [isValid, setIsValid] = useState(null); // null = carregando, true = autorizado, false = não autorizado
+  // const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    // setLoading(true);
     const verifyToken = async () => {
       if (!token) {
         setIsValid(false);
@@ -31,7 +34,10 @@ const PrivateRoute = ({ children }) => {
       } catch (error) {
         console.error("Erro ao verificar token:", error);
         setIsValid(false);
-      }
+      } 
+      // finally {
+      //   setLoading(false);
+      // }
     };
 
     verifyToken();

@@ -1,19 +1,17 @@
-
 services:
-  reservalab-web:
+  # Frontend - React com Vite
+  reservalab-frontend:
     build:
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: reservalab-frontend:dev
     container_name: reservalab-frontend-dev
-    hostname: frontend
-    restart: unless-stopped
     ports:
-      - "8000:8000"
+      - "5173:5173"
     expose:
-      - 8000
+      - 5173
     environment:
-      - VITE_API_URL=http://localhost:8080
+      - VITE_API_URL=http://localhost:4000
     volumes:
       - .:/app
       - /app/node_modules
@@ -22,5 +20,4 @@ services:
 
 networks:
   reservalab-network:
-    name: reservalab-network
     driver: bridge

@@ -11,6 +11,7 @@ import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Equipments = () => {
   const [loading, setLoading] = useState(false);
@@ -130,6 +131,7 @@ const Equipments = () => {
     <Container>
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -148,16 +150,17 @@ const Equipments = () => {
               className="InputSearchEquipments"
               placeholder="Filtre os Equipamentos"
               onSearch={filterEquipments}
-              loading={loading}
+              disabled={loading}
               allowClear
             />
             <Button
               className="CreateEquipmentButton"
               onClick={() => goToEquipment()}
+              disabled={loading}
             >Cadastrar Equipamento</Button>
           </Row>
           <List
-            loading={loading}
+            disabled={loading}
             dataSource={FilteredEquipments || equipments}
             className="ListEquipments"
             renderItem={(equipment) => (

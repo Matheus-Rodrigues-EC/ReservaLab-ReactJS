@@ -1,64 +1,79 @@
-import React, {
-  useState,
-  useEffect,
-} from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Col, Row, Card, Image, Typography, Tag, Button, Popconfirm, message, notification } from "antd";
-import dayjs from "dayjs";
-import "./Style.less";
-// const userData = JSON.parse(localStorage.getItem('userData'));
-
+import {
+  Col,
+  Row,
+  Card,
+  Image,
+  Typography,
+  Tag,
+  Button,
+  Popconfirm,
+  notification,
+  message,
+  Space,
+  Divider,
+} from "antd";
 import {
   ClockCircleOutlined,
   ReadOutlined,
   AppstoreOutlined,
   QuestionCircleOutlined,
   DeleteTwoTone,
-} from '@ant-design/icons';
+  FileTextOutlined,
+} from "@ant-design/icons";
+import dayjs from "dayjs";
+import "./Style.less";
+import Loading from "../Components/Loading";
 
-import Infra from '../assets/Infrastructure.png';
-import Music from '../assets/Music.png';
-import Audio from '../assets/Som.png';
-import Sport from '../assets/Sports.png';
-import Video from '../assets/Video.png';
-import Acessorio from '../assets/acessorio.png'
+import Infra from "../assets/Infrastructure.png";
+import Music from "../assets/Music.png";
+import Audio from "../assets/Som.png";
+import Sport from "../assets/Sports.png";
+import Video from "../assets/Video.png";
+import Acessorio from "../assets/acessorio.png";
 
-const CardEquipmentReservation = (Data) => {
-  const { data, setReservations } = Data;
-  const [userData] = useState(JSON.parse(localStorage.getItem('userData')));
+const { Text, Title } = Typography;
+
+const CardEquipmentReservation = ({ data, setReservations }) => {
+  const [userData] = useState(JSON.parse(localStorage.getItem("userData")));
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
 
   const renderImage = (id) => {
-    if (id === 'Audio') return Audio;
-    else if (id === 'Vídeo') return Video;
-    else if (id === 'Infraestrutura') return Infra;
-    else if (id === 'Esportes') return Sport;
-    else if (id === 'Música') return Music;
-    else if (id === 'Acessório') return Acessorio;
-  }
+    if (id === "Audio") return Audio;
+    else if (id === "Vídeo") return Video;
+    else if (id === "Infraestrutura") return Infra;
+    else if (id === "Esportes") return Sport;
+    else if (id === "Música") return Music;
+    else if (id === "Acessório") return Acessorio;
+    else return Infra;
+  };
 
   const cancel = () => {
     messageApi.open({
-      type: 'warning',
-      content: 'Exclusão cancelada',
+      type: "warning",
+      content: "Exclusão cancelada",
     });
   };
 
   const deleteItemFromArray = (idToRemove) => {
-    setReservations(prevItems => prevItems.filter(item => item.id !== idToRemove));
+    setReservations((prevItems) =>
+      prevItems.filter((item) => item.id !== idToRemove)
+    );
   };
 
   const deleteEquipmentReservation = async (id) => {
     setLoading(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/equipments-reservations/list/${id}`);
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/equipments-reservations/list/${id}`
+      );
 
       api.success({
-        message: 'Reserva de equipamento excluida com sucesso!',
-        description: 'As informações da reserva de quipamento foram deletadas.',
-        showProgress: true,
+        message: "Reserva de equipamento excluída com sucesso!",
+        description: "As informações da reserva de equipamento foram deletadas.",
         duration: 2,
         placement: "top",
       });
@@ -66,14 +81,13 @@ const CardEquipmentReservation = (Data) => {
         deleteItemFromArray(data?.id);
         setLoading(false);
       }, 1750);
-
     } catch (error) {
       console.error(error);
-
       api.error({
-        message: 'Erro ao excluir reserva de equipamento',
-        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
-        showProgress: true,
+        message: "Erro ao excluir reserva de equipamento",
+        description:
+          error.response?.data?.message ||
+          "Ocorreu um erro inesperado. Tente novamente.",
         duration: 2,
         placement: "top",
       });
@@ -81,193 +95,164 @@ const CardEquipmentReservation = (Data) => {
         setLoading(false);
       }, 1750);
     }
-  }
-
-  useEffect(() => {
-  }, [data, loading, userData])
+  };
 
   const formattedDate = dayjs(data.date).format("dddd, DD/MM/YYYY");
-  const capitalizedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+  const capitalizedDate =
+    formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
+  const canEditOrDelete =
+    data?.userId === userData.id ||
+    userData?.rulets === "Diretor(a)" ||
+    userData?.rulets === "Coordenador(a)";
 
   return (
-    <>
+    <Col span={24} className="actions">
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       <Card
-        className="Reservation no-padding-head"
+        loading={loading}
+        style={{
+          borderRadius: "16px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+          width: "100%",
+          maxWidth: 1600,
+          backgroundColor: "#79c7d9",
+          border: "1px solid #2BB9D9",
+        }}
         extra={
-          (data?.userId === userData.id ||
-          userData?.rulets === 'Diretor(a)' ||
-          userData?.rulets === 'Coordenador(a)') && (
-            <>
+          canEditOrDelete && (
+            <Space>
+              {/* Botão editar */}
               {/* <Button
                 type="icon"
-                style={{ fontSize: '1.25rem', position: 'absolute', top: 5, right: 45 }}
-                // onClick={() => editEquipment(equipment?.id)}
+                style={{ fontSize: "1.25rem" }}
+                onClick={() => editReservation(data?.id)}
               >
                 <EditTwoTone twoToneColor="#FFA500" />
               </Button> */}
+
+              {/* Botão excluir */}
               <Popconfirm
                 title="Excluir Reserva de Equipamento?"
                 description={
-                  <>
-                    <Typography.Text>
-                      Tem certeza que deseja excluir a reserva de equipamento, todas as informações ligadas a esta reserva serão deletadas!
-                    </Typography.Text>
-                  </>
+                  <Text>
+                    Tem certeza que deseja excluir a reserva de equipamento? Todas as informações ligadas a esta reserva serão deletadas.
+                  </Text>
                 }
-                autoAdjustOverflow
-                icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                onConfirm={() => deleteEquipmentReservation(data?.id)}
+                icon={<QuestionCircleOutlined style={{ color: "red" }} />}
+                onConfirm={() => deleteEquipmentReservation(data.id)}
                 onCancel={cancel}
                 okText="Deletar"
                 cancelText="Cancelar"
               >
-                <Button
-                  type="icon"
-                  style={{ fontSize: '1.25rem', position: 'absolute', top: 5, right: 0 }}
-                >
+                <Button type="icon" style={{ fontSize: "1.25rem" }}>
                   <DeleteTwoTone twoToneColor="#F00" />
                 </Button>
               </Popconfirm>
-            </>
+            </Space>
           )
         }
-
-        styles={window.innerWidth > 1025 ? {
-          body: { display: 'flex' }
-        } : window.innerWidth > 415 ? {
-          body: { display: 'flex', flexDirection: 'row', padding: '15px 10px', height: 'auto' }
-        } : {
-          body: { display: 'flex', flexDirection: 'column', padding: '15px 10px', height: 'auto' }
-        }}
-
       >
-        <Col
-          span={window.innerWidth > 1025 ? 4 : window.innerWidth > 415 ? 6 : 20}
-          style={
-            window.innerWidth > 1025 ? { margin: 'auto' } :
-              window.innerWidth > 415 ? { margin: 'auto' } :
-                { margin: 'auto' }
-          }
-        >
-          <Image
-            src={renderImage(data?.Equipment?.type)}
-            className="ImageResv"
-          />
-        </Col>
-        <Col
-          span={window.innerWidth > 1025 ? 19 : window.innerWidth > 415 ? 12 : 24} offset={1}
-          style={
-            window.innerWidth > 1025 ? { margin: 'auto' } :
-              window.innerWidth > 415 ? { margin: 'auto', justifyContent: 'space-between' } :
-                { margin: 'auto' }
-          }
-        >
-          <Row>
-            <Typography.Text className="TitleResv">
-              Equipamento: {data?.Equipment?.name} | {capitalizedDate}
-            </Typography.Text>
-          </Row>
-          <Row justify="space-between">
-            <Col
-              span={window.innerWidth > 1025 ? 14 : 12}
-              className="TextCommon"
-            >
-              <Typography.Text className="TextResv">
-                Horário(s):
-              </Typography.Text>
-            </Col>
+        <Row gutter={16} align="top">
+          {/* Imagem lateral */}
+          <Col flex="auto" style={{ maxWidth: 300, display: "flex", justifyContent: "center" }}>
+            <Image
+              src={renderImage(data?.Equipment?.type)}
+              alt="Equipamento"
+              style={{
+                width: "100%",
+                height: "160px",
+                objectFit: "cover",
+                borderRadius: "12px",
+                border: '1px solid #2BB9D9'
+              }}
+              preview={false}
+            />
+          </Col>
 
-            <Col
-              span={window.innerWidth > 1025 ? 7 : 12}
-              style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <div style={{ display: 'flex' }}>
-                <ClockCircleOutlined />
-              </div>
-              <div style={{ textAlign: 'end', gap: '10px' }}>
-                <Typography.Text className="TextCommon">
-                  {data?.time?.slice().sort().map((time) => {
-                    return (
-                      <Tag
-                        color="blue"
-                        key={time}
-                        style={
-                          window.innerWidth > 1280 ? {
-                            fontSize: '1rem',
-                            padding: 5
-                          } :
-                            window.innerWidth > 415 ? {
-                              fontSize: '.75rem',
-                              padding: 3
-                            } : {
-                              fontSize: '.65rem',
-                              padding: 3
-                            }}
-                      >
-                        {time} Hs
-                      </Tag>
-                    )
-                  })}
-                </Typography.Text>
-              </div>
-            </Col>
-          </Row>
-          <Row justify="space-between">
-            <Col
-              span={window.innerWidth > 1025 ? 14 : 12} className="TextCommon"
-            >
-              <Typography.Text ellipsis className="TextResv">
-                Professor(a):
-              </Typography.Text>
-            </Col>
+          {/* Conteúdo à direita */}
+          <Col flex="auto">
+            <Space direction="vertical" size="small" style={{ width: "100%" }}>
+              {/* Cabeçalho */}
+              <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Equipamento: {data?.Equipment?.name}
+              </Title>
+              {/* <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Tipo: {data?.Equipment?.type}
+              </Title> */}
+              <Title level={5} style={{ margin: 0, textAlign: "left" }}>
+                Data: {capitalizedDate}
+              </Title>
 
-            <Col
-              span={window.innerWidth > 1025 ? 7 : 12}
-              style={{ display: 'flex' }}
-            >
-              <ReadOutlined />
-              <Typography.Text ellipsis className="TextCommon" style={{ textAlign: 'end', marginRight: '2.5vw' }}>
-                {data?.User?.surname || data?.User?.name} - {data?.User?.subject}
-              </Typography.Text>
-            </Col>
-          </Row>
-          <Row justify="space-between">
-            <Col span={window.innerWidth > 1025 ? 14 : 12} className="TextCommon">
-              <Typography.Text className="TextResv">
-                Turma:
-              </Typography.Text>
-            </Col>
+              <Divider style={{ margin: "8px 0" }} />
 
-            <Col
-              span={window.innerWidth > 1025 ? 7 : 12}
-              style={{ display: 'flex' }}
-            >
-              <AppstoreOutlined />
-              <Typography.Text className="TextCommon" style={{ textAlign: 'end', marginRight: '2.5vw' }}>
-                {data?.Equipment?.type}
-              </Typography.Text>
-            </Col>
-          </Row>
-          {data?.description && (
-            <Row justify="space-between">
-              <Col span={3} className="TextCommon">
-                <Typography.Text className="TextResv">
-                  Descrição:
-                </Typography.Text>
-              </Col>
-              <Col span={20}>
-                <Typography.Text className="TextCommon">
-                  {data?.description}
-                </Typography.Text>
-              </Col>
-            </Row>
-          )}
-        </Col>
+              {/* Horários | Professor | Turma lado a lado */}
+              <Row gutter={32}>
+                {/* Horários */}
+                <Col>
+                  <Text strong style={{ fontSize: "16px" }}>
+                    <ClockCircleOutlined /> Horários:
+                  </Text>
+                  <br />
+                  <Space wrap>
+                    {data?.time
+                      ?.slice()
+                      .sort()
+                      .map((time) => (
+                        <Tag
+                          key={time}
+                          color="blue"
+                          style={{
+                            fontSize: "16px",
+                            padding: "4px 10px",
+                            marginTop: 4,
+                          }}
+                        >
+                          {time} Hs
+                        </Tag>
+                      ))}
+                  </Space>
+                </Col>
+
+                {/* Professor */}
+                <Col>
+                  <Text strong style={{ fontSize: "16px" }}>
+                    <ReadOutlined /> Professor(a):{' '}
+                  </Text>
+                  <Text style={{ fontSize: "16px" }}>
+                    {data?.User?.surname || data?.User?.name?.split(" ")[0]} - {data?.User?.subject}
+                  </Text>
+                </Col>
+
+                {/* Tipo de Equipamento */}
+                <Col>
+                  <Text strong style={{ fontSize: "16px" }}>
+                    <AppstoreOutlined /> Tipo:{' '}
+                  </Text>
+                  <Text style={{ fontSize: "16px" }}>
+                    {data?.Equipment?.type}
+                  </Text>
+                </Col>
+              </Row>
+
+              {/* Descrição */}
+              {data?.description && (
+                <>
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Text strong style={{ fontSize: "16px" }}>
+                    <FileTextOutlined /> Descrição:
+                  </Text>
+                  <Text type="secondary">{data?.description}</Text>
+                </>
+              )}
+            </Space>
+          </Col>
+        </Row>
       </Card>
-    </>
-  )
-}
+    </Col>
+  );
+};
 
 export default CardEquipmentReservation;

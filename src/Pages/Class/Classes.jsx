@@ -12,6 +12,7 @@ import { removerAcentos } from "../../Utils/Constants";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Classes = () => {
   const [loading, setLoading] = useState(false);
@@ -45,7 +46,7 @@ const Classes = () => {
       console.error(error);
 
       api.error({
-        message: 'Erro ao carregar usuários',
+        message: 'Erro ao carregar turmas',
         description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
         showProgress: true,
         duration: 2,
@@ -137,6 +138,7 @@ const Classes = () => {
     <Container>
       {contextHolder}
       {contextHolder2}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -164,7 +166,7 @@ const Classes = () => {
             >Cadastrar turma</Button>
           </Row>
           <List
-            loading={loading}
+            disabled={loading}
             dataSource={FilteredClasses || classes}
             className="ListClasses"
             renderItem={(classe) => (

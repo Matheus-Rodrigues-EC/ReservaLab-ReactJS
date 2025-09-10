@@ -16,6 +16,7 @@ import {
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Profile = () => {
   const [form] = Form.useForm();
@@ -39,7 +40,7 @@ const Profile = () => {
     try {
       const response = await axios.patch(`${import.meta.env.VITE_API_URL}/user/${id}/update`, body);
 
-      if(!editUser) {
+      if (!editUser) {
         const user = {
           id: response?.data?.id,
           name: response?.data?.name,
@@ -63,9 +64,9 @@ const Profile = () => {
       setTimeout(() => {
         getProfile(editUser || userData.id)
         setLoading(false);
-        if(editUser){
+        if (editUser) {
           goToUsers();
-        }else{
+        } else {
           goToHome();
         }
       }, 1750);
@@ -140,6 +141,7 @@ const Profile = () => {
     if (UserData) {
       form.setFieldsValue({
         name: UserData.name,
+        email: UserData.email,
         rulets: UserData.rulets,
         surname: UserData.surname,
         subject: UserData.subject,
@@ -152,6 +154,7 @@ const Profile = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -163,47 +166,19 @@ const Profile = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title level={2} style={{ textAlign: 'center'}}>Atualizar Perfil</Typography.Title>
+        <Typography.Title level={2} style={{ textAlign: 'center' }}>Atualizar Perfil</Typography.Title>
         <div className="ContainerProfile">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '35px' }}>
-            <Row>
-              <Typography.Text className="TextProfile" >Nome completo</Typography.Text>
-            </Row>
-
-            <Row>
-              <Typography.Text className="TextProfile" >Cargo</Typography.Text>
-            </Row>
-
-            <Row>
-              <Typography.Text className="TextProfile" >Apelido</Typography.Text>
-            </Row>
-
-            <Row>
-              <Typography.Text className="TextProfile" >Disciplina</Typography.Text>
-            </Row>
-
-            <Row>
-              <Typography.Text className="TextProfile" >Turno</Typography.Text>
-            </Row>
-
-            <Button
-              className="EditPasswordButton"
-              onClick={goToUpdatePassword}
-              loading={loading}
-              disabled={loading}
-            >
-              Alterar Senha
-            </Button>
-          </Col>
-          <Col span={12} offset={2}>
+          <Col span={24} >
             <Form
               form={form}
+              layout="vertical"
               name="Profile"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
+                label="Nome"
                 name='name'
                 initialValue={UserData?.name || ''}
                 rules={[
@@ -223,6 +198,27 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
+                label="Email"
+                name='email'
+                initialValue={UserData?.email || ''}
+                rules={[
+                  { required: false, message: "Por favor, insira seu email" },
+                ]}
+                className="FormItemProfile"
+              >
+
+                <Input
+                  size="large"
+                  placeholder="email"
+                  disabled={true}
+                  className="InputProfile"
+                  allowClear
+                  type="text"
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="Cargo"
                 name='rulets'
                 initialValue={UserData?.rulets || ''}
                 rules={[
@@ -249,6 +245,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
+                label="Apelido"
                 name='surname'
                 rules={[
                   { required: false, message: "Por favor digite seu Apelido." }
@@ -266,6 +263,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
+                label="Disciplina"
                 name='subject'
                 initialValue={UserData?.subject || ''}
                 rules={[
@@ -292,6 +290,7 @@ const Profile = () => {
               </Form.Item>
 
               <Form.Item
+                label="Turno"
                 name='shift'
                 initialValue={UserData?.shift || ''}
                 rules={[
@@ -303,9 +302,9 @@ const Profile = () => {
                   showSearch
                   size="large"
                   placeholder="Turno"
-                  disabled={loading || (userData?.rulets === 'Professor(a)') || (userData?.rulets === 'Apoio')}
+                  disabled={loading || (userData?.rulets === 'Apoio')}
                   className="InputProfile"
-                  style={{ marginBottom: '50px'}}
+                  style={{ marginBottom: '50px' }}
                   allowClear
                 >
                   {Turnos.map((turno) => (
@@ -316,14 +315,26 @@ const Profile = () => {
                 </Select>
               </Form.Item>
 
-              <Button
-                htmlType="submit"
-                className="SaveButtonProfile"
-                loading={loading}
-                disabled={loading}
-              >
-                Salvar Alterações
-              </Button>
+              <Row justify="space-between" style={{ marginBottom: '20px' }}>
+
+                <Button
+                  className="EditPasswordButton"
+                  onClick={goToUpdatePassword}
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Alterar Senha
+                </Button>
+
+                <Button
+                  htmlType="submit"
+                  className="SaveButtonProfile"
+                  loading={loading}
+                  disabled={loading}
+                >
+                  Salvar Alterações
+                </Button>
+              </Row>
 
             </Form>
           </Col>

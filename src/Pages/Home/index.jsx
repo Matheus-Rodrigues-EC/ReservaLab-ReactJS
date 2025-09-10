@@ -13,6 +13,7 @@ import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
 import CardReservation from "../../Components/CardReservation";
 import CardEquipmentReservation from "../../Components/CardEquipmentReservation";
+import Loading from "../../Components/Loading";
 
 const Home = () => {
   const [reservations, setReservations] = useState([]);
@@ -21,6 +22,8 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [api, contextHolder] = notification.useNotification();
   const dateFormat = 'DD/MM/YYYY';
+
+  localStorage.removeItem("googleUser");
 
   const dataFormatada = dayjs().format("dddd, DD/MM/YYYY");
   const dataCapitalizada = dataFormatada.charAt(0).toUpperCase() + dataFormatada.slice(1);
@@ -46,15 +49,15 @@ const Home = () => {
         axios.get(`${import.meta.env.VITE_API_URL}/reservations/list`),
         axios.get(`${import.meta.env.VITE_API_URL}/equipments-reservations/list`)
       ]);
-  
+
       const regular = regularRes?.data || [];
       const equipments = equipmentRes?.data || [];
-  
+
       const filterByDate = (items) =>
         date
           ? items.filter((item) => dayjs(item.date).isSame(dayjs(date), 'day'))
           : filteredToday(items);
-  
+
       const combined = [
         ...filterByDate(regular),
         ...filterByDate(equipments),
@@ -65,7 +68,7 @@ const Home = () => {
         const bEarliest = b.time?.length ? dayjs(b.time.sort()[0], 'HH:mm') : dayjs(0);
         return aEarliest.diff(bEarliest);
       });
-  
+
       setReservations(combined);
     } catch (error) {
       console.error(error);
@@ -95,6 +98,7 @@ const Home = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -156,13 +160,13 @@ const Home = () => {
                 <List.Item key={item.id}>
                   {item?.classId ? (
                     <CardReservation
-                      data={item} 
-                      setReservations={setReservations} 
+                      data={item}
+                      setReservations={setReservations}
                     />
                   ) : (
                     <CardEquipmentReservation
                       data={item}
-                      setReservations={setReservations} 
+                      setReservations={setReservations}
                     />
                   )}
                 </List.Item>

@@ -11,6 +11,7 @@ import "./Style.less";
 
 import SideMenu from "../../Components/SideMenu";
 import TopMenu from "../../Components/TopMenu";
+import Loading from "../../Components/Loading";
 
 const Classroom = () => {
   const [form] = Form.useForm();
@@ -111,10 +112,10 @@ const Classroom = () => {
 
   const onFinish = (values) => {
     // console.log('Success:');
-    if(editClassroom){
+    if (editClassroom) {
       updateClassroom(values);
       console.log('update')
-    }else{
+    } else {
       createClassroom(values);
       console.log('create')
     }
@@ -132,7 +133,7 @@ const Classroom = () => {
   };
 
   useEffect(() => {
-    if(editClassroom)
+    if (editClassroom)
       getClassroom(editClassroom)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
@@ -151,6 +152,7 @@ const Classroom = () => {
 
     <Container>
       {contextHolder}
+      {loading && <Loading />}
       {window.innerWidth < 1025 && (
         <Row className="TopMenu" >
           <TopMenu visible={Visible} setVisible={setVisible} />
@@ -162,45 +164,24 @@ const Classroom = () => {
         </Col>
       )}
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
-        <Typography.Title 
-          level={2} 
-          style={{ textAlign: 'center'}}
+        <Typography.Title
+          level={2}
+          style={{ textAlign: 'center' }}
         >
           {editClassroom ? 'Atualizar Sala' : 'Cadastrar Sala'}
         </Typography.Title>
         <div className="ContainerClassroom">
-          <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
-            <Row justify='space-between'>
-              <Typography.Text className="TextClassroom">Nome da Sala</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextClassroom">Capacidade da Sala</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextClassroom">Descrição</Typography.Text>
-            </Row>
-
-            <Button
-              type="danger"
-              className="CancelClassroomButton"
-              onClick={goToClassrooms}
-              loading={loading}
-              disabled={loading}
-            >
-              Cancelar
-            </Button>
-          </Col>
-          <Col span={12} offset={2}>
+          <Col span={24}>
             <Form
               form={form}
+              layout="vertical"
               name="Create_Classroom"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
               autoComplete="on"
             >
               <Form.Item
+                label="Nome da Sala"
                 name='name'
                 initialValue={ClassroomData?.name || ''}
                 rules={[
@@ -220,6 +201,7 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
+                label="Capacidade da Sala"
                 name='capacity'
                 initialValue={ClassroomData?.capacity || ''}
                 rules={[
@@ -241,6 +223,7 @@ const Classroom = () => {
               </Form.Item>
 
               <Form.Item
+                label="Descrição (opcional)"
                 name='description'
                 initialValue={ClassroomData?.description || ''}
                 rules={[
@@ -259,29 +242,39 @@ const Classroom = () => {
                 />
               </Form.Item>
 
-              {editClassroom ? (
+              <Row justify='space-between' style={{ marginTop: '3vh' }}>
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="ClassroomButton"
+                  type="danger"
+                  className="CancelClassroomButton"
+                  onClick={goToClassrooms}
                   loading={loading}
                   disabled={loading}
                 >
-                  Salvar Alterações
+                  Cancelar
                 </Button>
-              ) : (
+                {editClassroom ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="ClassroomButton"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Salvar Alterações
+                  </Button>
+                ) : (
 
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="ClassroomButton"
-                  loading={loading}
-                  disabled={loading}
-                >
-                  Cadastrar Sala
-                </Button>
-              )}
-
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="ClassroomButton"
+                    loading={loading}
+                    disabled={loading}
+                  >
+                    Cadastrar Sala
+                  </Button>
+                )}
+              </Row>
             </Form>
           </Col>
         </div>

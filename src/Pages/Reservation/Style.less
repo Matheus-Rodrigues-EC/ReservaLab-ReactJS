@@ -4,7 +4,7 @@
   display: flex;
   background-color: rgba(234, 234, 234, 0.85);
   margin: auto;
-  width: 50vw;
+  width: 30vw;
   height: 60%;
   padding: 30px;
   box-sizing: border-box;
@@ -32,9 +32,9 @@
 }
 
 .SaveButtonReservation {
-  color: #02732A;
+  color: #02732a;
   background-color: rgba(2, 115, 42, 0.15);
-  border: 2px solid #02732A;
+  border: 2px solid #02732a;
   border-radius: 5px;
   width: auto;
   height: 2rem;
@@ -45,9 +45,9 @@
 }
 
 .CanceldButtonReservation {
-  color: #02732A;
+  color: #02732a;
   background-color: rgba(2, 115, 42, 0.15);
-  border: 2px solid #02732A;
+  border: 2px solid #02732a;
   border-radius: 5px;
   width: auto;
   height: 2rem;
@@ -57,11 +57,12 @@
   left: 0;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 1024px) {
   .ContainerReservation {
-    width: 95vw;
+    width: 90vw;
     height: auto;
     margin-top: 2rem;
+    overflow-y: scroll;
   }
   .TextReservation {
     font-size: 1.25rem;
@@ -94,14 +95,15 @@
   }
 }
 
-@media (max-width: 425px){
+@media (max-width: 425px) {
   .ContainerReservation {
-    width: 95vw;
+    width: 90vw;
     height: auto;
     margin-top: 1rem;
+    overflow-y: scroll;
   }
   .TextReservation {
-    font-size: .90rem;
+    font-size: 0.9rem;
   }
   .InputDateReservation {
     width: 100% !important;
@@ -116,16 +118,16 @@
   .inputTextAreaReservation {
     width: 100% !important;
     height: 5rem !important;
-    font-size: .85rem !important;
+    font-size: 0.85rem !important;
   }
   .SaveButtonReservation {
     width: auto;
     height: 2.25rem;
-    font-size: .85rem;
+    font-size: 0.85rem;
   }
   .CanceldButtonReservation {
     width: auto;
     height: 2.25rem;
-    font-size: .85rem;
+    font-size: 0.85rem;
   }
 }
