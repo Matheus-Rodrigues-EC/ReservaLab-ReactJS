@@ -78,7 +78,7 @@ const SideMenu = () => {
   }, [today, user])
 
   return (
-    <Container style={window.innerWidth > 1025 ? { height: '100vh' } : { height: '100vh' }}>
+    <Container style={window.innerWidth > 1025 ? { height: '100vh' } : { height: '100%' }}>
       <Row justify="center" >
         <Avatar
           className="AvatarSideMenu"
@@ -95,7 +95,7 @@ const SideMenu = () => {
           {today}
         </Typography.Title>
       </Row>
-      <Row style={{ padding: '0 20px', textAlign: 'center' }} >
+      <Row style={{ padding: '0 20px', textAlign: 'center', display: 'flex', justifyContent: 'center' }} >
         <Typography.Title style={{ fontFamily: "Poppins, sans-serif", marginTop: '0', fontSize: '1rem' }}>
           Bem vindo(a), {user}.
         </Typography.Title>
@@ -189,6 +189,9 @@ const Container = styled.div`
   margin: auto;
   display: flex;
   flex-direction: column;
-  /* height: 100vh; */
+  /* height: 100%; */
   background-color: rgba(121, 199, 217, 0.8);
+  overflow-y: auto;
+  padding: 20px 10px;
+  box-sizing: border-box;
 `

@@ -22,6 +22,7 @@ import Equipments from "./Pages/Equipment/Equipments";
 import Equipment from "./Pages/Equipment";
 import PrivateRoute from "./Components/PrivateRoute";
 import NotFound from "./Utils/NotFound";
+import CheckingYourInfo from "./Components/CheckingYourInfo";
 
 function App() {
 
@@ -48,6 +49,7 @@ function App() {
 
   return (
     <Container>
+      <CheckingYourInfo />
       <BrowserRouter>
         <Routes>
 
@@ -137,6 +139,6 @@ const Container = styled.div`
   background-size: cover;
   background-attachment: scroll;
   overflow-y: scroll;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
   box-sizing: border-box;
 `

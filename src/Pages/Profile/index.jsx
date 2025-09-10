@@ -315,7 +315,7 @@ const Profile = () => {
                 </Select>
               </Form.Item>
 
-              <Row justify="space-between" style={{ marginBottom: '20px' }}>
+              <Row justify="space-between">
 
                 <Button
                   className="EditPasswordButton"
