@@ -42,6 +42,7 @@ const CheckingYourInfo = () => {
   }
 
   React.useEffect(() => {
+    if(!userData) return;
     checkRulets();
     checkShift();
     checkSubject();
