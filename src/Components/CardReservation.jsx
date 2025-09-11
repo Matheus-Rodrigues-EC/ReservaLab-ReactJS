@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import {
   Col,
@@ -23,6 +24,8 @@ import {
   EditTwoTone,
   FileTextOutlined,
   CalendarOutlined,
+  ApartmentOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -43,6 +46,7 @@ const CardReservation = ({ data, setReservations }) => {
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
+  const Navigate = useNavigate();
 
   const renderImage = (id) => {
     if (id === "1" || id === "7") return Test;
@@ -72,6 +76,11 @@ const CardReservation = ({ data, setReservations }) => {
       prevItems.filter((item) => item.id !== idToRemove)
     );
   };
+
+  const editReservation = (id) => {
+    sessionStorage.setItem("editReservationId", id);
+    Navigate("/reservation");
+  }
 
   const deleteReservation = async (id) => {
     setLoading(true);
@@ -135,13 +144,13 @@ const CardReservation = ({ data, setReservations }) => {
           canEditOrDelete && (
             <Space>
               {/* Botão editar */}
-              {/* <Button
+              <Button
                 type="icon"
                 style={{ fontSize: "1.25rem" }}
                 onClick={() => editReservation(data?.id)}
               >
                 <EditTwoTone twoToneColor="#FFA500" />
-              </Button> */}
+              </Button>
 
               {/* Botão excluir */}
               <Popconfirm
@@ -188,13 +197,13 @@ const CardReservation = ({ data, setReservations }) => {
             <Space direction="vertical" size="small" style={{ width: "100%" }}>
               {/* Cabeçalho */}
               <Title level={5} style={{ margin: 0, textAlign: "left" }}>
-                Sala: {data?.Classroom?.name}
+                <ApartmentOutlined /> Sala: {data?.Classroom?.name}
               </Title>
               <Title level={5} style={{ margin: 0, textAlign: "left" }}>
-                Propósito: {renderPurpose(data?.purpose)}
+                <ScheduleOutlined /> Propósito: {renderPurpose(data?.purpose)}
               </Title>
               <Title level={5} style={{ margin: 0, textAlign: "left" }}>
-                Data: {capitalizedDate}
+                <CalendarOutlined /> Data: {capitalizedDate}
               </Title>
 
               <Divider style={{ margin: "8px 0" }} />

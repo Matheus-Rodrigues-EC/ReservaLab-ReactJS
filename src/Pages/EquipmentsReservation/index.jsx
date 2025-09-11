@@ -33,6 +33,7 @@ const EquipmentsReservation = () => {
   const dateFormat = 'dddd, DD/MM/YYYY';
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData'));
+  const editEquipmentReservationId = sessionStorage.getItem("editEquipmentReservationId");
 
   const handleSearchEquipments = (value) => {
     if (!value) {
@@ -44,17 +45,6 @@ const EquipmentsReservation = () => {
       setFilteredEquipments(filtered);
     }
   };
-
-  // const handleSearchFinalidades = (value) => {
-  //   if (!value) {
-  //     setFilteredFinalidades(Finalidades);
-  //   } else {
-  //     const filtered = Finalidades?.filter((finalidade) =>
-  //       finalidade.label.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     setFilteredFinalidades(filtered);
-  //   }
-  // };
 
   const fetchEquipments = async () => {
     const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments/list`);
@@ -162,9 +152,59 @@ const EquipmentsReservation = () => {
     }
   }
 
+  const getEditEquipmentReservation = async (id) => {
+    setLoading(true);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/equipments-reservations/list/${id}`);
+    form.setFieldsValue({
+      date: dayjs(response?.data?.date),
+      equipmentId: response?.data?.equipmentId,
+      time: response?.data?.time,
+      description: response?.data?.description,
+    });
+    setSelectedTimes(response?.data?.time || []);
+    console.log(response?.data);
+    setLoading(false);
+  };
+
+  const updateEquipmentReservation = async (data) => {
+    const body = {
+      ...data,
+      userId: Number(userData.id),
+    }
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/equipments-reservations/${data.id}/update`, body);
+      api.success({
+        message: 'Reserva de Equipamento Atualizada!',
+        description: 'A reserva de equipamento foi atualizada com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+        goToHome();
+      }, 2250);
+    } catch (error) {
+      console.error("Erro:", error?.response?.data?.message || error?.message || error);
+      api.error({
+        message: 'Erro ao atualizar reserva de equipamento',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 3,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 2750);
+    }
+  };
+
   const onFinish = (values) => {
     const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
-    createEquipmentReservation({ ...values, date: dataCapitalizada });
+    editEquipmentReservationId
+      ? updateEquipmentReservation({ id: editEquipmentReservationId, ...values, date: dataCapitalizada })
+      : createEquipmentReservation({ ...values, date: dataCapitalizada });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -180,6 +220,9 @@ const EquipmentsReservation = () => {
   };
 
   useEffect(() => {
+    if (editEquipmentReservationId) {
+      getEditEquipmentReservation(editEquipmentReservationId);
+    }
     fetchEquipments();
     handleSearchEquipments('');
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,25 +249,6 @@ const EquipmentsReservation = () => {
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title level={2} style={{ textAlign: 'center' }}>Reservar Equipamentos</Typography.Title>
         <div className="ContainerEquipmentReservation">
-          {/* <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
-            <Row justify='space-between'>
-              <Typography.Text className="TextEquipmentReservation" >Selecione a data</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextEquipmentReservation" >Selecione o equipamento</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextEquipmentReservation" >Selecione o  horário</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextEquipmentReservation" >Descrição</Typography.Text>
-            </Row>
-
-          </Col> */}
-
           <Col span={24} style={{}}>
             <Form
               form={form}
@@ -321,11 +345,11 @@ const EquipmentsReservation = () => {
                   >
                     {Times.map((time) => (
                       <Select.Option
-                        key={time.label}
-                        value={time.label}
-                        disabled={!allowedSet.has(time)}
+                        key={time?.label}
+                        value={time?.label}
+                        disabled={!allowedSet?.has(time)}
                       >
-                        {time.label}
+                        {time?.label}
                       </Select.Option>
                     ))}
                   </Select>
@@ -369,7 +393,7 @@ const EquipmentsReservation = () => {
                   loading={loading}
                   disabled={loading}
                 >
-                  Salvar Alterações
+                  {editEquipmentReservationId ? 'Atualizar Reserva' : 'Salvar Reserva'}
                 </Button>
               </Row>
 
