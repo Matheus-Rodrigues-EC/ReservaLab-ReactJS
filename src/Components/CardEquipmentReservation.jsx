@@ -125,7 +125,6 @@ const CardEquipmentReservation = ({ data, setReservations }) => {
           borderRadius: "16px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           width: "100%",
-          maxWidth: 1600,
           backgroundColor: "#79c7d9",
           border: "1px solid #2BB9D9",
         }}
