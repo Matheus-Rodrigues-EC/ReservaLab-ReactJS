@@ -40,6 +40,7 @@ const Reservation = () => {
   const dateFormat = 'dddd, DD/MM/YYYY';
   const Navigate = useNavigate()
   const userData = JSON.parse(localStorage.getItem('userData')) || {};
+  const editReservationId = sessionStorage.getItem('editReservationId');
 
   const handleSearchSalas = (value) => {
     if (!value) {
@@ -203,9 +204,59 @@ const Reservation = () => {
     }
   }
 
+  const getEditReservation = async (id) => {
+    setLoading(true);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/reservations/list/${id}`);
+    form.setFieldsValue({
+      date: dayjs(response?.data?.date),
+      classroomId: response?.data?.classroomId,
+      classId: response?.data?.classId,
+      time: response?.data?.time,
+      purpose: Number(response?.data?.purpose),
+      description: response?.data?.description,
+    });
+    // console.log(response?.data);
+    setLoading(false);
+  };
+
+  const updateReservation = async (data) => {
+    const body = {
+      ...data,
+    };
+    setLoading(true);
+    try {
+      await axios.patch(`${import.meta.env.VITE_API_URL}/reservations/${editReservationId}/update`, body);
+      sessionStorage.removeItem('editReservationId');
+
+      api.success({
+        message: 'Reserva Atualizada!',
+        description: 'A reserva foi atualizada com sucesso.',
+        showProgress: true,
+        duration: 2,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+        goToHome();
+      }, 2250);
+    } catch (error) {
+      console.error("Erro:", error?.response?.data?.message || error?.message || error);
+      api.error({
+        message: 'Erro ao atualizar reserva',
+        description: error.response?.data?.message || 'Ocorreu um erro inesperado. Tente novamente.',
+        showProgress: true,
+        duration: 3,
+        placement: "top"
+      });
+      setTimeout(() => {
+        setLoading(false);
+      }, 2750);
+    }
+  };
+
   const onFinish = (values) => {
     const dataCapitalizada = dayjs(values.date).startOf('day').toDate();
-    createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
+    editReservationId ? updateReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada }) : createReservation({ ...values, purpose: String(values.purpose), date: dataCapitalizada });
   };
 
   const onFinishFailed = () => {
@@ -219,6 +270,9 @@ const Reservation = () => {
   };
 
   useEffect(() => {
+    if (editReservationId) {
+      getEditReservation(editReservationId);
+    }
     fetchSalas();
     fetchTurmas();
     handleSearchClasses('');
@@ -253,32 +307,6 @@ const Reservation = () => {
       <Col span={window.innerWidth < 1025 ? 24 : 20} style={window.innerWidth < 1025 ? { marginTop: '5vh' } : { marginTop: '1vh' }}>
         <Typography.Title level={2} style={{ textAlign: 'center' }}>Reservar Sala</Typography.Title>
         <div className="ContainerReservation">
-          {/* <Col span={10} style={{ display: 'flex', flexDirection: 'column', gap: '38px' }}>
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a data</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a sala</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione a turma</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Selecione o  horário</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Finalidade</Typography.Text>
-            </Row>
-
-            <Row justify='space-between'>
-              <Typography.Text className="TextReservation" >Descrição</Typography.Text>
-            </Row>
-          </Col> */}
-
           <Col span={24} style={{}}>
             <Form
               form={form}
@@ -403,11 +431,11 @@ const Reservation = () => {
                   >
                     {Times.map((time) => (
                       <Select.Option
-                        key={time.label}
-                        value={time.label}
-                        disabled={!allowedSet.has(time)}
+                        key={time?.label}
+                        value={time?.label}
+                        disabled={!allowedSet?.has(time)}
                       >
-                        {time.label}
+                        {time?.label}
                       </Select.Option>
                     ))}
                   </Select>
@@ -475,7 +503,7 @@ const Reservation = () => {
                   loading={loading}
                   disabled={loading}
                 >
-                  Criar Reserva
+                  {editReservationId ? 'Atualizar Reserva' : 'Criar Reserva'}
                 </Button>
               </Row>
 

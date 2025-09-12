@@ -85,8 +85,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    localStorage.removeItem("EditReservation");
-    localStorage.removeItem("EditEquipmentReservation");
+    sessionStorage.removeItem('editReservationId');
+    sessionStorage.removeItem("editEquipmentReservationId");
     fetchAllReservations(selectedDate)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);

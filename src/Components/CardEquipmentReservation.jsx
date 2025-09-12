@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import {
   Col,
@@ -19,6 +20,7 @@ import {
   ReadOutlined,
   AppstoreOutlined,
   QuestionCircleOutlined,
+  EditTwoTone,
   DeleteTwoTone,
   FileTextOutlined,
 } from "@ant-design/icons";
@@ -40,6 +42,7 @@ const CardEquipmentReservation = ({ data, setReservations }) => {
   const [loading, setLoading] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [messageApi, contextHolder2] = message.useMessage();
+  const Navigate = useNavigate();
 
   const renderImage = (id) => {
     if (id === "Audio") return Audio;
@@ -63,6 +66,11 @@ const CardEquipmentReservation = ({ data, setReservations }) => {
       prevItems.filter((item) => item.id !== idToRemove)
     );
   };
+
+  const editEquipmentReservation = (id) => {
+    sessionStorage.setItem("editEquipmentReservationId", id);
+    Navigate("/equipment-reservation");
+  }
 
   const deleteEquipmentReservation = async (id) => {
     setLoading(true);
@@ -117,7 +125,6 @@ const CardEquipmentReservation = ({ data, setReservations }) => {
           borderRadius: "16px",
           boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
           width: "100%",
-          maxWidth: 1600,
           backgroundColor: "#79c7d9",
           border: "1px solid #2BB9D9",
         }}
@@ -125,13 +132,13 @@ const CardEquipmentReservation = ({ data, setReservations }) => {
           canEditOrDelete && (
             <Space>
               {/* Botão editar */}
-              {/* <Button
+              <Button
                 type="icon"
                 style={{ fontSize: "1.25rem" }}
-                onClick={() => editReservation(data?.id)}
+                onClick={() => editEquipmentReservation(data?.id)}
               >
                 <EditTwoTone twoToneColor="#FFA500" />
-              </Button> */}
+              </Button>
 
               {/* Botão excluir */}
               <Popconfirm
